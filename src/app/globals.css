@@ -6,11 +6,11 @@
   Light only for now.
 */
 :root {
-  --background: #f3efe7; /* warm paper */
-  --surface: #fffcf9; /* off-white cards and panels */
+  --background: #f6f5f3; /* cool neutral page */
+  --surface: #fafaf9; /* off-white cards and panels */
   --foreground: #16130e; /* near-black ink */
-  --muted: #6b6358; /* quiet labels; ≥4.5:1 on background and surface */
-  --border: #e2dace;
+  --muted: #656360; /* quiet labels; ≥4.5:1 on background and surface */
+  --border: #e7e5e2;
   --brand: #1c1a4a; /* deep indigo */
   --brand-foreground: #ffffff;
   --accent: #c2410c; /* terracotta: sale, out of stock */
