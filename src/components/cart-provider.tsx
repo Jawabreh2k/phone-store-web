@@ -8,6 +8,8 @@ import type { CartDto } from "@/lib/api/types";
 /** "error" means the cart could not be loaded (API down, network); `refresh` retries. */
 export type CartStatus = "loading" | "ready" | "error";
 
+export type CartRefreshResult = { ok: true; cart: CartDto | null } | { ok: false };
+
 interface CartContextValue {
   cart: CartDto | null;
   itemCount: number;
@@ -15,8 +17,11 @@ interface CartContextValue {
   addItem: (variantId: string, quantity: number) => Promise<CartDto>;
   updateLine: (variantId: string, quantity: number) => Promise<CartDto>;
   removeLine: (variantId: string) => Promise<CartDto>;
-  /** Reloads the cart. Never rejects: a failure shows up as status "error". */
-  refresh: () => Promise<void>;
+  /**
+   * Reloads the cart. Never rejects. A failure shows up as status "error", unless `silent` is set,
+   * which leaves the cart already on screen alone (a follow-up reload must not cover a placed order).
+   */
+  refresh: (options?: { silent?: boolean }) => Promise<CartRefreshResult>;
 }
 
 const CartContext = createContext<CartContextValue | null>(null);
@@ -27,12 +32,15 @@ export function CartProvider({ locale, children }: { locale: Locale; children: R
   const [loaded, setLoaded] = useState<{ locale: Locale; failed: boolean } | null>(null);
   const status: CartStatus = loaded?.locale !== locale ? "loading" : loaded.failed ? "error" : "ready";
 
-  const refresh = useCallback(async () => {
+  const refresh = useCallback(async (options?: { silent?: boolean }) => {
     try {
-      setCart(await cartApi.getCart(locale));
+      const next = await cartApi.getCart(locale);
+      setCart(next);
       setLoaded({ locale, failed: false });
+      return { ok: true as const, cart: next };
     } catch {
-      setLoaded({ locale, failed: true });
+      if (!options?.silent) setLoaded({ locale, failed: true });
+      return { ok: false as const };
     }
   }, [locale]);
 

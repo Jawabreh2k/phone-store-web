@@ -36,11 +36,12 @@ export function HomeHero({ locale, dict, settings, phones, brands }: Props) {
 
   return (
     // Full-bleed band that starts under the transparent header and fills the first screen, so the page
-    // colour below stays out of view. The brand strip sits on the bottom edge.
-    <section className="relative isolate flex min-h-dvh flex-col overflow-hidden bg-brand text-brand-foreground [--focus-ring:var(--brand-foreground)] [--grid-line:color-mix(in_srgb,var(--brand-foreground)_7%,transparent)]">
+    // colour below stays out of view. The brand strip sits on the bottom edge. On phones the band is exactly
+    // one screen tall (growing only if the copy needs it) and the stage takes what the copy leaves.
+    <section className="relative isolate flex min-h-dvh flex-col overflow-hidden bg-brand text-brand-foreground [--focus-ring:var(--brand-foreground)] [--grid-line:color-mix(in_srgb,var(--brand-foreground)_7%,transparent)] max-md:h-dvh max-md:min-h-min">
       <div aria-hidden className="bg-grid mask-fade-b pointer-events-none absolute inset-0 -z-10" />
 
-      <div className="page-container grid flex-1 items-center pt-24 sm:pt-28 md:grid-cols-[1fr_1fr]">
+      <div className="page-container grid flex-1 items-center pt-24 sm:pt-28 md:grid-cols-[1fr_1fr] max-md:grid-rows-[auto_minmax(14rem,1fr)]">
         {/* ---- Copy ---- */}
         <div className="relative z-10 flex flex-col gap-7 pt-8 sm:pt-12 md:py-0">
           <h1 className="max-w-lg text-[2.6rem] font-semibold leading-[1.1] tracking-tight sm:text-6xl lg:text-[4.25rem]">
@@ -77,8 +78,13 @@ export function HomeHero({ locale, dict, settings, phones, brands }: Props) {
 
         {/* ---- Stage: rings, phone, floating cards ----
             Beside the copy (md+) the stage sets the row height: it gives up space on short screens so the
-            brand strip stays on the first screen (11.5rem = header offset + strip), but never below the phone. */}
-        <div aria-hidden className={`relative flex min-h-[30rem] items-center justify-center sm:min-h-[34rem] md:min-h-[clamp(32rem,calc(100dvh-11.5rem),40rem)] ${styles.stage}`}>
+            brand strip stays on the first screen (11.5rem = header offset + strip), but never below the phone.
+            Under the copy (phones) it fills the rest of the screen and the full-size phone rises out of the
+            brand strip, cropped by it, rather than shrinking. Size containment stops the phone from growing the row. */}
+        <div
+          aria-hidden
+          className={`relative flex items-start justify-center self-stretch overflow-hidden pt-6 contain-size md:min-h-[clamp(32rem,calc(100dvh-11.5rem),40rem)] md:items-center md:self-auto md:overflow-visible md:pt-0 md:contain-none ${styles.stage}`}
+        >
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="relative size-[22rem] sm:size-[28rem]">
               <div className="absolute inset-[18%] rounded-full bg-brand-foreground/5" />

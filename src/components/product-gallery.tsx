@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useRef, useState } from "react";
 import { t } from "@/lib/format";
 import { ArrowIcon, CloseIcon } from "./icons";
-import { swipeRow } from "./ui";
+import { iconButton, swipeRow } from "./ui";
 
 interface Props {
   images: { id: string; url: string }[];
@@ -12,8 +12,6 @@ interface Props {
   labels: { viewLarger: string; close: string; previous: string; next: string; photoOf: string };
 }
 
-const roundButton =
-  "flex size-10 items-center justify-center rounded-full border border-border bg-surface text-foreground transition-colors hover:border-foreground/40";
 
 /**
  * Product photos: a swipeable strip (CSS scroll-snap) with thumbnails and, on larger screens, arrows.
@@ -87,7 +85,7 @@ export function ProductGallery({ images, name, labels }: Props) {
           ref={track}
           onScroll={onStripScroll}
           aria-label={name}
-          className={`flex snap-x snap-mandatory rounded-[2rem] ${swipeRow}`}
+          className={`flex snap-x snap-mandatory rounded-panel border border-border/70 ${swipeRow}`}
         >
           {images.map((image, index) => (
             <button
@@ -95,7 +93,7 @@ export function ProductGallery({ images, name, labels }: Props) {
               type="button"
               onClick={() => openViewer(index)}
               aria-label={`${labels.viewLarger}: ${photoLabel(index)}`}
-              className="relative aspect-[4/5] w-full shrink-0 cursor-zoom-in snap-center bg-surface"
+              className="relative aspect-square w-full shrink-0 cursor-zoom-in snap-center bg-surface md:aspect-[4/5]"
             >
               <Image
                 src={image.url}
@@ -115,7 +113,7 @@ export function ProductGallery({ images, name, labels }: Props) {
               type="button"
               onClick={() => show(active - 1)}
               aria-label={labels.previous}
-              className={`${roundButton} absolute start-4 top-1/2 hidden -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100 focus-visible:opacity-100 md:flex`}
+              className={`${iconButton} absolute start-4 top-1/2 -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100 focus-visible:opacity-100 max-md:hidden`}
             >
               <ArrowIcon className="size-4 rotate-180" />
             </button>
@@ -123,7 +121,7 @@ export function ProductGallery({ images, name, labels }: Props) {
               type="button"
               onClick={() => show(active + 1)}
               aria-label={labels.next}
-              className={`${roundButton} absolute end-4 top-1/2 hidden -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100 focus-visible:opacity-100 md:flex`}
+              className={`${iconButton} absolute end-4 top-1/2 -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100 focus-visible:opacity-100 max-md:hidden`}
             >
               <ArrowIcon />
             </button>
@@ -140,7 +138,7 @@ export function ProductGallery({ images, name, labels }: Props) {
               onClick={() => show(index)}
               aria-label={photoLabel(index)}
               aria-current={index === active ? "true" : undefined}
-              className={`relative size-16 shrink-0 overflow-hidden rounded-2xl bg-surface transition sm:size-20 ${
+              className={`relative size-16 shrink-0 overflow-hidden rounded-2xl border border-border/70 bg-surface transition sm:size-20 ${
                 index === active ? "ring-2 ring-brand ring-offset-2 ring-offset-background" : "opacity-60 hover:opacity-100"
               }`}
             >
@@ -160,7 +158,7 @@ export function ProductGallery({ images, name, labels }: Props) {
         <div className="flex size-full flex-col">
           <div className="flex items-center justify-between gap-4 px-4 py-3 sm:px-6">
             <span className="text-sm text-muted">{count > 1 ? photoLabel(active) : name}</span>
-            <button type="button" onClick={() => viewer.current?.close()} aria-label={labels.close} className={roundButton}>
+            <button type="button" onClick={() => viewer.current?.close()} aria-label={labels.close} className={iconButton}>
               <CloseIcon />
             </button>
           </div>
@@ -191,10 +189,10 @@ export function ProductGallery({ images, name, labels }: Props) {
 
             {count > 1 && (
               <>
-                <button type="button" onClick={() => show(active - 1, "auto")} aria-label={labels.previous} className={`${roundButton} absolute start-4 top-1/2 -translate-y-1/2`}>
+                <button type="button" onClick={() => show(active - 1, "auto")} aria-label={labels.previous} className={`${iconButton} absolute start-4 top-1/2 -translate-y-1/2`}>
                   <ArrowIcon className="size-4 rotate-180" />
                 </button>
-                <button type="button" onClick={() => show(active + 1, "auto")} aria-label={labels.next} className={`${roundButton} absolute end-4 top-1/2 -translate-y-1/2`}>
+                <button type="button" onClick={() => show(active + 1, "auto")} aria-label={labels.next} className={`${iconButton} absolute end-4 top-1/2 -translate-y-1/2`}>
                   <ArrowIcon />
                 </button>
               </>

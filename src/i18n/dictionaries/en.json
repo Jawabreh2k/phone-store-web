@@ -16,13 +16,25 @@
     "shopAccessories": "Shop accessories",
     "featured": "Featured",
     "viewAll": "View all",
-    "freeDelivery": "Free delivery on orders over {amount}"
+    "freeDelivery": "Free delivery on orders over {amount}",
+    "shopByCategory": "Shop by category",
+    "accessoriesEyebrow": "Complete your setup",
+    "viewAllPhones": "View all phones",
+    "viewAllAccessories": "View all accessories",
+    "promisesLabel": "Why order from us",
+    "promiseCodTitle": "Pay cash on delivery",
+    "promiseCodBody": "No card needed: you pay the courier when your order arrives.",
+    "promiseDeliveryTitle": "Delivered to your door",
+    "promiseDeliveryFree": "Free on orders over {amount}, otherwise {fee}.",
+    "promiseDeliveryFlat": "A flat {fee} per order.",
+    "promiseDeliveryAlwaysFree": "Free on every order.",
+    "promiseTrackTitle": "Follow every step",
+    "promiseTrackBody": "You get a private tracking link the moment you order."
   },
   "catalog": {
     "phones": "Phones",
     "accessories": "Accessories",
     "allProducts": "All products",
-    "results": "{count} products",
     "noResults": "No products match your filters.",
     "brand": "Brand",
     "allBrands": "All brands",
@@ -37,7 +49,38 @@
     "inStock": "In stock",
     "sale": "Sale",
     "previous": "Previous",
-    "next": "Next"
+    "next": "Next",
+    "productCount": {
+      "zero": "{count} products",
+      "one": "{count} product",
+      "two": "{count} products",
+      "few": "{count} products",
+      "many": "{count} products",
+      "other": "{count} products"
+    },
+    "salePercent": "−{percent}",
+    "breadcrumb": "Breadcrumb",
+    "productType": "Product type",
+    "category": "Category",
+    "allCategories": "All categories",
+    "filters": "Filters",
+    "showResults": "Show results",
+    "reset": "Reset",
+    "clearAll": "Clear all",
+    "price": "Price ({currency})",
+    "priceMin": "Min",
+    "priceMax": "Max",
+    "priceRange": "{min} – {max}",
+    "priceFrom": "From {min}",
+    "priceUpTo": "Up to {max}",
+    "apply": "Apply",
+    "inStockOnly": "In stock only",
+    "activeFilters": "Applied filters",
+    "removeFilter": "Remove filter: {name}",
+    "noResultsHint": "Try removing a filter, or search for something else.",
+    "pagination": "Pages",
+    "page": "Page {n}",
+    "showing": "Showing {from}–{to} of {total}"
   },
   "product": {
     "chooseOption": "Choose an option",
@@ -49,7 +92,17 @@
     "cashOnDelivery": "Cash on delivery",
     "viewLarger": "View larger",
     "close": "Close",
-    "photoOf": "Photo {n} of {total}"
+    "photoOf": "Photo {n} of {total}",
+    "colour": "Colour",
+    "memory": "Storage",
+    "ram": "{ram} RAM",
+    "save": "Save {amount}",
+    "otherColours": "In other colours",
+    "codHint": "No card needed",
+    "delivery": "Delivery",
+    "freeDeliveryOver": "Free on orders over {amount}",
+    "deliveryFee": "{fee} per order",
+    "deliveryFree": "Free on every order"
   },
   "cart": {
     "title": "Cart",
@@ -84,6 +137,22 @@
       "catalog.variant_not_found": "This product option is no longer available.",
       "catalog.insufficient_stock": "Not enough stock for this item.",
       "generic": "Something went wrong. Please try again."
+    },
+    "summary": "Order summary",
+    "free": "Free",
+    "freeShippingProgress": "Add {amount} more for free delivery",
+    "freeShippingUnlocked": "Your order ships free",
+    "continueShopping": "Continue shopping",
+    "codNote": "Pay in cash when your order arrives",
+    "trackNote": "Follow your order with a private link",
+    "each": "{price} each",
+    "itemCount": {
+      "zero": "{count} items",
+      "one": "{count} item",
+      "two": "{count} items",
+      "few": "{count} items",
+      "many": "{count} items",
+      "other": "{count} items"
     }
   },
   "checkout": {
@@ -104,7 +173,7 @@
     "placeOrder": "Place order",
     "processing": "Placing order…",
     "orderSummary": "Order summary",
-    "guestCheckoutDisabled": "Please sign in to place an order.",
+    "guestCheckoutDisabled": "Ordering is unavailable right now. Please contact the store.",
     "fieldErrors": {
       "fullName": "Enter your full name.",
       "phone": "Enter a valid phone number.",
@@ -121,13 +190,21 @@
       "validation": "Please check the highlighted fields.",
       "phone.invalid": "Enter a valid phone number.",
       "cart.empty": "Your cart is empty.",
+      "orderMaybePlaced": "Your order may already be placed, and we can't show the tracking link again. Contact the store with the phone number you entered so they can find it.",
       "cart.item_unavailable": "One or more items are no longer available.",
       "orders.stock_changed": "Stock changed while you were checking out. Please review your cart and try again.",
-      "orders.guest_checkout_disabled": "Please sign in to place an order.",
+      "orders.guest_checkout_disabled": "Ordering is unavailable right now. Please contact the store.",
       "catalog.insufficient_stock": "Not enough stock for one or more items.",
       "catalog.variant_not_found": "A product option is no longer available.",
       "generic": "Something went wrong. Please try again."
-    }
+    },
+    "steps": "Checkout steps",
+    "stepCart": "Cart",
+    "stepDetails": "Details",
+    "stepDone": "Confirmation",
+    "codDetail": "Pay {total} in cash when your order arrives. No card needed.",
+    "noPaymentNow": "Nothing to pay now.",
+    "showSummary": "Order summary"
   },
   "confirmation": {
     "orderPlaced": "Order placed!",
@@ -159,12 +236,18 @@
     "statusDelivered": "Delivered",
     "statusCancelled": "Cancelled",
     "paymentUnpaid": "Unpaid",
-    "paymentPaid": "Paid"
+    "paymentPaid": "Paid",
+    "cancelledNotice": "This order was cancelled.",
+    "cancelReason": "Reason: {reason}",
+    "items": "Items",
+    "free": "Free"
   },
   "footer": {
     "contact": "Contact us",
     "whatsapp": "WhatsApp",
-    "rights": "All rights reserved."
+    "rights": "All rights reserved.",
+    "shop": "Shop",
+    "language": "Language"
   },
   "common": {
     "notFoundTitle": "Page not found",

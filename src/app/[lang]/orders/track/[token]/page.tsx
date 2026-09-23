@@ -31,22 +31,16 @@ export default async function TrackOrderPage({
   const order = await api.trackOrder(locale, token, requestHeaders.get("x-forwarded-for"));
   if (!order) notFound();
 
-  const host = requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host");
-  const proto = requestHeaders.get("x-forwarded-proto")?.split(",")[0] ?? "http";
-  const trackingUrl = `${proto}://${host}/${locale}/orders/track/${token}`;
-
+  // OrderTrack renders the page heading: the confirmation right after checkout, "Track order" otherwise.
   return (
-    <div className="flex flex-col gap-8 sm:gap-10">
-      <h1 className="border-b border-border pb-6 text-3xl font-semibold tracking-tight sm:text-4xl">{dict.track.title}</h1>
-      <OrderTrack
-        locale={locale}
-        order={order}
-        trackingUrl={trackingUrl}
-        placed={query.placed === "1"}
-        labels={dict.track}
-        confirmation={dict.confirmation}
-        cashOnDeliveryLabel={dict.checkout.cashOnDelivery}
-      />
-    </div>
+    <OrderTrack
+      locale={locale}
+      order={order}
+      trackingPath={`/${locale}/orders/track/${token}`}
+      placed={query.placed === "1"}
+      labels={dict.track}
+      confirmation={dict.confirmation}
+      cashOnDeliveryLabel={dict.checkout.cashOnDelivery}
+    />
   );
 }

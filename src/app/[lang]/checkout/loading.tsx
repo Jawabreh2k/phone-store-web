@@ -1,9 +1,9 @@
-import { CheckoutPageSkeleton, PageTitleSkeleton } from "@/components/skeletons";
+import { CheckoutHeaderSkeleton, CheckoutPageSkeleton } from "@/components/skeletons";
 
 export default function CheckoutLoading() {
   return (
-    <div className="flex flex-col gap-8 sm:gap-10" aria-busy="true">
-      <PageTitleSkeleton />
+    <div className="flex flex-col gap-6 sm:gap-8" aria-busy="true">
+      <CheckoutHeaderSkeleton />
       <CheckoutPageSkeleton />
     </div>
   );

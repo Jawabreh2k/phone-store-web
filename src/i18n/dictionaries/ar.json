@@ -16,13 +16,25 @@
     "shopAccessories": "تسوّق الإكسسوارات",
     "featured": "منتجات مميزة",
     "viewAll": "عرض الكل",
-    "freeDelivery": "توصيل مجاني للطلبات فوق {amount}"
+    "freeDelivery": "توصيل مجاني للطلبات فوق {amount}",
+    "shopByCategory": "تسوّق حسب الفئة",
+    "accessoriesEyebrow": "أكمل تجهيز هاتفك",
+    "viewAllPhones": "عرض كل الهواتف",
+    "viewAllAccessories": "عرض كل الإكسسوارات",
+    "promisesLabel": "لماذا تطلب منّا",
+    "promiseCodTitle": "ادفع نقداً عند الاستلام",
+    "promiseCodBody": "لا حاجة لبطاقة، تدفع لمندوب التوصيل عند وصول طلبك.",
+    "promiseDeliveryTitle": "توصيل حتى باب بيتك",
+    "promiseDeliveryFree": "مجاني للطلبات فوق {amount}، ورسوم {fee} لما دون ذلك.",
+    "promiseDeliveryFlat": "رسوم ثابتة {fee} لكل طلب.",
+    "promiseDeliveryAlwaysFree": "مجاني لكل الطلبات.",
+    "promiseTrackTitle": "تابع طلبك خطوة بخطوة",
+    "promiseTrackBody": "تحصل على رابط تتبّع خاص بطلبك فور إتمامه."
   },
   "catalog": {
     "phones": "الهواتف",
     "accessories": "الإكسسوارات",
     "allProducts": "كل المنتجات",
-    "results": "{count} منتج",
     "noResults": "لا توجد منتجات مطابقة.",
     "brand": "الماركة",
     "allBrands": "كل الماركات",
@@ -37,7 +49,38 @@
     "inStock": "متوفر",
     "sale": "خصم",
     "previous": "السابق",
-    "next": "التالي"
+    "next": "التالي",
+    "productCount": {
+      "zero": "لا توجد منتجات",
+      "one": "منتج واحد",
+      "two": "منتجان",
+      "few": "{count} منتجات",
+      "many": "{count} منتجاً",
+      "other": "{count} منتج"
+    },
+    "salePercent": "خصم {percent}",
+    "breadcrumb": "مسار التنقل",
+    "productType": "نوع المنتج",
+    "category": "الفئة",
+    "allCategories": "كل الفئات",
+    "filters": "الفلترة",
+    "showResults": "عرض النتائج",
+    "reset": "إعادة ضبط",
+    "clearAll": "مسح الكل",
+    "price": "السعر ({currency})",
+    "priceMin": "من",
+    "priceMax": "إلى",
+    "priceRange": "{min} – {max}",
+    "priceFrom": "من {min}",
+    "priceUpTo": "حتى {max}",
+    "apply": "تطبيق",
+    "inStockOnly": "المتوفر فقط",
+    "activeFilters": "الفلاتر المطبّقة",
+    "removeFilter": "إزالة الفلتر: {name}",
+    "noResultsHint": "جرّب إزالة أحد الفلاتر أو البحث عن شيء آخر.",
+    "pagination": "الصفحات",
+    "page": "الصفحة {n}",
+    "showing": "عرض {from}–{to} من أصل {total}"
   },
   "product": {
     "chooseOption": "اختر الخيار",
@@ -49,7 +92,17 @@
     "cashOnDelivery": "الدفع عند الاستلام",
     "viewLarger": "عرض بحجم أكبر",
     "close": "إغلاق",
-    "photoOf": "الصورة {n} من {total}"
+    "photoOf": "الصورة {n} من {total}",
+    "colour": "اللون",
+    "memory": "السعة",
+    "ram": "رام {ram}",
+    "save": "وفّر {amount}",
+    "otherColours": "بألوان أخرى",
+    "codHint": "بدون بطاقة",
+    "delivery": "التوصيل",
+    "freeDeliveryOver": "مجاني للطلبات فوق {amount}",
+    "deliveryFee": "{fee} لكل طلب",
+    "deliveryFree": "مجاني لكل الطلبات"
   },
   "cart": {
     "title": "السلة",
@@ -84,6 +137,22 @@
       "catalog.variant_not_found": "خيار المنتج هذا لم يعد متوفراً.",
       "catalog.insufficient_stock": "الكمية المتوفرة من هذا المنتج غير كافية.",
       "generic": "حدث خطأ. يرجى المحاولة مرة أخرى."
+    },
+    "summary": "ملخص الطلب",
+    "free": "مجاني",
+    "freeShippingProgress": "أضف {amount} لتحصل على توصيل مجاني",
+    "freeShippingUnlocked": "طلبك مؤهل للتوصيل المجاني",
+    "continueShopping": "متابعة التسوق",
+    "codNote": "ادفع نقداً عند وصول طلبك",
+    "trackNote": "تابع طلبك عبر رابط خاص",
+    "each": "{price} للقطعة",
+    "itemCount": {
+      "zero": "لا توجد قطع",
+      "one": "قطعة واحدة",
+      "two": "قطعتان",
+      "few": "{count} قطع",
+      "many": "{count} قطعة",
+      "other": "{count} قطعة"
     }
   },
   "checkout": {
@@ -104,7 +173,7 @@
     "placeOrder": "تأكيد الطلب",
     "processing": "جاري تأكيد الطلب…",
     "orderSummary": "ملخص الطلب",
-    "guestCheckoutDisabled": "يرجى تسجيل الدخول لإتمام الطلب.",
+    "guestCheckoutDisabled": "الطلب غير متاح حالياً. يرجى التواصل مع المتجر.",
     "fieldErrors": {
       "fullName": "أدخل اسمك الكامل.",
       "phone": "أدخل رقماً هاتفياً صالحاً.",
@@ -121,13 +190,21 @@
       "validation": "يرجى مراجعة الحقول المظللة.",
       "phone.invalid": "أدخل رقماً هاتفياً صالحاً.",
       "cart.empty": "سلتك فارغة.",
+      "orderMaybePlaced": "ربما تم تسجيل طلبك، ولا يمكننا إظهار رابط التتبّع مرة أخرى. تواصل مع المتجر برقم الهاتف الذي أدخلته ليتمكنوا من العثور على الطلب.",
       "cart.item_unavailable": "منتج واحد أو أكثر لم يعد متوفراً.",
       "orders.stock_changed": "تغيّرت الكميات المتوفرة أثناء إتمام الطلب. يرجى مراجعة سلتك والمحاولة مرة أخرى.",
-      "orders.guest_checkout_disabled": "يرجى تسجيل الدخول لإتمام الطلب.",
+      "orders.guest_checkout_disabled": "الطلب غير متاح حالياً. يرجى التواصل مع المتجر.",
       "catalog.insufficient_stock": "الكمية المتوفرة غير كافية لمنتج واحد أو أكثر.",
       "catalog.variant_not_found": "خيار المنتج لم يعد متوفراً.",
       "generic": "حدث خطأ. يرجى المحاولة مرة أخرى."
-    }
+    },
+    "steps": "خطوات الطلب",
+    "stepCart": "السلة",
+    "stepDetails": "البيانات",
+    "stepDone": "التأكيد",
+    "codDetail": "ادفع {total} نقداً عند وصول طلبك، بدون بطاقة.",
+    "noPaymentNow": "لن تدفع شيئاً الآن.",
+    "showSummary": "ملخص الطلب"
   },
   "confirmation": {
     "orderPlaced": "تم تأكيد الطلب!",
@@ -159,12 +236,18 @@
     "statusDelivered": "تم التسليم",
     "statusCancelled": "ملغى",
     "paymentUnpaid": "غير مدفوع",
-    "paymentPaid": "مدفوع"
+    "paymentPaid": "مدفوع",
+    "cancelledNotice": "تم إلغاء هذا الطلب.",
+    "cancelReason": "السبب: {reason}",
+    "items": "المنتجات",
+    "free": "مجاني"
   },
   "footer": {
     "contact": "تواصل معنا",
     "whatsapp": "واتساب",
-    "rights": "جميع الحقوق محفوظة."
+    "rights": "جميع الحقوق محفوظة.",
+    "shop": "تسوّق",
+    "language": "اللغة"
   },
   "common": {
     "notFoundTitle": "الصفحة غير موجودة",

@@ -30,6 +30,22 @@
   --font-sans: var(--font-plex-arabic), system-ui, sans-serif;
 }
 
+/*
+  Shape and depth below the hero. card: product tiles, form sections, summaries; panel: the gallery stage,
+  sheets and full-page states. lift: a card under the pointer; float: UI that sits above the page
+  (sticky buy bar, filter sheet, floating filter button). Cards are flat (border only) otherwise.
+*/
+@theme {
+  --radius-card: 1.5rem;
+  --radius-panel: 2rem;
+  --shadow-lift:
+    0 1px 2px color-mix(in srgb, var(--foreground) 5%, transparent),
+    0 14px 28px -16px color-mix(in srgb, var(--foreground) 24%, transparent);
+  --shadow-float:
+    0 2px 6px color-mix(in srgb, var(--foreground) 6%, transparent),
+    0 24px 48px -20px color-mix(in srgb, var(--foreground) 32%, transparent);
+}
+
 @theme {
   /* Header entrance: fades and drops in once on page load. */
   --animate-nav-in: nav-in 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
@@ -161,9 +177,12 @@ body {
   color: var(--brand-foreground);
 }
 
-/* One visible focus style for every interactive element. Dark surfaces set --focus-ring to stay visible. */
+/*
+  One visible focus style for every interactive element. Dark surfaces set --focus-ring to stay visible.
+  The outline follows each element's own radius; this rule sits outside Tailwind's layers, so setting a
+  radius here would square off every pill (rounded-full) on keyboard focus.
+*/
 :focus-visible {
   outline: 2px solid var(--focus-ring, var(--brand));
   outline-offset: 3px;
-  border-radius: 0.5rem;
 }

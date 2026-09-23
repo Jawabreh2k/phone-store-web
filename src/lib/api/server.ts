@@ -1,6 +1,6 @@
 import "server-only";
 import type { Locale } from "@/i18n/config";
-import { ApiError, type ApiProblem, type Brand, type OrderDetailsDto, type PagedResult, type ProductDetails, type ProductSearch, type ProductSummary, type PublicSettings } from "./types";
+import { ApiError, type ApiProblem, type Brand, type Category, type OrderDetailsDto, type PagedResult, type ProductDetails, type ProductSearch, type ProductSummary, type PublicSettings } from "./types";
 
 export { ApiError };
 
@@ -53,6 +53,9 @@ export const api = {
 
   brands: (locale: Locale, type?: ProductSummary["type"]) =>
     get<Brand[]>("/api/catalog/brands", locale, { type }, { revalidate: 300 }),
+
+  categories: (locale: Locale, type?: ProductSummary["type"]) =>
+    get<Category[]>("/api/catalog/categories", locale, { type }, { revalidate: 300 }),
 
   products: (locale: Locale, search: ProductSearch = {}) =>
     get<PagedResult<ProductSummary>>("/api/catalog/products", locale, { ...search }),

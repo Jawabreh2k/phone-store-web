@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { RouteIcon } from "@/components/icons";
+import { StatePanel } from "@/components/state-panel";
 import { buttonPrimary } from "@/components/ui";
 import { getDictionary, getLocale } from "@/i18n/dictionaries";
 
@@ -7,12 +9,10 @@ export default async function TrackOrderNotFound() {
   const [locale, dict] = await Promise.all([getLocale(), getDictionary()]);
 
   return (
-    <div className="flex flex-col items-center gap-6 rounded-[2rem] bg-surface px-6 py-20 text-center sm:py-28">
-      <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">{dict.track.notFoundTitle}</h1>
-      <p className="max-w-md text-muted">{dict.track.notFoundBody}</p>
+    <StatePanel visual={<RouteIcon className="size-10" />} title={dict.track.notFoundTitle} body={dict.track.notFoundBody}>
       <Link href={`/${locale}`} className={buttonPrimary}>
         {dict.common.backHome}
       </Link>
-    </div>
+    </StatePanel>
   );
 }

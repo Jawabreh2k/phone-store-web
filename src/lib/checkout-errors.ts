@@ -30,9 +30,11 @@ export function mapFieldErrors(
   return mapped;
 }
 
-/** Cart notice query param for redirect-after-conflict flows. */
-export function checkoutRedirectNotice(code: string | undefined): "empty" | "unavailable" | "stock_changed" | null {
-  if (code === "cart.empty") return "empty";
+/**
+ * Cart notice for conflicts the customer must resolve on the cart page.
+ * `cart.empty` stays on checkout: the order may already be placed, and the tracking link was only in that response.
+ */
+export function checkoutRedirectNotice(code: string | undefined): "unavailable" | "stock_changed" | null {
   if (code === "cart.item_unavailable" || code === "catalog.variant_not_found") return "unavailable";
   if (code === "orders.stock_changed" || code === "catalog.insufficient_stock") return "stock_changed";
   return null;

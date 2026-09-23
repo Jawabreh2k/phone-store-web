@@ -14,20 +14,28 @@ export function CopyLinkButton({ url, copyLabel, copiedLabel }: Props) {
   const [copied, setCopied] = useState(false);
 
   const copy = async () => {
+    const markCopied = () => {
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2000);
+    };
+
     try {
       await navigator.clipboard.writeText(url);
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 2000);
+      markCopied();
     } catch {
-      // Fallback for browsers that block clipboard without a user gesture context.
+      // Fallback for browsers that block the clipboard API. Only confirm when the copy actually lands.
       const input = document.createElement("input");
       input.value = url;
+      input.setAttribute("aria-hidden", "true");
+      input.tabIndex = -1;
+      input.style.position = "fixed";
+      input.style.opacity = "0";
       document.body.appendChild(input);
+      input.focus();
       input.select();
-      document.execCommand("copy");
+      const copiedOk = document.execCommand("copy");
       document.body.removeChild(input);
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 2000);
+      if (copiedOk) markCopied();
     }
   };
 

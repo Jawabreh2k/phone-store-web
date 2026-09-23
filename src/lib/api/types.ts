@@ -91,6 +91,10 @@ export interface ProductSearch {
   category?: string;
   search?: string;
   sort?: ProductSort;
+  /** Bounds on the cheapest variant's price (the card's "from" price). */
+  minPrice?: number;
+  maxPrice?: number;
+  inStockOnly?: boolean;
   featuredOnly?: boolean;
   compatibleWith?: string;
   page?: number;
