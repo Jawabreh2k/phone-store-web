@@ -5,7 +5,7 @@ import type { Dictionary } from "@/i18n/dictionaries";
 import type { Brand, ProductSummary, PublicSettings } from "@/lib/api/types";
 import { formatPrice, t } from "@/lib/format";
 import styles from "./home-hero.module.css";
-import { ArrowIcon, BagIcon, CheckIcon } from "./icons";
+import { ArrowIcon, CartIcon, CheckIcon } from "./icons";
 import { ProductImagePlaceholder } from "./product-image-placeholder";
 import { StoreLogo } from "./store-logo";
 import { buttonInverse } from "./ui";
@@ -35,22 +35,14 @@ export function HomeHero({ locale, dict, settings, phones, brands }: Props) {
   const strip = brands.length === 0 ? [] : Array.from({ length: Math.ceil(10 / brands.length) }, () => brands).flat();
 
   return (
-    // Full-bleed band that starts under the transparent header; rounded only at the bottom where it meets the page.
-    // Focus rings and the grid switch to light-on-dark tones for this surface.
-    <section className="relative isolate overflow-hidden rounded-b-[2rem] bg-brand text-brand-foreground [--focus-ring:var(--brand-foreground)] [--grid-line:color-mix(in_srgb,var(--brand-foreground)_7%,transparent)] sm:rounded-b-[3rem]">
+    // Full-bleed band that starts under the transparent header and fills the first screen, so the page
+    // colour below stays out of view. The brand strip sits on the bottom edge.
+    <section className="relative isolate flex min-h-dvh flex-col overflow-hidden bg-brand text-brand-foreground [--focus-ring:var(--brand-foreground)] [--grid-line:color-mix(in_srgb,var(--brand-foreground)_7%,transparent)]">
       <div aria-hidden className="bg-grid mask-fade-b pointer-events-none absolute inset-0 -z-10" />
 
-      <div className="page-container grid items-center pt-24 sm:pt-28 md:grid-cols-[1fr_1fr]">
+      <div className="page-container grid flex-1 items-center pt-24 sm:pt-28 md:grid-cols-[1fr_1fr]">
         {/* ---- Copy ---- */}
-        <div className="relative z-10 flex flex-col gap-7 pt-8 sm:pt-12 md:py-16">
-          <p className="inline-flex w-fit items-center gap-2.5 rounded-full border border-brand-foreground/20 px-3.5 py-1.5 text-xs">
-            <span aria-hidden className="relative flex size-2">
-              <span className="absolute inline-flex size-full rounded-full bg-accent opacity-75 motion-safe:animate-ping" />
-              <span className="relative inline-flex size-2 rounded-full bg-accent" />
-            </span>
-            {dict.product.cashOnDelivery}
-          </p>
-
+        <div className="relative z-10 flex flex-col gap-7 pt-8 sm:pt-12 md:py-0">
           <h1 className="max-w-lg text-[2.6rem] font-semibold leading-[1.1] tracking-tight sm:text-6xl lg:text-[4.25rem]">
             {dict.home.heroTitle}
           </h1>
@@ -83,8 +75,10 @@ export function HomeHero({ locale, dict, settings, phones, brands }: Props) {
           )}
         </div>
 
-        {/* ---- Stage: rings, phone, floating cards ---- */}
-        <div aria-hidden className={`relative flex min-h-[30rem] items-center justify-center sm:min-h-[34rem] md:min-h-[40rem] ${styles.stage}`}>
+        {/* ---- Stage: rings, phone, floating cards ----
+            Beside the copy (md+) the stage sets the row height: it gives up space on short screens so the
+            brand strip stays on the first screen (11.5rem = header offset + strip), but never below the phone. */}
+        <div aria-hidden className={`relative flex min-h-[30rem] items-center justify-center sm:min-h-[34rem] md:min-h-[clamp(32rem,calc(100dvh-11.5rem),40rem)] ${styles.stage}`}>
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="relative size-[22rem] sm:size-[28rem]">
               <div className="absolute inset-[18%] rounded-full bg-brand-foreground/5" />
@@ -204,7 +198,7 @@ function PhoneScreen({
       <div className="absolute inset-x-0 top-0 z-10 bg-background px-4 pb-2 pt-7">
         <div className="flex items-center justify-between">
           <StoreLogo storeName={storeName} logoUrl={logoUrl} size="xs" />
-          <BagIcon className="size-3.5" />
+          <CartIcon className="size-3.5" />
         </div>
         <div className="mt-2.5 flex gap-1.5">
           <span className="rounded-full bg-brand px-2 py-0.5 text-[8px] text-brand-foreground">{dict.catalog.phones}</span>

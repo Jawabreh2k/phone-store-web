@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Sans_Arabic } from "next/font/google";
+import { CartProvider } from "@/components/cart-provider";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { dirOf } from "@/i18n/config";
@@ -37,11 +38,13 @@ export default async function LocaleLayout({ children }: LayoutProps<"/[lang]">)
       <body className="relative isolate flex min-h-full flex-col font-sans">
         {/* Page background grid, fading out; the header is transparent at the top so it shares this surface. */}
         <div aria-hidden className="bg-grid mask-fade-b pointer-events-none absolute inset-x-0 top-0 -z-10 h-[42rem] opacity-60" />
-        <SiteHeader />
-        {/* The header is fixed (~70px), so content starts below it. Pages sit in the centred column unless a
-            child opts into .full-bleed (the home hero). */}
-        <main className="page-grid flex-1 pt-24 sm:pt-28">{children}</main>
-        <SiteFooter />
+        <CartProvider locale={locale}>
+          <SiteHeader />
+          {/* The header is fixed (~70px), so content starts below it. Pages sit in the centred column unless a
+              child opts into .full-bleed (the home hero). */}
+          <main className="page-grid flex-1 pt-24 sm:pt-28">{children}</main>
+          <SiteFooter />
+        </CartProvider>
       </body>
     </html>
   );

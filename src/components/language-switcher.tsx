@@ -2,15 +2,22 @@
 
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
+import { GlobeIcon } from "@/components/icons";
 import { hasLocale, localeCookie } from "@/i18n/config";
 
 /** Links to the same page in the other language and remembers the choice for the proxy. */
 export function LanguageSwitcher({
   label,
-  className = "text-sm text-muted hover:text-foreground",
+  className = "inline-flex items-center gap-2 text-sm font-medium leading-none text-muted hover:text-foreground",
+  iconClassName = "size-[1.125rem] shrink-0",
+  iconOnly = false,
 }: {
+  /** Accessible name, e.g. "Switch to Arabic" / "English". */
   label: string;
   className?: string;
+  iconClassName?: string;
+  /** Icon without visible text (header toolbar). */
+  iconOnly?: boolean;
 }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -25,12 +32,14 @@ export function LanguageSwitcher({
       href={href}
       hrefLang={target}
       lang={target}
+      aria-label={label}
       onClick={() => {
         document.cookie = `${localeCookie}=${target}; path=/; max-age=31536000; samesite=lax`;
       }}
       className={className}
     >
-      {label}
+      <GlobeIcon className={iconClassName} />
+      {!iconOnly && <span>{label}</span>}
     </Link>
   );
 }

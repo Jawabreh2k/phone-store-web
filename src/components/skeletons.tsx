@@ -35,21 +35,21 @@ export function SectionHeadingSkeleton() {
 export function HeroSkeleton() {
   const onBrand = "animate-pulse rounded-full bg-brand-foreground/15";
   return (
-    <div className="overflow-hidden rounded-b-[2rem] bg-brand sm:rounded-b-[3rem]">
-      <div className="page-container grid items-center pt-24 sm:pt-28 md:grid-cols-2">
-        <div className="flex flex-col gap-7 pt-8 sm:pt-12 md:py-16">
-          <div className={`${onBrand} h-7 w-36`} />
+    <div className="flex min-h-dvh flex-col overflow-hidden bg-brand">
+      <div className="page-container grid flex-1 items-center pt-24 sm:pt-28 md:grid-cols-2">
+        <div className="flex flex-col gap-7 pt-8 sm:pt-12 md:py-0">
           <div className="flex flex-col gap-3">
             <div className={`${onBrand} h-11 w-11/12 sm:h-14`} />
             <div className={`${onBrand} h-11 w-3/4 sm:h-14`} />
           </div>
           <div className={`${onBrand} h-4 w-64 max-w-full`} />
-          <div className="flex items-center gap-7">
+          <div className="flex flex-wrap items-center gap-x-7 gap-y-4">
             <div className={`${onBrand} h-12 w-36`} />
-            <div className={`${onBrand} h-3 w-28`} />
+            <div className="h-12 w-40 animate-pulse rounded-full border border-brand-foreground/25" />
           </div>
+          <div className={`${onBrand} h-3 w-52`} />
         </div>
-        <div className="flex min-h-[30rem] items-center justify-center sm:min-h-[34rem] md:min-h-[40rem]">
+        <div className="flex min-h-[30rem] items-center justify-center sm:min-h-[34rem] md:min-h-[clamp(32rem,calc(100dvh-11.5rem),40rem)]">
           {/* Same footprint as the phone mock-up. */}
           <div className="aspect-[9/19] w-[196px] animate-pulse rounded-[2.6rem] bg-brand-foreground/10 sm:w-[236px]" />
         </div>
@@ -65,6 +65,55 @@ export function PageTitleSkeleton() {
     <div className="flex flex-col gap-3 border-b border-border pb-6">
       <div className={`${bar} h-3 w-20`} />
       <div className={`${bar} h-10 w-56`} />
+    </div>
+  );
+}
+
+/** Mirrors the cart page: line items and totals sidebar. */
+export function CartPageSkeleton() {
+  return (
+    <div className="flex flex-col gap-10 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)] lg:gap-16">
+      <div className="flex flex-col gap-4">
+        {Array.from({ length: 2 }, (_, i) => (
+          <div key={i} className="flex gap-4 rounded-[1.5rem] border border-border bg-surface p-5">
+            <div className="aspect-square w-24 animate-pulse rounded-2xl bg-border sm:w-28" />
+            <div className="flex flex-1 flex-col gap-3">
+              <div className={`${bar} h-4 w-3/4`} />
+              <div className={`${bar} h-3 w-1/2`} />
+              <div className={`${bar} mt-auto h-5 w-20`} />
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="flex flex-col gap-4 rounded-[1.5rem] border border-border bg-surface p-6">
+        <div className={`${bar} h-4 w-full`} />
+        <div className={`${bar} h-4 w-full`} />
+        <div className={`${bar} h-6 w-full`} />
+        <div className="h-12 w-full animate-pulse rounded-full bg-border" />
+      </div>
+    </div>
+  );
+}
+
+/** Mirrors checkout: form sections and order summary sidebar. */
+export function CheckoutPageSkeleton() {
+  return (
+    <div className="flex flex-col gap-10 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)] lg:gap-16">
+      <div className="flex flex-col gap-4">
+        {Array.from({ length: 3 }, (_, i) => (
+          <div key={i} className="flex flex-col gap-4 rounded-[1.5rem] border border-border bg-surface p-6">
+            <div className={`${bar} h-5 w-40`} />
+            <div className={`${bar} h-11 w-full`} />
+            <div className={`${bar} h-11 w-full`} />
+          </div>
+        ))}
+      </div>
+      <div className="flex flex-col gap-4 rounded-[1.5rem] border border-border bg-surface p-6">
+        <div className={`${bar} h-5 w-32`} />
+        <div className={`${bar} h-16 w-full`} />
+        <div className={`${bar} h-4 w-full`} />
+        <div className="h-12 w-full animate-pulse rounded-full bg-border" />
+      </div>
     </div>
   );
 }

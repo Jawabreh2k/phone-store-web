@@ -104,3 +104,110 @@ export interface ApiProblem {
   code?: string;
   errors?: Record<string, string[]>;
 }
+
+export class ApiError extends Error {
+  constructor(readonly problem: ApiProblem) {
+    super(problem.title);
+    this.name = "ApiError";
+  }
+}
+
+export interface CartLineDto {
+  variantId: string;
+  productSlug: string;
+  productName: string;
+  variantLabel: string;
+  imageUrl: string | null;
+  unitPrice: number;
+  quantity: number;
+  lineTotal: number;
+  isAvailable: boolean;
+  availableQuantity: number;
+}
+
+export interface CartDto {
+  cartId: string;
+  lines: CartLineDto[];
+  /** Sum of quantities on available lines only. */
+  itemCount: number;
+  subtotal: number;
+  shippingFee: number;
+  total: number;
+  /** Live store currency — not snapshotted like orders. */
+  currencyCode: string;
+  hasUnavailableItems: boolean;
+}
+
+export type OrderStatus = "Pending" | "Confirmed" | "Shipped" | "Delivered" | "Cancelled";
+export type PaymentMethod = "CashOnDelivery";
+export type PaymentStatus = "Unpaid" | "Paid";
+
+export interface AddressInput {
+  city: string;
+  area: string;
+  street: string;
+  building?: string | null;
+  details?: string | null;
+}
+
+export interface PlaceOrderRequest {
+  fullName: string;
+  phone: string;
+  email?: string | null;
+  address: AddressInput;
+  note?: string | null;
+  saveAddress: boolean;
+}
+
+export interface OrderPlacedDto {
+  orderId: string;
+  orderNumber: string;
+  /** Shown only here; the API stores a hash. */
+  trackingToken: string;
+  total: number;
+  currencyCode: string;
+}
+
+export interface ContactDto {
+  fullName: string;
+  phone: string;
+  email?: string | null;
+}
+
+export interface OrderItemDto {
+  productId: string;
+  variantId: string;
+  sku: string;
+  productName: string;
+  variantLabel: string;
+  imageUrl: string | null;
+  unitPrice: number;
+  quantity: number;
+  lineTotal: number;
+}
+
+export interface OrderStatusChangeDto {
+  status: OrderStatus;
+  occurredAt: string;
+  note?: string | null;
+}
+
+export interface OrderDetailsDto {
+  id: string;
+  orderNumber: string;
+  status: OrderStatus;
+  paymentMethod: PaymentMethod;
+  paymentStatus: PaymentStatus;
+  placedAt: string;
+  contact: ContactDto;
+  shippingAddress: AddressInput;
+  customerNote?: string | null;
+  cancellationReason?: string | null;
+  items: OrderItemDto[];
+  subtotal: number;
+  shippingFee: number;
+  total: number;
+  currencyCode: string;
+  history: OrderStatusChangeDto[];
+  canCancel: boolean;
+}

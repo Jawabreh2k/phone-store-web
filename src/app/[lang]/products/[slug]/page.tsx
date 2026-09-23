@@ -86,8 +86,10 @@ export default async function ProductPage({ params }: PageProps<"/[lang]/product
               outOfStock: dict.catalog.outOfStock,
               inStock: dict.catalog.inStock,
               onlyLeft: dict.catalog.onlyLeft,
-              comingSoon: dict.product.comingSoon,
               sale: dict.catalog.sale,
+              added: dict.cart.added,
+              quantityLimit: dict.cart.quantityLimit,
+              errors: dict.cart.errors,
             }}
           />
 

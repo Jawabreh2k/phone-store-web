@@ -1,19 +1,17 @@
 import "server-only";
 import type { Locale } from "@/i18n/config";
-import type { ApiProblem, Brand, PagedResult, ProductDetails, ProductSearch, ProductSummary, PublicSettings } from "./types";
+import { ApiError, type ApiProblem, type Brand, type OrderDetailsDto, type PagedResult, type ProductDetails, type ProductSearch, type ProductSummary, type PublicSettings } from "./types";
+
+export { ApiError };
 
 const baseUrl = process.env.API_INTERNAL_URL ?? "http://localhost:5011";
-
-export class ApiError extends Error {
-  constructor(readonly problem: ApiProblem) {
-    super(problem.title);
-    this.name = "ApiError";
-  }
-}
 
 interface ReadOptions {
   /** Seconds the response may be served from Next's data cache. Catalogue data tolerates a short delay. */
   revalidate?: number;
+  /** Bypass the data cache entirely (per-customer or credential-bearing responses). */
+  noStore?: boolean;
+  headers?: Record<string, string>;
 }
 
 /**
@@ -28,8 +26,8 @@ async function get<T>(path: string, locale: Locale, query: Record<string, unknow
   }
 
   const response = await fetch(url, {
-    headers: { Accept: "application/json" },
-    next: { revalidate: options.revalidate ?? 60 },
+    headers: { Accept: "application/json", ...options.headers },
+    ...(options.noStore ? { cache: "no-store" as const } : { next: { revalidate: options.revalidate ?? 60 } }),
   });
 
   if (response.status === 404) return null;
@@ -42,7 +40,16 @@ async function get<T>(path: string, locale: Locale, query: Record<string, unknow
 }
 
 export const api = {
-  settings: (locale: Locale) => get<PublicSettings>("/api/settings", locale, {}, { revalidate: 300 }),
+  /**
+   * Null when the API is unreachable, not just when unset: the root layout, header and footer read it,
+   * and a throw there would take down every page (error.tsx can't catch its own layout) instead of
+   * letting each page show its own error. Every caller already falls back to defaults.
+   */
+  settings: (locale: Locale) =>
+    get<PublicSettings>("/api/settings", locale, {}, { revalidate: 300 }).catch((error: unknown) => {
+      console.error("Store settings unavailable; using defaults.", error);
+      return null;
+    }),
 
   brands: (locale: Locale, type?: ProductSummary["type"]) =>
     get<Brand[]>("/api/catalog/brands", locale, { type }, { revalidate: 300 }),
@@ -52,4 +59,15 @@ export const api = {
 
   product: (locale: Locale, slug: string) =>
     get<ProductDetails>(`/api/catalog/products/${encodeURIComponent(slug)}`, locale),
+
+  /**
+   * Guest order by tracking token; null when the token matches no order. The token is a credential,
+   * so the response is never cached. `clientIp` keeps the API's per-IP tracking rate limit per customer
+   * instead of shared by every visitor to this server.
+   */
+  trackOrder: (locale: Locale, token: string, clientIp?: string | null) =>
+    get<OrderDetailsDto>(`/api/orders/track/${encodeURIComponent(token)}`, locale, {}, {
+      noStore: true,
+      headers: clientIp ? { "X-Forwarded-For": clientIp } : undefined,
+    }),
 };
