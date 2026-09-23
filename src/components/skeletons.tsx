@@ -288,3 +288,48 @@ export function ProductPageSkeleton() {
     </div>
   );
 }
+
+/** Mirrors the staff orders list: search, status chips, and table rows. */
+export function AdminOrdersSkeleton() {
+  return (
+    <div aria-busy="true" className="flex flex-col gap-6">
+      <div className={`${bar} h-10 w-48`} />
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
+        <div className={`${pulse} h-11 flex-1 rounded-2xl border border-border bg-surface`} />
+        <div className={`${pulse} h-11 w-24 rounded-full border border-border bg-surface`} />
+      </div>
+      <div className="flex flex-wrap gap-2">
+        {Array.from({ length: 6 }, (_, i) => (
+          <div key={i} className={`${pulse} h-9 w-20 rounded-full border border-border bg-surface`} />
+        ))}
+      </div>
+      <div className="flex flex-col gap-3">
+        {Array.from({ length: 8 }, (_, i) => (
+          <div key={i} className={`${tile} h-16 rounded-card sm:h-12`} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/** Mirrors the staff order detail: header, items panel, and sidebar. */
+export function AdminOrderDetailSkeleton() {
+  return (
+    <div aria-busy="true" className="flex flex-col gap-6">
+      <div className={`${bar} h-4 w-28`} />
+      <div className={`${bar} h-10 w-64`} />
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)]">
+        <div className="flex flex-col gap-6">
+          <div className={`${tile} min-h-64 rounded-card`} />
+          <div className={`${tile} min-h-40 rounded-card`} />
+          <div className={`${tile} min-h-48 rounded-card`} />
+        </div>
+        <div className="flex flex-col gap-4">
+          <div className={`${tile} h-32 rounded-card`} />
+          <div className={`${tile} h-32 rounded-card`} />
+          <div className={`${tile} h-20 rounded-card`} />
+        </div>
+      </div>
+    </div>
+  );
+}

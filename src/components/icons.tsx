@@ -9,6 +9,15 @@ export function ArrowIcon({ className = "size-4" }: { className?: string }) {
   );
 }
 
+/** Points "backward" in the reading direction, so it flips in RTL. */
+export function BackArrowIcon({ className = "size-4" }: { className?: string }) {
+  return (
+    <svg aria-hidden viewBox="0 0 16 16" className={`${className} rtl:-scale-x-100`} fill="none" stroke="currentColor" strokeWidth={1.5}>
+      <path d="M13 8H3M7 4L3 8l4 4" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 export function CheckIcon({ className = "size-4" }: { className?: string }) {
   return (
     <svg aria-hidden viewBox="0 0 16 16" className={className} fill="none" stroke="currentColor" strokeWidth={1.5}>
@@ -151,6 +160,16 @@ export function TrashIcon({ className = "size-4" }: { className?: string }) {
   return (
     <svg aria-hidden viewBox="0 0 16 16" className={className} fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
       <path d="M2.75 4.25h10.5M6.25 4.25V2.75h3.5v1.5M4.25 4.25l.6 8.6a1 1 0 0 0 1 .9h4.3a1 1 0 0 0 1-.9l.6-8.6M6.75 7v4M9.25 7v4" />
+    </svg>
+  );
+}
+
+/** Padlock for access-denied states. */
+export function LockIcon({ className = "size-4" }: { className?: string }) {
+  return (
+    <svg aria-hidden viewBox="0 0 16 16" className={className} fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3.25" y="7" width="9.5" height="6.75" rx="1.25" />
+      <path d="M5.25 7V5.25a2.75 2.75 0 0 1 5.5 0V7" />
     </svg>
   );
 }

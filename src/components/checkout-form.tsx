@@ -57,6 +57,8 @@ export function CheckoutForm({ locale, labels, cartLabels }: Props) {
   const { cart, status, refresh } = useCart();
   const ready = status === "ready";
   const [submitting, setSubmitting] = useState(false);
+  const [placedOrder, setPlacedOrder] = useState(false);
+  const [keepCheckoutView, setKeepCheckoutView] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Partial<Record<FieldKey, string>>>({});
   const formRef = useRef<HTMLFormElement>(null);
@@ -71,10 +73,10 @@ export function CheckoutForm({ locale, labels, cartLabels }: Props) {
   const keepCheckoutRef = useRef(false);
 
   useEffect(() => {
-    if (ready && !placedRef.current && !keepCheckoutRef.current && (!cart || cart.lines.length === 0)) {
+    if (ready && !placedOrder && !keepCheckoutView && (!cart || cart.lines.length === 0)) {
       router.replace(`/${locale}/cart?notice=empty`);
     }
-  }, [ready, cart, locale, router]);
+  }, [ready, placedOrder, keepCheckoutView, cart, locale, router]);
 
   const focusFirstInvalid = (errors: Partial<Record<FieldKey, string>>) => {
     const first = fieldOrder.find((key) => errors[key]);
@@ -87,11 +89,11 @@ export function CheckoutForm({ locale, labels, cartLabels }: Props) {
     return apiKey in labels.fieldErrors ? labels.fieldErrors[apiKey as keyof typeof labels.fieldErrors] : labels.fieldErrors.generic;
   };
 
-  if (status === "error" && !placedRef.current) {
+  if (status === "error" && !placedOrder) {
     return <CartLoadError labels={cartLabels} onRetry={refresh} />;
   }
 
-  if (keepCheckoutRef.current && (!cart || cart.lines.length === 0)) {
+  if (keepCheckoutView && (!cart || cart.lines.length === 0)) {
     return (
       <p className={noticeBox} role="alert">
         <AlertIcon />
@@ -161,6 +163,7 @@ export function CheckoutForm({ locale, labels, cartLabels }: Props) {
       });
 
       placedRef.current = true;
+      setPlacedOrder(true);
       router.replace(`/${locale}/orders/track/${placed.trackingToken}?placed=1`);
       // Silent: a failed reload must not flip the page into the cart error after the order exists.
       void refresh({ silent: true });
@@ -170,6 +173,7 @@ export function CheckoutForm({ locale, labels, cartLabels }: Props) {
 
       if (error instanceof ApiError && error.problem.code === "cart.empty") {
         keepCheckoutRef.current = true;
+        setKeepCheckoutView(true);
         await refresh({ silent: true });
         if (placedRef.current) return;
         setFormError(labels.errors.orderMaybePlaced);
@@ -178,6 +182,7 @@ export function CheckoutForm({ locale, labels, cartLabels }: Props) {
 
       if (!(error instanceof ApiError)) {
         keepCheckoutRef.current = true;
+        setKeepCheckoutView(true);
         const latest = await refresh({ silent: true });
         if (placedRef.current) return;
         const emptied = latest.ok && (latest.cart === null || latest.cart.lines.length === 0);
@@ -186,6 +191,7 @@ export function CheckoutForm({ locale, labels, cartLabels }: Props) {
           return;
         }
         keepCheckoutRef.current = false;
+        setKeepCheckoutView(false);
         setFormError(labels.errors.generic);
         return;
       }

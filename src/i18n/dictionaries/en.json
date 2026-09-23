@@ -255,5 +255,90 @@
     "backHome": "Back to home",
     "errorTitle": "Something went wrong",
     "tryAgain": "Try again"
+  },
+  "admin": {
+    "staffTitle": "Staff",
+    "logout": "Sign out",
+    "logoutFailed": "Could not sign out. Try again.",
+    "loading": "Working…",
+    "switchLanguage": "Switch to Arabic",
+    "navLabel": "Staff navigation",
+    "nav": {
+      "orders": "Orders"
+    },
+    "menuOpen": "Open menu",
+    "menuClose": "Close menu",
+    "login": {
+      "title": "Staff sign in",
+      "subtitle": "Sign in to manage guest orders and move them through fulfillment.",
+      "email": "Email",
+      "password": "Password",
+      "rememberMe": "Keep me signed in",
+      "submit": "Sign in",
+      "errors": {
+        "generic": "Something went wrong. Please try again.",
+        "auth.invalid_credentials": "The email or password is incorrect.",
+        "auth.locked_out": "Too many failed attempts. Try again in a few minutes."
+      }
+    },
+    "forbidden": {
+      "title": "Access denied",
+      "body": "Your account does not have staff access. Sign out and use a staff account.",
+      "logout": "Sign out"
+    },
+    "error": {
+      "title": "Something went wrong",
+      "retry": "Try again",
+      "backToOrders": "Back to orders"
+    },
+    "orders": {
+      "title": "Orders",
+      "search": "Search by order number, name, or phone",
+      "searchSubmit": "Search",
+      "statusFilter": "Status",
+      "statusAll": "All",
+      "orderNumber": "Order",
+      "customer": "Customer",
+      "phone": "Phone",
+      "city": "City",
+      "items": "Items",
+      "total": "Total",
+      "placedAt": "Placed",
+      "guest": "Guest",
+      "account": "Account",
+      "emptyTitle": "No orders found",
+      "emptyBody": "Try a different search or clear the status filter.",
+      "loadErrorTitle": "Could not load orders",
+      "loadErrorBody": "The server did not respond. Check your connection and try again.",
+      "retry": "Try again",
+      "backToList": "Back to orders",
+      "detailTitlePrefix": "Order",
+      "status": "Status",
+      "payment": "Payment",
+      "contact": "Contact",
+      "shippingAddress": "Delivery address",
+      "customerNote": "Customer note",
+      "history": "Status history",
+      "actions": "Update status",
+      "actionNote": "Note (optional)",
+      "actionNoteHint": "Recommended when cancelling — explain why.",
+      "confirmCancelTitle": "Cancel this order?",
+      "confirmCancelBody": "Stock will return to the shelf. This cannot be undone.",
+      "confirmCancelConfirm": "Cancel order",
+      "confirmCancelBack": "Keep order",
+      "actionConfirm": "Confirm order",
+      "actionShip": "Mark shipped",
+      "actionDeliver": "Mark delivered",
+      "actionCancel": "Cancel order",
+      "notFoundTitle": "Order not found",
+      "notFoundBody": "This order does not exist or was removed.",
+      "errors": {
+        "generic": "Something went wrong. Please try again.",
+        "orders.not_found": "This order was not found.",
+        "orders.invalid_transition": "This status change is no longer allowed. The order may have been updated by someone else.",
+        "orders.cannot_cancel": "This order can no longer be cancelled.",
+        "validation": "Please check the note and try again."
+      }
+    }
   }
 }

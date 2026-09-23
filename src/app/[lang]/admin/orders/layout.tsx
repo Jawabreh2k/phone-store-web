@@ -1,0 +1,20 @@
+import { AdminForbidden } from "@/components/admin-forbidden";
+import { AdminShell } from "@/components/admin-shell";
+import { getDictionary, getLocale } from "@/i18n/dictionaries";
+import { getAdminGate, redirectToAdminLogin } from "@/lib/admin-auth";
+
+export default async function AdminOrdersLayout({ children }: LayoutProps<"/[lang]/admin/orders">) {
+  const [locale, dict] = await Promise.all([getLocale(), getDictionary()]);
+  const gate = await getAdminGate(locale);
+
+  if (gate.kind === "anonymous") redirectToAdminLogin(locale);
+  if (gate.kind === "forbidden") {
+    return <AdminForbidden locale={locale} labels={dict.admin.forbidden} logoutFailedLabel={dict.admin.logoutFailed} />;
+  }
+
+  return (
+    <AdminShell locale={locale} profile={gate.profile} labels={dict.admin}>
+      {children}
+    </AdminShell>
+  );
+}

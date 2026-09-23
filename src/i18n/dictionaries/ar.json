@@ -255,5 +255,90 @@
     "backHome": "العودة للرئيسية",
     "errorTitle": "حدث خطأ ما",
     "tryAgain": "حاول مرة أخرى"
+  },
+  "admin": {
+    "staffTitle": "الموظفون",
+    "logout": "تسجيل الخروج",
+    "logoutFailed": "تعذّر تسجيل الخروج. حاول مرة أخرى.",
+    "loading": "جارٍ التنفيذ…",
+    "switchLanguage": "English",
+    "navLabel": "تنقل الموظفين",
+    "nav": {
+      "orders": "الطلبات"
+    },
+    "menuOpen": "فتح القائمة",
+    "menuClose": "إغلاق القائمة",
+    "login": {
+      "title": "تسجيل دخول الموظفين",
+      "subtitle": "سجّل الدخول لإدارة طلبات الضيوف وتحريكها في مسار التنفيذ.",
+      "email": "البريد الإلكتروني",
+      "password": "كلمة المرور",
+      "rememberMe": "أبقني مسجّلاً",
+      "submit": "تسجيل الدخول",
+      "errors": {
+        "generic": "حدث خطأ ما. حاول مرة أخرى.",
+        "auth.invalid_credentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة.",
+        "auth.locked_out": "محاولات كثيرة فاشلة. حاول بعد بضع دقائق."
+      }
+    },
+    "forbidden": {
+      "title": "الوصول مرفوض",
+      "body": "حسابك ليس لديه صلاحية الموظفين. سجّل الخروج واستخدم حساب موظف.",
+      "logout": "تسجيل الخروج"
+    },
+    "error": {
+      "title": "حدث خطأ ما",
+      "retry": "حاول مرة أخرى",
+      "backToOrders": "العودة للطلبات"
+    },
+    "orders": {
+      "title": "الطلبات",
+      "search": "ابحث برقم الطلب أو الاسم أو الهاتف",
+      "searchSubmit": "بحث",
+      "statusFilter": "الحالة",
+      "statusAll": "الكل",
+      "orderNumber": "الطلب",
+      "customer": "العميل",
+      "phone": "الهاتف",
+      "city": "المدينة",
+      "items": "المنتجات",
+      "total": "الإجمالي",
+      "placedAt": "تاريخ الطلب",
+      "guest": "ضيف",
+      "account": "حساب",
+      "emptyTitle": "لا توجد طلبات",
+      "emptyBody": "جرّب بحثاً مختلفاً أو أزل فلتر الحالة.",
+      "loadErrorTitle": "تعذّر تحميل الطلبات",
+      "loadErrorBody": "الخادم لم يستجب. تحقق من الاتصال وحاول مرة أخرى.",
+      "retry": "حاول مرة أخرى",
+      "backToList": "العودة للطلبات",
+      "detailTitlePrefix": "طلب",
+      "status": "الحالة",
+      "payment": "الدفع",
+      "contact": "التواصل",
+      "shippingAddress": "عنوان التوصيل",
+      "customerNote": "ملاحظة العميل",
+      "history": "سجل الحالة",
+      "actions": "تحديث الحالة",
+      "actionNote": "ملاحظة (اختياري)",
+      "actionNoteHint": "يُفضّل ذكر السبب عند الإلغاء.",
+      "confirmCancelTitle": "إلغاء هذا الطلب؟",
+      "confirmCancelBody": "سيعود المخزون إلى الرف. لا يمكن التراجع.",
+      "confirmCancelConfirm": "إلغاء الطلب",
+      "confirmCancelBack": "الإبقاء على الطلب",
+      "actionConfirm": "تأكيد الطلب",
+      "actionShip": "تم الشحن",
+      "actionDeliver": "تم التسليم",
+      "actionCancel": "إلغاء الطلب",
+      "notFoundTitle": "الطلب غير موجود",
+      "notFoundBody": "هذا الطلب غير موجود أو تم حذفه.",
+      "errors": {
+        "generic": "حدث خطأ ما. حاول مرة أخرى.",
+        "orders.not_found": "لم يُعثر على هذا الطلب.",
+        "orders.invalid_transition": "تغيير الحالة لم يعد مسموحاً. ربما حدّث شخص آخر الطلب.",
+        "orders.cannot_cancel": "لم يعد بالإمكان إلغاء هذا الطلب.",
+        "validation": "تحقق من الملاحظة وحاول مرة أخرى."
+      }
+    }
   }
 }

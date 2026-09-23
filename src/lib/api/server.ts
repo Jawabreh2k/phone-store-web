@@ -1,6 +1,21 @@
 import "server-only";
+import { headers } from "next/headers";
 import type { Locale } from "@/i18n/config";
-import { ApiError, type ApiProblem, type Brand, type Category, type OrderDetailsDto, type PagedResult, type ProductDetails, type ProductSearch, type ProductSummary, type PublicSettings } from "./types";
+import {
+  ApiError,
+  type AdminOrderDetails,
+  type AdminOrderListItem,
+  type ApiProblem,
+  type Brand,
+  type Category,
+  type OrderDetailsDto,
+  type PagedResult,
+  type ProductDetails,
+  type ProductSearch,
+  type ProductSummary,
+  type PublicSettings,
+  type UserProfile,
+} from "./types";
 
 export { ApiError };
 
@@ -39,6 +54,42 @@ async function get<T>(path: string, locale: Locale, query: Record<string, unknow
   return (await response.json()) as T;
 }
 
+/** Credential-bearing GET for staff routes. Forwards the browser cookie and never caches. */
+async function getAuth<T>(
+  path: string,
+  locale: Locale,
+  query: Record<string, unknown> = {},
+): Promise<{ data: T | null; status: number }> {
+  const url = new URL(path, baseUrl);
+  url.searchParams.set("lang", locale);
+  for (const [key, value] of Object.entries(query)) {
+    if (value !== undefined && value !== null && value !== "") url.searchParams.set(key, String(value));
+  }
+
+  const cookie = (await headers()).get("cookie");
+  const response = await fetch(url, {
+    headers: { Accept: "application/json", ...(cookie ? { Cookie: cookie } : {}) },
+    cache: "no-store",
+  });
+
+  if (response.status === 404) return { data: null, status: 404 };
+  if (response.status === 401) return { data: null, status: 401 };
+  if (response.status === 403) return { data: null, status: 403 };
+  if (!response.ok) {
+    const problem = (await response.json().catch(() => null)) as ApiProblem | null;
+    throw new ApiError(problem ?? { status: response.status, title: response.statusText });
+  }
+
+  return { data: (await response.json()) as T, status: response.status };
+}
+
+function authRequired<T>(result: { data: T | null; status: number }, label: string): T {
+  if (result.status === 401) throw new ApiError({ status: 401, title: "Unauthorized", code: "auth.unauthorized" });
+  if (result.status === 403) throw new ApiError({ status: 403, title: "Forbidden", code: "auth.forbidden" });
+  if (!result.data) throw new ApiError({ status: 500, title: `${label} failed` });
+  return result.data;
+}
+
 export const api = {
   /**
    * Null when the API is unreachable, not just when unset: the root layout, header and footer read it,
@@ -72,5 +123,21 @@ export const api = {
     get<OrderDetailsDto>(`/api/orders/track/${encodeURIComponent(token)}`, locale, {}, {
       noStore: true,
       headers: clientIp ? { "X-Forwarded-For": clientIp } : undefined,
+    }),
+};
+
+export const adminApi = {
+  me: (locale: Locale) =>
+    getAuth<UserProfile>("/api/auth/me", locale).then((result) => ({ profile: result.data, status: result.status })),
+
+  orders: (locale: Locale, search: { status?: string; search?: string; page?: number; pageSize?: number } = {}) =>
+    getAuth<PagedResult<AdminOrderListItem>>("/api/admin/orders", locale, search).then((result) =>
+      authRequired(result, "Orders list"),
+    ),
+
+  order: (locale: Locale, id: string) =>
+    getAuth<AdminOrderDetails>(`/api/admin/orders/${encodeURIComponent(id)}`, locale).then((result) => {
+      if (result.status === 404) return null;
+      return authRequired(result, "Order detail");
     }),
 };

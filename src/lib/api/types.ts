@@ -215,3 +215,41 @@ export interface OrderDetailsDto {
   history: OrderStatusChangeDto[];
   canCancel: boolean;
 }
+
+export interface UserProfile {
+  id: string;
+  email: string;
+  fullName: string;
+  phoneNumber: string | null;
+  preferredLanguage: string;
+  roles: string[];
+}
+
+export interface AdminOrderListItem {
+  id: string;
+  orderNumber: string;
+  status: OrderStatus;
+  paymentStatus: PaymentStatus;
+  placedAt: string;
+  customerName: string;
+  phone: string;
+  city: string;
+  itemCount: number;
+  total: number;
+  currencyCode: string;
+  isGuest: boolean;
+}
+
+export interface AdminStatusChange {
+  status: OrderStatus;
+  occurredAt: string;
+  changedBy: string | null;
+  note?: string | null;
+}
+
+export interface AdminOrderDetails {
+  order: OrderDetailsDto;
+  customerId: string | null;
+  history: AdminStatusChange[];
+  nextStatuses: OrderStatus[];
+}
