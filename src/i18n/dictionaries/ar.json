@@ -1,0 +1,67 @@
+{
+  "nav": {
+    "home": "الرئيسية",
+    "phones": "الهواتف",
+    "accessories": "الإكسسوارات",
+    "cart": "السلة",
+    "account": "حسابي",
+    "search": "ابحث عن هاتف أو إكسسوار",
+    "menu": "القائمة",
+    "switchLanguage": "English"
+  },
+  "home": {
+    "heroTitle": "أحدث الهواتف تصلك حتى باب بيتك",
+    "heroSubtitle": "اطلب أونلاين وادفع نقداً عند الاستلام.",
+    "shopPhones": "تسوّق الهواتف",
+    "shopAccessories": "تسوّق الإكسسوارات",
+    "featured": "منتجات مميزة",
+    "viewAll": "عرض الكل",
+    "freeDelivery": "توصيل مجاني للطلبات فوق {amount}"
+  },
+  "catalog": {
+    "phones": "الهواتف",
+    "accessories": "الإكسسوارات",
+    "allProducts": "كل المنتجات",
+    "results": "{count} منتج",
+    "noResults": "لا توجد منتجات مطابقة.",
+    "brand": "الماركة",
+    "allBrands": "كل الماركات",
+    "sort": "ترتيب حسب",
+    "sortFeatured": "المميزة",
+    "sortNewest": "الأحدث",
+    "sortPriceAsc": "السعر: من الأقل",
+    "sortPriceDesc": "السعر: من الأعلى",
+    "from": "يبدأ من",
+    "outOfStock": "غير متوفر",
+    "onlyLeft": "بقي {count} فقط",
+    "inStock": "متوفر",
+    "sale": "خصم",
+    "previous": "السابق",
+    "next": "التالي"
+  },
+  "product": {
+    "chooseOption": "اختر الخيار",
+    "addToCart": "أضف إلى السلة",
+    "specifications": "المواصفات",
+    "description": "الوصف",
+    "fitsThisPhone": "إكسسوارات لهذا الهاتف",
+    "compatibleWith": "متوافق مع",
+    "cashOnDelivery": "الدفع عند الاستلام",
+    "comingSoon": "الإضافة إلى السلة ستتوفر في المرحلة القادمة.",
+    "viewLarger": "عرض بحجم أكبر",
+    "close": "إغلاق",
+    "photoOf": "الصورة {n} من {total}"
+  },
+  "footer": {
+    "contact": "تواصل معنا",
+    "whatsapp": "واتساب",
+    "rights": "جميع الحقوق محفوظة."
+  },
+  "common": {
+    "notFoundTitle": "الصفحة غير موجودة",
+    "notFoundBody": "الصفحة التي تبحث عنها غير موجودة أو تم حذفها.",
+    "backHome": "العودة للرئيسية",
+    "errorTitle": "حدث خطأ ما",
+    "tryAgain": "حاول مرة أخرى"
+  }
+}

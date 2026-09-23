@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="30" height="40" viewBox="0 0 30 40">
+  <!-- Temporary mark only; the store name is rendered next to it as live text (see StoreLogo).
+       Upload a real logo in admin settings to replace both. -->
+  <rect x="3" y="3" width="22" height="34" rx="6" fill="#1c1a4a"/>
+  <rect x="7" y="8" width="14" height="20" rx="2.5" fill="#fffcf9"/>
+  <rect x="11" y="31" width="6" height="2" rx="1" fill="#fffcf9"/>
+  <circle cx="24" cy="6" r="5" fill="#c2410c" stroke="#fffcf9" stroke-width="2"/>
+</svg>

@@ -1,0 +1,129 @@
+@import "tailwindcss";
+
+/*
+  Design tokens. Every component uses these semantic names (bg-surface, text-muted, bg-brand…),
+  so retinting the shop, e.g. once the client has a brand, means changing the values below and nothing else.
+  Light only for now.
+*/
+:root {
+  --background: #f3efe7; /* warm paper */
+  --surface: #fffcf9; /* off-white cards and panels */
+  --foreground: #16130e; /* near-black ink */
+  --muted: #6b6358; /* quiet labels; ≥4.5:1 on background and surface */
+  --border: #e2dace;
+  --brand: #1c1a4a; /* deep indigo */
+  --brand-foreground: #ffffff;
+  --accent: #c2410c; /* terracotta: sale, out of stock */
+  --success: #3d6b4f; /* quiet green: in stock */
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-accent: var(--accent);
+  --color-success: var(--success);
+  --font-sans: var(--font-plex-arabic), system-ui, sans-serif;
+}
+
+@theme {
+  /* Header entrance: fades and drops in once on page load. */
+  --animate-nav-in: nav-in 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+
+  @keyframes nav-in {
+    from {
+      opacity: 0;
+      transform: translateY(-12px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+/*
+  Faint square grid behind the top of every page; the transparent header sits on it, so the two read as one surface.
+  Line colour defaults to the border token; dark surfaces (the home hero) override --grid-line.
+*/
+@utility bg-grid {
+  background-image:
+    linear-gradient(to right, var(--grid-line, var(--border)) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line, var(--border)) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+/*
+  Page layout: a centred content column (80rem) with gutters. Direct children sit in the column;
+  a child marked .full-bleed spans edge to edge. Unlike 100vw tricks, this never adds a horizontal
+  scrollbar on systems with classic scrollbars.
+*/
+.page-grid {
+  display: grid;
+  grid-template-columns: minmax(1rem, 1fr) minmax(0, 80rem) minmax(1rem, 1fr);
+  align-content: start;
+}
+
+@media (min-width: 40rem) {
+  .page-grid {
+    grid-template-columns: minmax(1.5rem, 1fr) minmax(0, 80rem) minmax(1.5rem, 1fr);
+  }
+}
+
+.page-grid > * {
+  grid-column: 2;
+}
+
+.page-grid > .full-bleed {
+  grid-column: 1 / -1;
+}
+
+/* The same column for content nested inside a full-bleed section. */
+@utility page-container {
+  width: 100%;
+  max-width: calc(80rem + 3rem);
+  margin-inline: auto;
+  padding-inline: 1rem;
+
+  @media (min-width: 40rem) {
+    padding-inline: 1.5rem;
+  }
+}
+
+/* Fades an element out towards its bottom edge. */
+@utility mask-fade-b {
+  -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+}
+
+html {
+  color-scheme: light;
+}
+
+/* The page behind a full-screen viewer (e.g. the product photo <dialog>) must not scroll. */
+html:has(dialog[open]) {
+  overflow: hidden;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-feature-settings: "kern";
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--brand);
+  color: var(--brand-foreground);
+}
+
+/* One visible focus style for every interactive element. Dark surfaces set --focus-ring to stay visible. */
+:focus-visible {
+  outline: 2px solid var(--focus-ring, var(--brand));
+  outline-offset: 3px;
+  border-radius: 0.5rem;
+}

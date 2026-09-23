@@ -1,0 +1,67 @@
+{
+  "nav": {
+    "home": "Home",
+    "phones": "Phones",
+    "accessories": "Accessories",
+    "cart": "Cart",
+    "account": "My account",
+    "search": "Search phones and accessories",
+    "menu": "Menu",
+    "switchLanguage": "العربية"
+  },
+  "home": {
+    "heroTitle": "The latest phones, delivered to your door",
+    "heroSubtitle": "Order online and pay cash on delivery.",
+    "shopPhones": "Shop phones",
+    "shopAccessories": "Shop accessories",
+    "featured": "Featured",
+    "viewAll": "View all",
+    "freeDelivery": "Free delivery on orders over {amount}"
+  },
+  "catalog": {
+    "phones": "Phones",
+    "accessories": "Accessories",
+    "allProducts": "All products",
+    "results": "{count} products",
+    "noResults": "No products match your filters.",
+    "brand": "Brand",
+    "allBrands": "All brands",
+    "sort": "Sort by",
+    "sortFeatured": "Featured",
+    "sortNewest": "Newest",
+    "sortPriceAsc": "Price: low to high",
+    "sortPriceDesc": "Price: high to low",
+    "from": "From",
+    "outOfStock": "Out of stock",
+    "onlyLeft": "Only {count} left",
+    "inStock": "In stock",
+    "sale": "Sale",
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "product": {
+    "chooseOption": "Choose an option",
+    "addToCart": "Add to cart",
+    "specifications": "Specifications",
+    "description": "Description",
+    "fitsThisPhone": "Accessories for this phone",
+    "compatibleWith": "Compatible with",
+    "cashOnDelivery": "Cash on delivery",
+    "comingSoon": "Adding to cart is coming in the next phase.",
+    "viewLarger": "View larger",
+    "close": "Close",
+    "photoOf": "Photo {n} of {total}"
+  },
+  "footer": {
+    "contact": "Contact us",
+    "whatsapp": "WhatsApp",
+    "rights": "All rights reserved."
+  },
+  "common": {
+    "notFoundTitle": "Page not found",
+    "notFoundBody": "The page you are looking for does not exist or was removed.",
+    "backHome": "Back to home",
+    "errorTitle": "Something went wrong",
+    "tryAgain": "Try again"
+  }
+}

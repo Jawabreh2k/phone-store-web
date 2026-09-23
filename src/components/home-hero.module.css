@@ -1,0 +1,202 @@
+/*
+  Motion and 3D for the home hero. Layout and colour stay in Tailwind classes; this file only holds
+  what utilities express poorly (keyframes, 3D transforms, direction-aware animation).
+  Every animation is off for visitors who ask for reduced motion.
+*/
+
+/* ---- Phone: tilted towards the reading direction, straightens on hover ---- */
+.stage {
+  perspective: 1400px;
+}
+
+.device {
+  --tilt-y: -18deg;
+  transform: rotateY(var(--tilt-y)) rotateX(8deg) rotateZ(-2deg);
+  transform-style: preserve-3d;
+  transition: transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+:global([dir="rtl"]) .device {
+  --tilt-y: 18deg;
+  transform: rotateY(var(--tilt-y)) rotateX(8deg) rotateZ(2deg);
+}
+
+.stage:hover .device {
+  transform: rotateY(0deg) rotateX(0deg) rotateZ(0deg);
+}
+
+.float {
+  animation: float 7s ease-in-out infinite;
+}
+
+.floatLate {
+  animation: float 7s ease-in-out -3.5s infinite;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+/* ---- Screen: the shop's own feed scrolling, like someone browsing the app ---- */
+.feed {
+  animation: feed var(--feed-duration, 24s) linear infinite;
+}
+
+.stage:hover .feed {
+  animation-play-state: paused;
+}
+
+@keyframes feed {
+  to {
+    transform: translateY(-50%);
+  }
+}
+
+/* ---- Signal rings radiating from behind the phone ---- */
+.ring {
+  animation: ring 6s cubic-bezier(0.2, 0.6, 0.3, 1) infinite;
+}
+
+.ring:nth-child(2) {
+  animation-delay: 2s;
+}
+
+.ring:nth-child(3) {
+  animation-delay: 4s;
+}
+
+@keyframes ring {
+  from {
+    transform: scale(0.55);
+    opacity: 0.9;
+  }
+  to {
+    transform: scale(1.35);
+    opacity: 0;
+  }
+}
+
+/* ---- Brand strip: endless marquee; the content is duplicated so -50% loops seamlessly ---- */
+.marquee {
+  animation: marquee 40s linear infinite;
+}
+
+:global([dir="rtl"]) .marquee {
+  animation-name: marquee-rtl;
+}
+
+.marquee:hover {
+  animation-play-state: paused;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marquee-rtl {
+  to {
+    transform: translateX(50%);
+  }
+}
+
+/* ---- Buttons: a band of light sweeps across on hover, the arrow nudges forward, a press sinks slightly ---- */
+.shine {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.shine::after {
+  content: "";
+  position: absolute;
+  inset-block: -20%;
+  inset-inline-start: 0;
+  width: 35%;
+  background: color-mix(in srgb, var(--brand) 10%, transparent);
+  transform: translateX(-160%) skewX(-20deg);
+  pointer-events: none;
+}
+
+:global([dir="rtl"]) .shine::after {
+  transform: translateX(160%) skewX(20deg);
+}
+
+.shine:hover::after {
+  animation: shine 0.75s ease-out;
+}
+
+:global([dir="rtl"]) .shine:hover::after {
+  animation-name: shine-rtl;
+}
+
+.shine:active {
+  transform: scale(0.97);
+}
+
+@keyframes shine {
+  to {
+    transform: translateX(420%) skewX(-20deg);
+  }
+}
+
+@keyframes shine-rtl {
+  to {
+    transform: translateX(-420%) skewX(20deg);
+  }
+}
+
+.arrow {
+  transition: translate 0.25s ease;
+}
+
+.nudge:hover .arrow {
+  translate: 3px 0;
+}
+
+:global([dir="rtl"]) .nudge:hover .arrow {
+  translate: -3px 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shine:hover::after {
+    animation: none;
+  }
+
+  .shine:active {
+    transform: none;
+  }
+
+  .nudge:hover .arrow {
+    translate: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .float,
+  .floatLate,
+  .feed,
+  .ring,
+  .marquee {
+    animation: none;
+  }
+
+  .ring {
+    opacity: 0.4;
+  }
+
+  .device,
+  :global([dir="rtl"]) .device {
+    transition: none;
+  }
+}
