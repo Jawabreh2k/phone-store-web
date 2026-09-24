@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { AdminBrands } from "@/components/admin-brands";
+import { AdminBrands } from "@/features/admin/admin-brands";
 import { getDictionary, getLocale } from "@/i18n/dictionaries";
 import { handleAdminReadError } from "@/lib/admin-auth";
 import { adminApi } from "@/lib/api/server";

@@ -1,5 +1,5 @@
 import type { Locale } from "@/i18n/config";
-import { DashboardIcon, GearIcon, GridIcon, PhoneIcon, RouteIcon, TagIcon } from "@/components/icons";
+import { DashboardIcon, GearIcon, GridIcon, PhoneIcon, RouteIcon, TagIcon } from "@/components/ui/icons";
 import type { ComponentType } from "react";
 
 export type AdminNavId = "dashboard" | "orders" | "products" | "brands" | "categories" | "settings";

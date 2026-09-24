@@ -1,4 +1,4 @@
-import { CheckoutHeaderSkeleton, CheckoutPageSkeleton } from "@/components/skeletons";
+import { CheckoutHeaderSkeleton, CheckoutPageSkeleton } from "@/components/ui/skeletons";
 
 export default function CheckoutLoading() {
   return (

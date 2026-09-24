@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { AdminProductForm } from "@/components/admin-product-form";
-import { BackArrowIcon } from "@/components/icons";
-import { buttonSecondary, pageTitle } from "@/components/ui";
+import { AdminProductForm } from "@/features/admin/admin-product-form";
+import { BackArrowIcon } from "@/components/ui/icons";
+import { buttonSecondary, pageTitle } from "@/components/ui/ui";
 import { getDictionary, getLocale } from "@/i18n/dictionaries";
 import { handleAdminReadError } from "@/lib/admin-auth";
 import { adminProductsListHref, parseAdminProductsListParams } from "@/lib/admin-products";

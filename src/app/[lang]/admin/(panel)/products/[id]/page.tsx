@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { AdminProductEditor } from "@/components/admin-product-editor";
+import { AdminProductEditor } from "@/features/admin/admin-product-editor";
 import { getDictionary, getLocale } from "@/i18n/dictionaries";
 import { handleAdminReadError } from "@/lib/admin-auth";
 import { adminProductsListHref, localized, parseAdminProductsListParams } from "@/lib/admin-products";

@@ -1,4 +1,4 @@
-import { AdminSettingsSkeleton } from "@/components/skeletons";
+import { AdminSettingsSkeleton } from "@/components/ui/skeletons";
 
 export default function AdminSettingsLoading() {
   return <AdminSettingsSkeleton />;

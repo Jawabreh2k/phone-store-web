@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
-import { OrderTrack } from "@/components/order-track";
+import { OrderTrack } from "@/features/storefront/order-track";
 import { getDictionary, getLocale } from "@/i18n/dictionaries";
 import { api } from "@/lib/api/server";
 import { isValidTrackingToken } from "@/lib/order-labels";

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { AdminForbidden } from "@/components/admin-forbidden";
-import { AdminLoginForm } from "@/components/admin-login-form";
-import { AdminLoginShell } from "@/components/admin-login-shell";
+import { AdminForbidden } from "@/features/admin/admin-forbidden";
+import { AdminLoginForm } from "@/features/admin/admin-login-form";
+import { AdminLoginShell } from "@/features/admin/admin-login-shell";
 import { getDictionary, getLocale } from "@/i18n/dictionaries";
 import { getAdminGate } from "@/lib/admin-auth";
 import { redirect } from "next/navigation";

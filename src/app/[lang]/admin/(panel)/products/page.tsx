@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { AdminFilterSelect } from "@/components/admin-filter-select";
-import { HeadphonesIcon, PhoneIcon, PlusIcon, SearchIcon, StarIcon } from "@/components/icons";
-import { LocalDateTime } from "@/components/local-date-time";
-import { Pagination } from "@/components/pagination";
-import { StatePanel } from "@/components/state-panel";
+import { AdminFilterSelect } from "@/features/admin/admin-filter-select";
+import { HeadphonesIcon, PhoneIcon, PlusIcon, SearchIcon, StarIcon } from "@/components/ui/icons";
+import { LocalDateTime } from "@/components/ui/local-date-time";
+import { Pagination } from "@/components/ui/pagination";
+import { StatePanel } from "@/components/ui/state-panel";
 import {
   badgeAccent,
   badgeMuted,
@@ -19,7 +19,7 @@ import {
   panel,
   segment,
   segmented,
-} from "@/components/ui";
+} from "@/components/ui/ui";
 import { getDictionary, getLocale } from "@/i18n/dictionaries";
 import { handleAdminReadError } from "@/lib/admin-auth";
 import {

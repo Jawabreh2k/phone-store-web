@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { SearchIcon } from "@/components/icons";
-import { LocalDateTime } from "@/components/local-date-time";
-import { Pagination } from "@/components/pagination";
-import { StatePanel } from "@/components/state-panel";
-import { buttonPrimary, chipActive, chipIdle, fieldInput, pageTitle, panel } from "@/components/ui";
+import { SearchIcon } from "@/components/ui/icons";
+import { LocalDateTime } from "@/components/ui/local-date-time";
+import { Pagination } from "@/components/ui/pagination";
+import { StatePanel } from "@/components/ui/state-panel";
+import { buttonPrimary, chipActive, chipIdle, fieldInput, pageTitle, panel } from "@/components/ui/ui";
 import { getDictionary, getLocale } from "@/i18n/dictionaries";
 import { handleAdminReadError } from "@/lib/admin-auth";
 import { adminOrderStatuses, adminOrdersListHref, adminOrdersListQuery, parseAdminOrdersListParams } from "@/lib/admin-orders-list";

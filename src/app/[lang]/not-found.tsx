@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { ProductArt } from "@/components/product-art";
-import { ShopShell } from "@/components/shop-shell";
-import { StatePanel } from "@/components/state-panel";
-import { buttonPrimary, buttonSecondary } from "@/components/ui";
+import { ProductArt } from "@/features/storefront/product-art";
+import { ShopShell } from "@/components/layout/shop-shell";
+import { StatePanel } from "@/components/ui/state-panel";
+import { buttonPrimary, buttonSecondary } from "@/components/ui/ui";
 import { getDictionary, getLocale } from "@/i18n/dictionaries";
 
 export default async function NotFound() {

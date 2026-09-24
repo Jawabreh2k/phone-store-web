@@ -1,4 +1,4 @@
-import { CartPageSkeleton, CheckoutStepperSkeleton, PageTitleSkeleton } from "@/components/skeletons";
+import { CartPageSkeleton, CheckoutStepperSkeleton, PageTitleSkeleton } from "@/components/ui/skeletons";
 
 export default function CartLoading() {
   return (

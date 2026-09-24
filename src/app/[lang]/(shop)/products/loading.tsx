@@ -1,4 +1,4 @@
-import { ListingSkeleton, PageTitleSkeleton } from "@/components/skeletons";
+import { ListingSkeleton, PageTitleSkeleton } from "@/components/ui/skeletons";
 
 export default function ProductsLoading() {
   return (

@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { AlertIcon } from "@/components/icons";
-import { StatePanel } from "@/components/state-panel";
-import { buttonPrimary, buttonSecondary } from "@/components/ui";
+import { AlertIcon } from "@/components/ui/icons";
+import { StatePanel } from "@/components/ui/state-panel";
+import { buttonPrimary, buttonSecondary } from "@/components/ui/ui";
 
 // Error boundaries are client components and cannot load server dictionaries; these mirror
 // common.errorTitle / common.tryAgain / common.backHome in the dictionaries.

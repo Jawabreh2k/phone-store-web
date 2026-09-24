@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { AdminCategories } from "@/components/admin-categories";
+import { AdminCategories } from "@/features/admin/admin-categories";
 import { getDictionary, getLocale } from "@/i18n/dictionaries";
 import { handleAdminReadError } from "@/lib/admin-auth";
 import { adminApi } from "@/lib/api/server";

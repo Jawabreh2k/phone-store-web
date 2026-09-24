@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { AdminSettingsForm } from "@/components/admin-settings-form";
-import { pageTitle } from "@/components/ui";
+import { AdminSettingsForm } from "@/features/admin/admin-settings-form";
+import { pageTitle } from "@/components/ui/ui";
 import { getDictionary, getLocale } from "@/i18n/dictionaries";
 import { handleAdminReadError } from "@/lib/admin-auth";
 import { adminApi } from "@/lib/api/server";

@@ -1,4 +1,4 @@
-import { AdminOrdersSkeleton } from "@/components/skeletons";
+import { AdminOrdersSkeleton } from "@/components/ui/skeletons";
 
 export default function AdminOrdersLoading() {
   return <AdminOrdersSkeleton />;

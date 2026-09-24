@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { AdminOrderDetail } from "@/components/admin-order-detail";
+import { AdminOrderDetail } from "@/features/admin/admin-order-detail";
 import { getDictionary, getLocale } from "@/i18n/dictionaries";
 import { handleAdminReadError } from "@/lib/admin-auth";
 import { adminOrdersListHref, parseAdminOrdersListParams } from "@/lib/admin-orders-list";

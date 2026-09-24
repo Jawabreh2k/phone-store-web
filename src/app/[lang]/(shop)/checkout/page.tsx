@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { CheckoutForm } from "@/components/checkout-form";
-import { CheckoutStepper } from "@/components/checkout-stepper";
-import { pageTitle } from "@/components/ui";
+import { CheckoutForm } from "@/features/storefront/checkout-form";
+import { CheckoutStepper } from "@/features/storefront/checkout-stepper";
+import { pageTitle } from "@/components/ui/ui";
 import { getDictionary, getLocale } from "@/i18n/dictionaries";
 import { api } from "@/lib/api/server";
 

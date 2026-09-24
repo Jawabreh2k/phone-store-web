@@ -1,5 +1,5 @@
-import { AdminForbidden } from "@/components/admin-forbidden";
-import { AdminShell } from "@/components/admin-shell";
+import { AdminForbidden } from "@/features/admin/admin-forbidden";
+import { AdminShell } from "@/features/admin/admin-shell";
 import { getDictionary, getLocale } from "@/i18n/dictionaries";
 import { getAdminGate, redirectToAdminLogin } from "@/lib/admin-auth";
 

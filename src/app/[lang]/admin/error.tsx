@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { AlertIcon } from "@/components/icons";
-import { StatePanel } from "@/components/state-panel";
-import { buttonPrimary, buttonSecondary } from "@/components/ui";
+import { AlertIcon } from "@/components/ui/icons";
+import { StatePanel } from "@/components/ui/state-panel";
+import { buttonPrimary, buttonSecondary } from "@/components/ui/ui";
 import ar from "@/i18n/dictionaries/ar.json";
 import en from "@/i18n/dictionaries/en.json";
 

@@ -1,4 +1,4 @@
-import { AdminTaxonomySkeleton } from "@/components/skeletons";
+import { AdminTaxonomySkeleton } from "@/components/ui/skeletons";
 
 export default function AdminBrandsLoading() {
   return <AdminTaxonomySkeleton />;
