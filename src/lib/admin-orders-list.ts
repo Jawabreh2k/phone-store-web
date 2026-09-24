@@ -1,7 +1,7 @@
 import type { Locale } from "@/i18n/config";
 import type { OrderStatus } from "@/lib/api/types";
 
-export const adminOrderStatuses: OrderStatus[] = ["Pending", "Confirmed", "Shipped", "Delivered", "Cancelled"];
+export const adminOrderStatuses: OrderStatus[] = ["Pending", "Confirmed", "Shipped", "Delivered", "Cancelled", "Returned"];
 
 export type AdminOrdersListParams = {
   status?: OrderStatus;

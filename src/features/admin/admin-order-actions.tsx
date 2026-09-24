@@ -24,6 +24,7 @@ function actionLabel(status: OrderStatus, labels: Dictionary["admin"]["orders"])
     Shipped: labels.actionShip,
     Delivered: labels.actionDeliver,
     Cancelled: labels.actionCancel,
+    Returned: labels.actionReturn,
   };
   return map[status] ?? status;
 }
@@ -31,6 +32,7 @@ function actionLabel(status: OrderStatus, labels: Dictionary["admin"]["orders"])
 export function AdminOrderActions({ locale, orderId, nextStatuses, labels, loadingLabel }: Props) {
   const router = useRouter();
   const cancelDialogRef = useRef<HTMLDialogElement>(null);
+  const returnDialogRef = useRef<HTMLDialogElement>(null);
   const [note, setNote] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState<OrderStatus | null>(null);
@@ -43,6 +45,7 @@ export function AdminOrderActions({ locale, orderId, nextStatuses, labels, loadi
       await adminApi.changeOrderStatus(locale, orderId, status, note.trim() || null);
       setNote("");
       cancelDialogRef.current?.close();
+      returnDialogRef.current?.close();
       startTransition(() => {
         router.refresh();
       });
@@ -51,7 +54,7 @@ export function AdminOrderActions({ locale, orderId, nextStatuses, labels, loadi
       setError(adminOrderErrorMessage(err, labels.errors));
       if (err instanceof ApiError) {
         const code = err.problem.code;
-        if (code === "orders.invalid_transition" || code === "orders.cannot_cancel") {
+        if (code === "orders.invalid_transition" || code === "orders.cannot_cancel" || code === "orders.cannot_return") {
           startTransition(() => router.refresh());
         }
       }
@@ -60,24 +63,30 @@ export function AdminOrderActions({ locale, orderId, nextStatuses, labels, loadi
     }
   };
 
-  const openCancelDialog = () => {
-    const dialog = cancelDialogRef.current;
+  const openDialog = (ref: React.RefObject<HTMLDialogElement | null>, confirmSelector: string) => {
+    const dialog = ref.current;
     if (!dialog) return;
     if (!dialog.open) dialog.showModal();
-    dialog.querySelector<HTMLButtonElement>("[data-cancel-confirm]")?.focus();
+    dialog.querySelector<HTMLButtonElement>(confirmSelector)?.focus();
   };
 
   useEffect(() => {
-    const dialog = cancelDialogRef.current;
-    if (!dialog) return;
-    const onCancel = () => dialog.close();
-    dialog.addEventListener("cancel", onCancel);
-    return () => dialog.removeEventListener("cancel", onCancel);
+    const dialogs = [cancelDialogRef.current, returnDialogRef.current].filter(Boolean) as HTMLDialogElement[];
+    const handlers = dialogs.map((dialog) => {
+      const onCancel = () => dialog.close();
+      dialog.addEventListener("cancel", onCancel);
+      return () => dialog.removeEventListener("cancel", onCancel);
+    });
+    return () => handlers.forEach((dispose) => dispose());
   }, []);
 
   const onAction = (status: OrderStatus) => {
     if (status === "Cancelled") {
-      openCancelDialog();
+      openDialog(cancelDialogRef, "[data-cancel-confirm]");
+      return;
+    }
+    if (status === "Returned") {
+      openDialog(returnDialogRef, "[data-return-confirm]");
       return;
     }
     void applyStatus(status);
@@ -122,7 +131,7 @@ export function AdminOrderActions({ locale, orderId, nextStatuses, labels, loadi
               type="button"
               onClick={() => onAction(status)}
               disabled={disabled}
-              className={status === "Cancelled" ? buttonSecondary : buttonPrimary}
+              className={status === "Cancelled" || status === "Returned" ? buttonSecondary : buttonPrimary}
             >
               {busy === status || pending ? loadingLabel : actionLabel(status, labels)}
             </button>
@@ -146,6 +155,27 @@ export function AdminOrderActions({ locale, orderId, nextStatuses, labels, loadi
             </button>
             <button type="submit" disabled={disabled} className={buttonSecondary}>
               {labels.confirmCancelBack}
+            </button>
+          </div>
+        </form>
+      </dialog>
+
+      <dialog ref={returnDialogRef} aria-labelledby="return-title" aria-describedby="return-body" className="w-[min(100%,28rem)] rounded-card border border-border bg-surface p-0 shadow-float backdrop:bg-foreground/20">
+        <form method="dialog" className="flex flex-col gap-5 p-5 sm:p-6">
+          <div className="flex flex-col gap-2">
+            <h3 id="return-title" className="text-lg font-semibold tracking-tight">
+              {labels.confirmReturnTitle}
+            </h3>
+            <p id="return-body" className="text-sm leading-relaxed text-muted">
+              {labels.confirmReturnBody}
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <button type="button" data-return-confirm disabled={disabled} onClick={() => void applyStatus("Returned")} className={buttonPrimary}>
+              {busy === "Returned" || pending ? loadingLabel : labels.confirmReturnConfirm}
+            </button>
+            <button type="submit" disabled={disabled} className={buttonSecondary}>
+              {labels.confirmReturnBack}
             </button>
           </div>
         </form>

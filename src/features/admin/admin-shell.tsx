@@ -10,24 +10,32 @@ import type { Dictionary } from "@/i18n/dictionaries";
 import type { Locale } from "@/i18n/config";
 import { adminNavItems } from "@/lib/admin-nav";
 import type { UserProfile } from "@/lib/api/types";
+import { t } from "@/lib/format";
 import { iconButton } from "@/components/ui/ui";
 
 interface Props {
   locale: Locale;
   profile: UserProfile;
   labels: Dictionary["admin"];
+  pendingOrderCount?: number;
   children: React.ReactNode;
+}
+
+function formatBadgeCount(count: number): string {
+  return count > 99 ? "99+" : String(count);
 }
 
 function NavLinks({
   locale,
   labels,
   pathname,
+  pendingOrderCount,
   onNavigate,
 }: {
   locale: Locale;
   labels: Dictionary["admin"];
   pathname: string;
+  pendingOrderCount: number;
   onNavigate?: () => void;
 }) {
   return (
@@ -35,18 +43,32 @@ function NavLinks({
       <ul className="flex flex-col gap-1">
         {adminNavItems.map(({ id, href, labelKey, Icon, isActive, groupStart }) => {
           const active = isActive(pathname);
+          const badgeCount = id === "orders" ? pendingOrderCount : 0;
+          const showBadge = badgeCount > 0;
+          const linkLabel = showBadge ? t(labels.ordersNew, { count: badgeCount }) : labels.nav[labelKey];
           return (
             <li key={id} className={groupStart ? "mt-2 border-t border-border pt-2" : undefined}>
               <Link
                 href={href(locale)}
                 onClick={onNavigate}
                 aria-current={active ? "page" : undefined}
+                aria-label={showBadge ? linkLabel : undefined}
                 className={`flex items-center gap-3 rounded-2xl px-3 py-2.5 text-sm font-medium transition-colors ${
                   active ? "bg-brand text-brand-foreground" : "text-foreground hover:bg-foreground/5"
                 }`}
               >
                 <Icon className="size-4 shrink-0" />
-                {labels.nav[labelKey]}
+                <span className="min-w-0 flex-1">{labels.nav[labelKey]}</span>
+                {showBadge && (
+                  <span
+                    aria-hidden
+                    className={`inline-flex h-5 min-w-5 shrink-0 items-center justify-center rounded-full px-1.5 text-xs font-semibold tabular-nums ${
+                      active ? "bg-brand-foreground text-brand" : "bg-accent text-brand-foreground"
+                    }`}
+                  >
+                    {formatBadgeCount(badgeCount)}
+                  </span>
+                )}
               </Link>
             </li>
           );
@@ -61,12 +83,14 @@ function SidebarContent({
   profile,
   labels,
   pathname,
+  pendingOrderCount,
   onNavigate,
 }: {
   locale: Locale;
   profile: UserProfile;
   labels: Dictionary["admin"];
   pathname: string;
+  pendingOrderCount: number;
   onNavigate?: () => void;
 }) {
   return (
@@ -79,7 +103,7 @@ function SidebarContent({
         </span>
       </div>
 
-      <NavLinks locale={locale} labels={labels} pathname={pathname} onNavigate={onNavigate} />
+      <NavLinks locale={locale} labels={labels} pathname={pathname} pendingOrderCount={pendingOrderCount} onNavigate={onNavigate} />
 
       <div className="mt-auto flex flex-col gap-3 border-t border-border pt-5">
         <Suspense fallback={null}>
@@ -147,10 +171,10 @@ function MobileNav({
   );
 }
 
-export function AdminShell({ locale, profile, labels, children }: Props) {
+export function AdminShell({ locale, profile, labels, pendingOrderCount = 0, children }: Props) {
   const pathname = usePathname();
 
-  const sidebarProps = { locale, profile, labels, pathname };
+  const sidebarProps = { locale, profile, labels, pathname, pendingOrderCount };
 
   return (
     <div className="flex min-h-dvh flex-col lg:flex-row">

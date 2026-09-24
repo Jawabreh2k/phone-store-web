@@ -142,7 +142,7 @@ export interface CartDto {
   hasUnavailableItems: boolean;
 }
 
-export type OrderStatus = "Pending" | "Confirmed" | "Shipped" | "Delivered" | "Cancelled";
+export type OrderStatus = "Pending" | "Confirmed" | "Shipped" | "Delivered" | "Cancelled" | "Returned";
 export type PaymentMethod = "CashOnDelivery";
 export type PaymentStatus = "Unpaid" | "Paid";
 
@@ -316,10 +316,20 @@ export interface AdminSettings {
   /** Null: no free delivery. */
   freeShippingThreshold: number | null;
   allowGuestCheckout: boolean;
+  /** Outbound mail for staff new-order alerts. Null host: alerts are off. */
+  smtpHost: string | null;
+  smtpPort: number;
+  smtpFrom: string | null;
+  smtpUser: string | null;
+  /** Whether a password is saved; the value itself is never sent back to the browser. */
+  hasSmtpPassword: boolean;
 }
 
-/** The settings form; the logo has its own upload and remove calls. */
-export type UpdateSettingsRequest = Omit<AdminSettings, "logoUrl">;
+/**
+ * The settings form; the logo has its own upload and remove calls. `smtpPassword` replaces `hasSmtpPassword`:
+ * null keeps the saved password, "" clears it, anything else replaces it.
+ */
+export type UpdateSettingsRequest = Omit<AdminSettings, "logoUrl" | "hasSmtpPassword"> & { smtpPassword: string | null };
 
 export interface AdminProductListItem {
   id: string;

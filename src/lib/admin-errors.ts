@@ -28,6 +28,7 @@ export function adminOrderErrorMessage(error: unknown, errors: OrderErrors): str
   if (code === "orders.not_found") return errors["orders.not_found"];
   if (code === "orders.invalid_transition") return errors["orders.invalid_transition"];
   if (code === "orders.cannot_cancel") return errors["orders.cannot_cancel"];
+  if (code === "orders.cannot_return") return errors["orders.cannot_return"];
   if (code === "validation") return errors.validation;
   if (code && code in errors) return errors[code as keyof OrderErrors];
 

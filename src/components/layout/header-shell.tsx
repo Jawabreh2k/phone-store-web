@@ -5,8 +5,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Suspense, useEffect, useId, useState, type ReactNode } from "react";
 import { useCart } from "@/features/storefront/cart-provider";
+import { useSession } from "@/features/storefront/session-provider";
+import { GoogleSignInLink } from "@/features/storefront/google-sign-in-link";
+import { SignInPanel } from "@/features/storefront/sign-in-panel";
+import type { Dictionary } from "@/i18n/dictionaries";
 import type { Locale } from "@/i18n/config";
-import { CartIcon, CloseIcon, MenuIcon, SearchIcon } from "@/components/ui/icons";
+import { CartIcon, CloseIcon, MenuIcon, SearchIcon, UserIcon } from "@/components/ui/icons";
 import { LanguageSwitcher } from "@/components/layout/language-switcher";
 import { StoreLogo } from "@/components/layout/store-logo";
 
@@ -24,10 +28,14 @@ interface Props {
     search: string;
     menu: string;
     switchLanguage: string;
+    signIn: string;
+    account: string;
+    signOut: string;
   };
+  authLabels: Dictionary["auth"];
 }
 
-type Panel = "menu" | "search";
+type Panel = "menu" | "search" | "account";
 
 function CartBadge({ count }: { count: number }) {
   if (count <= 0) return null;
@@ -95,8 +103,9 @@ const panelSurface =
  * (and its grid) runs straight through it; once the page scrolls it becomes a floating, blurred pill.
  * Phones get a menu panel; every size gets a search panel.
  */
-export function HeaderShell({ locale, storeName, logoUrl, labels }: Props) {
+export function HeaderShell({ locale, storeName, logoUrl, labels, authLabels }: Props) {
   const { itemCount } = useCart();
+  const { profile, status, signOut } = useSession();
   const pathname = usePathname();
   const [floating, setFloating] = useState(false);
 
@@ -187,6 +196,28 @@ export function HeaderShell({ locale, storeName, logoUrl, labels }: Props) {
             />
           </Suspense>
 
+          <button
+            type="button"
+            aria-label={status === "signedIn" ? labels.account : labels.signIn}
+            aria-expanded={open === "account"}
+            title={status === "signedIn" ? profile?.fullName : undefined}
+            onClick={() => toggle("account")}
+            className={`hidden ${navHeight} items-center gap-2 rounded-lg px-3 ${navText} transition-colors duration-300 md:inline-flex ${tone.link}`}
+          >
+            <UserIcon className={navIcon} />
+            {status === "signedIn" ? <bdi className="max-w-32 truncate">{profile?.fullName}</bdi> : labels.signIn}
+          </button>
+
+          <button
+            type="button"
+            aria-label={status === "signedIn" ? labels.account : labels.signIn}
+            aria-expanded={open === "account"}
+            onClick={() => toggle("account")}
+            className={`${iconButton} md:hidden`}
+          >
+            <UserIcon className={navIcon} />
+          </button>
+
           <CartLink
             href={`/${locale}/cart`}
             label={labels.cart}
@@ -214,7 +245,26 @@ export function HeaderShell({ locale, storeName, logoUrl, labels }: Props) {
         </div>
       </nav>
 
-      {open && <div aria-hidden className="pointer-events-auto fixed inset-0 z-40" onClick={close} />}
+      {open && open !== "account" && <div aria-hidden className="pointer-events-auto fixed inset-0 z-40" onClick={close} />}
+
+      {status === "signedIn" ? (
+        open === "account" && (
+          <>
+            <div aria-hidden className="pointer-events-auto fixed inset-0 z-40" onClick={close} />
+            <div className="pointer-events-auto fixed end-4 top-[78px] z-50 flex w-full max-w-xs flex-col gap-2 rounded-2xl border border-border bg-surface/95 p-3 backdrop-blur-xl">
+              <p className="px-2 text-sm font-medium">
+                <bdi className="truncate">{profile?.fullName}</bdi>
+              </p>
+              <GoogleSignInLink locale={locale} returnUrl={pathname} label={authLabels.google.connect} connect />
+              <button type="button" onClick={() => void signOut()} className={`${menuItemBase} text-muted hover:bg-foreground/5 hover:text-foreground`}>
+                {labels.signOut}
+              </button>
+            </div>
+          </>
+        )
+      ) : (
+        <SignInPanel locale={locale} open={open === "account"} onClose={close} labels={authLabels} />
+      )}
 
       {open === "search" && (
         <Form id={searchId} action={`/${locale}/products`} role="search" onSubmit={close} className={`${panelSurface} max-w-2xl p-2`}>
@@ -246,6 +296,10 @@ export function HeaderShell({ locale, storeName, logoUrl, labels }: Props) {
               className={`${menuItemBase} text-muted hover:bg-foreground/5 hover:text-foreground`}
             />
           </Suspense>
+          <button type="button" onClick={() => toggle("account")} className={`${menuItemBase} text-muted hover:bg-foreground/5 hover:text-foreground`}>
+            <UserIcon className={navIcon} />
+            {status === "signedIn" ? labels.account : labels.signIn}
+          </button>
           <CartLink
             href={`/${locale}/cart`}
             label={labels.cart}

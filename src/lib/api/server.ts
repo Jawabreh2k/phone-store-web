@@ -146,6 +146,11 @@ export const adminApi = {
       authRequired(result, "Orders list"),
     ),
 
+  pendingOrderCount: (locale: Locale) =>
+    getAuth<number>("/api/admin/orders/pending-count", locale).then((result) =>
+      result.status === 401 || result.status === 403 ? 0 : authRequired(result, "Pending order count"),
+    ),
+
   order: (locale: Locale, id: string) =>
     getAuth<AdminOrderDetails>(`/api/admin/orders/${encodeURIComponent(id)}`, locale).then((result) => {
       if (result.status === 404) return null;

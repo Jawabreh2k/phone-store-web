@@ -1,12 +1,13 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import type { Dictionary } from "@/i18n/dictionaries";
 import type { Locale } from "@/i18n/config";
 import * as adminApi from "@/lib/api/admin-client";
 import { adminLoginErrorMessage } from "@/lib/admin-errors";
-import { buttonPrimary, fieldGroup, fieldHint, fieldInput, fieldLabel, formSection } from "@/components/ui/ui";
+import { buttonPrimary, fieldGroup, fieldHint, fieldInput, fieldLabel, formSection, textLink } from "@/components/ui/ui";
 
 interface Props {
   locale: Locale;
@@ -48,9 +49,15 @@ export function AdminLoginForm({ locale, labels, loadingLabel }: Props) {
       </div>
 
       <div className={fieldGroup}>
-        <label htmlFor="admin-password" className={fieldLabel}>
-          {labels.password}
-        </label>
+        <div className="flex items-baseline justify-between gap-3">
+          <label htmlFor="admin-password" className={fieldLabel}>
+            {labels.password}
+          </label>
+          {/* Staff and customers share accounts, so recovery is the storefront's forgot-password page. */}
+          <Link href={`/${locale}/forgot-password`} className={textLink}>
+            {labels.forgotPassword}
+          </Link>
+        </div>
         <input id="admin-password" name="password" type="password" autoComplete="current-password" required className={fieldInput} />
       </div>
 

@@ -37,6 +37,8 @@ function formatAddress(address: OrderDetailsDto["shippingAddress"]): string {
 export function OrderTrack({ locale, order, trackingPath, placed, labels, confirmation, cashOnDeliveryLabel }: Props) {
   const money = (amount: number) => formatPrice(amount, order.currencyCode, locale);
   const cancelled = order.status === "Cancelled";
+  const returned = order.status === "Returned";
+  const terminal = cancelled || returned;
   const current = steps.indexOf(order.status);
   // The latest history entry for a status: when the order reached it, and any note from the shop.
   const reached = (status: OrderStatus) => order.history.filter((entry) => entry.status === status).at(-1);
@@ -100,18 +102,18 @@ export function OrderTrack({ locale, order, trackingPath, placed, labels, confir
           <h2 id="order-progress" className={panelTitle}>
             {labels.timeline}
           </h2>
-          <span className={`rounded-full px-3 py-1 text-sm font-semibold ${cancelled ? "bg-accent text-brand-foreground" : "bg-brand/5 text-brand"}`}>
+          <span className={`rounded-full px-3 py-1 text-sm font-semibold ${terminal ? "bg-accent text-brand-foreground" : "bg-brand/5 text-brand"}`}>
             {orderStatusLabel(order.status, labels)}
           </span>
         </div>
 
-        {cancelled ? (
+        {terminal ? (
           <div className="flex flex-col gap-5">
             <p className={notice}>
               <AlertIcon />
               <span>
-                {labels.cancelledNotice}
-                {order.cancellationReason && <> {t(labels.cancelReason, { reason: order.cancellationReason })}</>}
+                {returned ? labels.returnedNotice : labels.cancelledNotice}
+                {!returned && order.cancellationReason && <> {t(labels.cancelReason, { reason: order.cancellationReason })}</>}
               </span>
             </p>
             <ol className="flex flex-col gap-3">

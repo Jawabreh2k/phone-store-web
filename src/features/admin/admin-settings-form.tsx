@@ -13,7 +13,7 @@ import { currencyLabel, formatPrice, t } from "@/lib/format";
 import { useAdminAction, useUnsavedChangesWarning } from "@/lib/use-admin-action";
 import { AdornedInput, BilingualField, Field, SelectField, Switch } from "@/features/admin/admin-form-controls";
 import { AdminSection, SaveBar } from "@/features/admin/admin-section";
-import { AlertIcon, CashIcon, ChatIcon, CoinsIcon, StoreIcon, TrashIcon, TruckIcon, UploadIcon } from "@/components/ui/icons";
+import { AlertIcon, CashIcon, ChatIcon, CoinsIcon, MailIcon, StoreIcon, TrashIcon, TruckIcon, UploadIcon } from "@/components/ui/icons";
 import { StoreLogo } from "@/components/layout/store-logo";
 import { buttonGhost, buttonSecondary, fieldInput, notice, panel } from "@/components/ui/ui";
 
@@ -39,6 +39,12 @@ interface Draft {
   freeShipping: boolean;
   freeShippingThreshold: string;
   allowGuestCheckout: boolean;
+  smtpHost: string;
+  smtpPort: string;
+  smtpFrom: string;
+  smtpUser: string;
+  /** Null: leave the saved password alone. Set only once the field is actually edited. */
+  smtpPassword: string | null;
 }
 
 type FieldKey =
@@ -51,10 +57,29 @@ type FieldKey =
   | "phoneCountryCode"
   | "timeZoneId"
   | "flatShippingFee"
-  | "freeShippingThreshold";
+  | "freeShippingThreshold"
+  | "smtpHost"
+  | "smtpPort"
+  | "smtpFrom"
+  | "smtpUser";
 type FieldErrors = Partial<Record<FieldKey, string>>;
 
-const fieldKeys = new Set<string>(["storeName.en", "storeName.ar", "supportPhone", "whatsAppNumber", "supportEmail", "currencyCode", "phoneCountryCode", "timeZoneId", "flatShippingFee", "freeShippingThreshold"]);
+const fieldKeys = new Set<string>([
+  "storeName.en",
+  "storeName.ar",
+  "supportPhone",
+  "whatsAppNumber",
+  "supportEmail",
+  "currencyCode",
+  "phoneCountryCode",
+  "timeZoneId",
+  "flatShippingFee",
+  "freeShippingThreshold",
+  "smtpHost",
+  "smtpPort",
+  "smtpFrom",
+  "smtpUser",
+]);
 const storeNameMax = 80;
 
 /** Currencies of the region first; the current one is always offered even if it isn't listed. */
@@ -110,6 +135,11 @@ function draftFrom(s: AdminSettings): Draft {
     freeShipping: s.freeShippingThreshold !== null,
     freeShippingThreshold: formatNumberInput(s.freeShippingThreshold),
     allowGuestCheckout: s.allowGuestCheckout,
+    smtpHost: s.smtpHost ?? "",
+    smtpPort: String(s.smtpPort),
+    smtpFrom: s.smtpFrom ?? "",
+    smtpUser: s.smtpUser ?? "",
+    smtpPassword: null,
   };
 }
 
@@ -128,6 +158,11 @@ function toRequest(d: Draft): UpdateSettingsRequest {
     flatShippingFee: parseNumber(d.flatShippingFee),
     freeShippingThreshold: d.freeShipping ? parseNumber(d.freeShippingThreshold) : null,
     allowGuestCheckout: d.allowGuestCheckout,
+    smtpHost: d.smtpHost.trim() || null,
+    smtpPort: parseNumber(d.smtpPort),
+    smtpFrom: d.smtpFrom.trim() || null,
+    smtpUser: d.smtpUser.trim() || null,
+    smtpPassword: d.smtpPassword,
   };
 }
 
@@ -145,6 +180,11 @@ function validate(d: Draft, labels: Props["labels"]): FieldErrors {
     errors.freeShippingThreshold = labels.fieldErrors.money;
   }
   if (!/^[1-9]\d{0,2}$/.test(request.phoneCountryCode)) errors.phoneCountryCode = labels.fieldErrors.countryCode;
+  if (!Number.isInteger(request.smtpPort) || request.smtpPort < 1 || request.smtpPort > 65535) errors.smtpPort = labels.fieldErrors.smtpPort;
+  if (request.smtpHost) {
+    if (!request.smtpFrom) errors.smtpFrom = labels.fieldErrors.required;
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(request.smtpFrom)) errors.smtpFrom = labels.fieldErrors.email;
+  }
   return errors;
 }
 
@@ -198,7 +238,13 @@ export function AdminSettingsForm({ locale, settings, labels, saveBarLabels, lan
     setFormError(null);
 
     const result = await run(() => adminApi.updateSettings(locale, toRequest(draft)));
-    if (result.ok) return setBaseline(draft);
+    if (result.ok) {
+      // Never leave a just-typed password sitting in the field once it's saved.
+      const cleared = { ...draft, smtpPassword: null };
+      setBaseline(cleared);
+      setDraft(cleared);
+      return;
+    }
 
     const serverFields = apiFieldErrors(result.error);
     const mapped: FieldErrors = {};
@@ -356,6 +402,95 @@ export function AdminSettingsForm({ locale, settings, labels, saveBarLabels, lan
               <p role="status" className={notice}>
                 <AlertIcon />
                 {labels.guestCheckoutOff}
+              </p>
+            )}
+          </div>
+        </AdminSection>
+
+        <AdminSection id="email" title={labels.emailSection} description={labels.emailDescription} icon={<MailIcon />}>
+          <div className="flex flex-col gap-5">
+            <div className="grid gap-5 sm:grid-cols-2">
+              <Field label={labels.smtpHost} note={labels.optional} hint={labels.smtpHostHint} error={errors.smtpHost}>
+                {(control) => (
+                  <input
+                    {...control}
+                    type="text"
+                    dir="ltr"
+                    autoComplete="off"
+                    placeholder="smtp.example.com"
+                    value={draft.smtpHost}
+                    disabled={busy}
+                    onChange={(event) => update({ smtpHost: event.target.value }, ["smtpHost"])}
+                    className={`${fieldInput} text-start`}
+                  />
+                )}
+              </Field>
+              <Field label={labels.smtpPort} error={errors.smtpPort} className="sm:max-w-xs">
+                {(control) => (
+                  <input
+                    {...control}
+                    type="text"
+                    dir="ltr"
+                    inputMode="numeric"
+                    autoComplete="off"
+                    value={draft.smtpPort}
+                    disabled={busy}
+                    onChange={(event) => update({ smtpPort: event.target.value }, ["smtpPort"])}
+                    className={`${fieldInput} text-start`}
+                  />
+                )}
+              </Field>
+            </div>
+            <Field label={labels.smtpFrom} hint={labels.smtpFromHint} error={errors.smtpFrom}>
+              {(control) => (
+                <input
+                  {...control}
+                  type="email"
+                  dir="ltr"
+                  autoComplete="off"
+                  placeholder="orders@example.com"
+                  value={draft.smtpFrom}
+                  disabled={busy}
+                  onChange={(event) => update({ smtpFrom: event.target.value }, ["smtpFrom"])}
+                  className={`${fieldInput} text-start`}
+                />
+              )}
+            </Field>
+            <div className="grid gap-5 sm:grid-cols-2">
+              <Field label={labels.smtpUser} note={labels.optional}>
+                {(control) => (
+                  <input
+                    {...control}
+                    type="text"
+                    dir="ltr"
+                    autoComplete="off"
+                    value={draft.smtpUser}
+                    disabled={busy}
+                    onChange={(event) => update({ smtpUser: event.target.value })}
+                    className={`${fieldInput} text-start`}
+                  />
+                )}
+              </Field>
+              <Field label={labels.smtpPassword} note={labels.optional} hint={settings.hasSmtpPassword ? labels.smtpPasswordSetHint : labels.smtpPasswordUnsetHint}>
+                {(control) => (
+                  <input
+                    {...control}
+                    type="password"
+                    dir="ltr"
+                    autoComplete="new-password"
+                    placeholder={settings.hasSmtpPassword ? "••••••••" : ""}
+                    value={draft.smtpPassword ?? ""}
+                    disabled={busy}
+                    onChange={(event) => update({ smtpPassword: event.target.value })}
+                    className={`${fieldInput} text-start`}
+                  />
+                )}
+              </Field>
+            </div>
+            {!draft.smtpHost && (
+              <p role="status" className={notice}>
+                <AlertIcon />
+                {labels.smtpOff}
               </p>
             )}
           </div>

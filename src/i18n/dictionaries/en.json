@@ -5,6 +5,8 @@
     "accessories": "Accessories",
     "cart": "Cart",
     "account": "My account",
+    "signIn": "Sign in",
+    "signOut": "Sign out",
     "search": "Search phones and accessories",
     "menu": "Menu",
     "switchLanguage": "Switch to Arabic"
@@ -230,14 +232,16 @@
     "total": "Total",
     "notFoundTitle": "Order not found",
     "notFoundBody": "This tracking link is invalid or the order no longer exists. If you just placed an order, make sure you saved the tracking link from the confirmation page.",
-    "statusPending": "Pending",
+    "statusPending": "New",
     "statusConfirmed": "Confirmed",
-    "statusShipped": "Shipped",
+    "statusShipped": "Out for delivery",
     "statusDelivered": "Delivered",
     "statusCancelled": "Cancelled",
+    "statusReturned": "Returned",
     "paymentUnpaid": "Unpaid",
     "paymentPaid": "Paid",
     "cancelledNotice": "This order was cancelled.",
+    "returnedNotice": "This order was returned after delivery.",
     "cancelReason": "Reason: {reason}",
     "items": "Items",
     "free": "Free"
@@ -256,6 +260,78 @@
     "errorTitle": "Something went wrong",
     "tryAgain": "Try again"
   },
+  "auth": {
+    "signIn": {
+      "title": "Welcome back",
+      "subtitle": "Sign in to track your orders and check out faster.",
+      "email": "Email",
+      "password": "Password",
+      "rememberMe": "Remember me",
+      "submit": "Sign in",
+      "submitting": "Signing in…",
+      "noAccount": "New here?",
+      "createAccount": "Create an account"
+    },
+    "signUp": {
+      "title": "Create your account",
+      "subtitle": "Takes a minute, and your cart comes with you.",
+      "fullName": "Full name",
+      "submit": "Create account",
+      "submitting": "Creating account…",
+      "haveAccount": "Already have an account?",
+      "signInLink": "Sign in"
+    },
+    "forgot": {
+      "link": "Forgot password?",
+      "title": "Reset your password",
+      "subtitle": "Enter the email address on your account and we'll send you a link to choose a new password.",
+      "email": "Email",
+      "submit": "Send reset link",
+      "sending": "Sending…",
+      "sentTitle": "Check your email",
+      "sentBody": "If an account uses {email}, we've sent it a link to choose a new password. It can take a minute or two, so check your spam folder too.",
+      "useAnotherEmail": "Use a different email",
+      "back": "Back to sign in"
+    },
+    "reset": {
+      "title": "Choose a new password",
+      "forAccount": "For {email}",
+      "newPassword": "New password",
+      "confirmPassword": "Confirm new password",
+      "passwordHint": "At least 8 characters, including a lowercase English letter and a number.",
+      "mismatch": "The passwords don't match.",
+      "submit": "Save new password",
+      "saving": "Saving…",
+      "doneTitle": "Password updated",
+      "doneBody": "Your new password is ready. Use it the next time you sign in.",
+      "continueShopping": "Continue shopping",
+      "incompleteTitle": "This reset link is incomplete",
+      "incompleteBody": "Open the link from the email again, or request a new one.",
+      "requestNewLink": "Request a new link"
+    },
+    "google": {
+      "continue": "Continue with Google",
+      "connect": "Connect Google",
+      "or": "or"
+    },
+    "errors": {
+      "generic": "Something went wrong. Please try again.",
+      "rateLimited": "Too many attempts. Wait a minute and try again.",
+      "validation": "Check what you entered and try again.",
+      "auth.invalid_reset_token": "This reset link is invalid or has expired.",
+      "auth.invalid_credentials": "The email or password is incorrect.",
+      "auth.email_taken": "An account with this email already exists.",
+      "auth.weak_password": "Use at least 8 characters, including a lowercase English letter and a number.",
+      "auth.locked_out": "Too many failed attempts. Try again in a few minutes.",
+      "auth.external_login_failed": "Signing in with Google didn't complete. Please try again.",
+      "auth.external_provider_unavailable": "Signing in with Google isn't available right now.",
+      "auth.external_email_unverified": "Your Google account has no verified email address, so it can't be used to sign in.",
+      "auth.external_account_exists": "An account with this email already exists. Sign in with your password, then connect Google from your account menu.",
+      "auth.external_email_mismatch": "That Google account uses a different email than the one you're signed in with.",
+      "auth.external_login_taken": "This Google account is already connected to another store account."
+    },
+    "dismiss": "Dismiss"
+  },
   "admin": {
     "staffTitle": "Staff",
     "logout": "Sign out",
@@ -263,6 +339,7 @@
     "loading": "Working…",
     "switchLanguage": "Switch to Arabic",
     "navLabel": "Staff navigation",
+    "ordersNew": "Orders, {count} new",
     "nav": {
       "dashboard": "Dashboard",
       "orders": "Orders",
@@ -290,6 +367,7 @@
       "subtitle": "Sign in to manage guest orders and move them through fulfillment.",
       "email": "Email",
       "password": "Password",
+      "forgotPassword": "Forgot password?",
       "rememberMe": "Keep me signed in",
       "submit": "Sign in",
       "errors": {
@@ -399,6 +477,12 @@
       "actionShip": "Mark shipped",
       "actionDeliver": "Mark delivered",
       "actionCancel": "Cancel order",
+      "actionReturn": "Mark returned",
+      "whatsapp": "WhatsApp",
+      "confirmReturnTitle": "Mark this order as returned?",
+      "confirmReturnBody": "Stock will return to the shelf. Payment stays as collected.",
+      "confirmReturnConfirm": "Mark returned",
+      "confirmReturnBack": "Keep delivered",
       "notFoundTitle": "Order not found",
       "notFoundBody": "This order does not exist or was removed.",
       "errors": {
@@ -406,6 +490,7 @@
         "orders.not_found": "This order was not found.",
         "orders.invalid_transition": "This status change is no longer allowed. The order may have been updated by someone else.",
         "orders.cannot_cancel": "This order can no longer be cancelled.",
+        "orders.cannot_return": "This order can only be returned after delivery.",
         "validation": "Please check the note and try again."
       }
     },
@@ -840,6 +925,18 @@
       "guestCheckout": "Guest checkout",
       "guestCheckoutHint": "Customers order with just a name, phone and address, without an account.",
       "guestCheckoutOff": "Only signed-in customers could order, and the store has no customer sign-in pages yet, so turning this off stops all new orders.",
+      "emailSection": "Email alerts",
+      "emailDescription": "Notifies staff by email when a customer places an order.",
+      "smtpHost": "SMTP host",
+      "smtpHostHint": "Leave empty to turn off email alerts.",
+      "smtpPort": "Port",
+      "smtpFrom": "From address",
+      "smtpFromHint": "The address the alert appears to come from.",
+      "smtpUser": "Username",
+      "smtpPassword": "Password",
+      "smtpPasswordSetHint": "A password is saved. Leave blank to keep it.",
+      "smtpPasswordUnsetHint": "No password saved. Leave blank if the server doesn't need one.",
+      "smtpOff": "Email alerts are off: staff won't be notified of new orders.",
       "regionSection": "Currency & region",
       "regionDescription": "The currency prices are shown in, and how phone numbers are read.",
       "currency": "Currency",
@@ -861,6 +958,7 @@
         "money": "Enter an amount of 0 or more, e.g. 3 or 2.500.",
         "countryCode": "Enter 1 to 3 digits, e.g. 962.",
         "phone": "Enter a valid phone number.",
+        "smtpPort": "Enter a port from 1 to 65535, e.g. 587.",
         "invalid": "Check this field."
       },
       "errors": {

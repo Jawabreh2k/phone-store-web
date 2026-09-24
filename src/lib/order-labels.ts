@@ -8,6 +8,7 @@ export function orderStatusLabel(status: OrderStatus, labels: Dictionary["track"
     Shipped: "statusShipped",
     Delivered: "statusDelivered",
     Cancelled: "statusCancelled",
+    Returned: "statusReturned",
   };
   return labels[map[status]];
 }

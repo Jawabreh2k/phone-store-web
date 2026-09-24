@@ -10,7 +10,7 @@ import type { Locale } from "@/i18n/config";
 import type { AdminOrderDetails, OrderDetailsDto } from "@/lib/api/types";
 import { formatPrice } from "@/lib/format";
 import { orderStatusLabel, paymentStatusLabel } from "@/lib/order-labels";
-import { buttonSecondary, pageTitle, panel, panelTitle } from "@/components/ui/ui";
+import { buttonSecondary, pageTitle, panel, panelTitle, textLink } from "@/components/ui/ui";
 
 interface Props {
   locale: Locale;
@@ -30,6 +30,7 @@ function formatAddress(address: OrderDetailsDto["shippingAddress"]): string {
 export function AdminOrderDetail({ locale, backHref, details, labels, trackLabels, cashOnDeliveryLabel, loadingLabel }: Props) {
   const { order, history, nextStatuses } = details;
   const money = (amount: number) => formatPrice(amount, order.currencyCode, locale);
+  const whatsAppDigits = order.contact.phone.replace(/\D/g, "");
 
   return (
     <div className="flex flex-col gap-6 sm:gap-8">
@@ -130,9 +131,18 @@ export function AdminOrderDetail({ locale, backHref, details, labels, trackLabel
             </h2>
             <address className="mt-3 flex flex-col gap-1 text-sm leading-relaxed not-italic">
               <span className="font-medium">{order.contact.fullName}</span>
-              <bdi dir="ltr" className="w-fit text-muted">
-                {order.contact.phone}
+              <bdi dir="ltr" className="w-fit">
+                <a href={`tel:${order.contact.phone}`} className={textLink}>
+                  {order.contact.phone}
+                </a>
               </bdi>
+              {whatsAppDigits && (
+                <bdi dir="ltr" className="w-fit">
+                  <a href={`https://wa.me/${whatsAppDigits}`} target="_blank" rel="noopener noreferrer" className={textLink}>
+                    {labels.whatsapp}
+                  </a>
+                </bdi>
+              )}
               {order.contact.email && (
                 <span dir="ltr" className="w-fit text-muted">
                   {order.contact.email}
