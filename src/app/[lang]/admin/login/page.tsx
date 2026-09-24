@@ -15,7 +15,7 @@ export default async function AdminLoginPage() {
   const [locale, dict] = await Promise.all([getLocale(), getDictionary()]);
   const gate = await getAdminGate(locale);
 
-  if (gate.kind === "admin") redirect(`/${locale}/admin/orders`);
+  if (gate.kind === "admin") redirect(`/${locale}/admin/dashboard`);
 
   return (
     <AdminLoginShell labels={dict.admin}>

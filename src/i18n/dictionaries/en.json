@@ -264,6 +264,7 @@
     "switchLanguage": "Switch to Arabic",
     "navLabel": "Staff navigation",
     "nav": {
+      "dashboard": "Dashboard",
       "orders": "Orders",
       "products": "Products",
       "brands": "Brands",
@@ -305,7 +306,59 @@
     "error": {
       "title": "Something went wrong",
       "retry": "Try again",
-      "backToOrders": "Back to orders"
+      "backToDashboard": "Back to dashboard"
+    },
+    "dashboard": {
+      "title": "Dashboard",
+      "greeting": "Good to see you, {name}",
+      "todayDate": "Today is {date}",
+      "viewStore": "View store",
+      "ordersToday": "Orders today",
+      "salesToday": "Sales today",
+      "ordersDelta": "{delta} vs yesterday",
+      "ordersDeltaSame": "Same as yesterday",
+      "yesterdaySales": "Yesterday: {amount}",
+      "waitingConfirmation": "Waiting for confirmation",
+      "readyToShip": "Ready to ship",
+      "oldestWaiting": "Oldest placed {time}",
+      "salesChart": "Sales, last 14 days",
+      "chartEmpty": "No sales in the last 14 days yet.",
+      "needsAttention": "Needs attention",
+      "lowStock": "Low stock",
+      "viewAllLowStock": "View all",
+      "catalogHealth": "Catalogue health",
+      "drafts": "Drafts",
+      "publishedNoPhotos": "Published without photos",
+      "publishedOutOfStock": "Published out of stock",
+      "topSellers": "Top sellers (30 days)",
+      "recentOrders": "Recent orders",
+      "unitsSold": "Units",
+      "salesColumn": "Sales",
+      "emptyTitle": "Your store is ready",
+      "emptyBody": "Add products and share your link to start receiving orders.",
+      "emptyAddProducts": "Add products",
+      "emptyShareStore": "Share your store link",
+      "outOfStock": "Out of stock",
+      "leftCount": {
+        "zero": "Out of stock",
+        "one": "{count} left",
+        "two": "{count} left",
+        "few": "{count} left",
+        "many": "{count} left",
+        "other": "{count} left"
+      },
+      "chartOrders": {
+        "zero": "{count} orders",
+        "one": "{count} order",
+        "two": "{count} orders",
+        "few": "{count} orders",
+        "many": "{count} orders",
+        "other": "{count} orders"
+      },
+      "topSellersEmpty": "No sales in the last 30 days yet.",
+      "productColumn": "Product",
+      "dayColumn": "Day",
+      "ordersColumn": "Orders"
     },
     "orders": {
       "title": "Orders",
@@ -380,6 +433,8 @@
       "statusPublished": "Published",
       "statusDraft": "Drafts",
       "statusLowStock": "Low stock",
+      "statusNoPhotos": "No photos",
+      "statusOutOfStock": "Out of stock",
       "columnProduct": "Product",
       "columnPrice": "Price",
       "columnStock": "Units",
@@ -790,6 +845,8 @@
       "currency": "Currency",
       "countryCode": "Phone country code",
       "countryCodeHint": "Numbers typed without one, like 079 123 4567, get this code. Jordan is 962, Palestine 970.",
+      "timeZone": "Store time zone",
+      "timeZoneHint": "“Today” on the dashboard follows this time zone.",
       "currencyChanged": "Prices aren't converted: every price keeps its number and shows in {to} instead of {from}. Past orders keep their own currency.",
       "preview": "Preview",
       "previewHeader": "Header",
@@ -811,6 +868,21 @@
         "validation": "Some fields are invalid. Check them and try again.",
         "files.too_large": "The logo must be 5 MB or smaller.",
         "files.unsupported_type": "Use a JPEG, PNG or WebP image for the logo."
+      },
+      "timeZones": {
+        "Asia/Amman": "Amman",
+        "Asia/Hebron": "Hebron",
+        "Asia/Jerusalem": "Jerusalem",
+        "Asia/Riyadh": "Riyadh",
+        "Asia/Dubai": "Dubai",
+        "Asia/Kuwait": "Kuwait",
+        "Asia/Qatar": "Doha",
+        "Asia/Bahrain": "Bahrain",
+        "Asia/Muscat": "Muscat",
+        "Asia/Baghdad": "Baghdad",
+        "Africa/Cairo": "Cairo",
+        "Europe/London": "London",
+        "UTC": "UTC"
       }
     }
   }

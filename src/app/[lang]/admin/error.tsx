@@ -17,8 +17,8 @@ export default function AdminErrorPage({ reset }: { error: Error & { digest?: st
       <button type="button" onClick={reset} className={buttonPrimary}>
         {labels.retry}
       </button>
-      <Link href={`/${lang === "en" ? "en" : "ar"}/admin/orders`} className={buttonSecondary}>
-        {labels.backToOrders}
+      <Link href={`/${lang === "en" ? "en" : "ar"}/admin/dashboard`} className={buttonSecondary}>
+        {labels.backToDashboard}
       </Link>
     </StatePanel>
   );

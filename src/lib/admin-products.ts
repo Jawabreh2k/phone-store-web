@@ -28,7 +28,7 @@ export const acceptedImageTypes = ["image/jpeg", "image/png", "image/webp"] as c
 // ---------- List filters in the URL ----------
 
 export const productTypes: ProductType[] = ["Phone", "Accessory"];
-export const productStatusFilters = ["published", "draft", "lowStock"] as const;
+export const productStatusFilters = ["published", "draft", "lowStock", "noPhotos", "outOfStock"] as const;
 export type ProductStatusFilter = (typeof productStatusFilters)[number];
 
 export type AdminProductsListParams = {

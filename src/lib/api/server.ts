@@ -6,6 +6,7 @@ import {
   ApiError,
   type AdminBrand,
   type AdminCategory,
+  type AdminDashboard,
   type AdminOrderDetails,
   type AdminOrderListItem,
   type AdminProduct,
@@ -182,4 +183,7 @@ export const adminApi = {
 
   settings: (locale: Locale) =>
     getAuth<AdminSettings>("/api/admin/settings", locale).then((result) => authRequired(result, "Settings")),
+
+  dashboard: (locale: Locale) =>
+    getAuth<AdminDashboard>("/api/admin/dashboard", locale).then((result) => authRequired(result, "Dashboard")),
 };

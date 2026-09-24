@@ -54,6 +54,8 @@ export default async function AdminProductsPage({ searchParams }: PageProps<"/[l
         brandId: brand,
         published: status === "published" ? true : status === "draft" ? false : undefined,
         lowStockOnly: status === "lowStock" || undefined,
+        noPhotosOnly: status === "noPhotos" || undefined,
+        outOfStockOnly: status === "outOfStock" || undefined,
         page,
         pageSize: 24,
       }),
@@ -69,7 +71,13 @@ export default async function AdminProductsPage({ searchParams }: PageProps<"/[l
   const listQuery = adminProductsListQuery(filters);
   const filtered = Boolean(search || type || brand || status);
 
-  const statusLabel = { published: labels.statusPublished, draft: labels.statusDraft, lowStock: labels.statusLowStock } as const;
+  const statusLabel = {
+    published: labels.statusPublished,
+    draft: labels.statusDraft,
+    lowStock: labels.statusLowStock,
+    noPhotos: labels.statusNoPhotos,
+    outOfStock: labels.statusOutOfStock,
+  } as const;
   const editHref = (product: AdminProductListItem) => `/${locale}/admin/products/${product.id}${listQuery}`;
   const price = (product: AdminProductListItem) => (product.minPrice === null ? "—" : formatPrice(product.minPrice, currency, locale));
 

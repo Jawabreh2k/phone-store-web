@@ -310,6 +310,8 @@ export interface AdminSettings {
   currencyCode: string;
   /** Digits only ("962"), given to numbers typed in national form. */
   phoneCountryCode: string;
+  /** IANA id, e.g. "Asia/Amman". */
+  timeZoneId: string;
   flatShippingFee: number;
   /** Null: no free delivery. */
   freeShippingThreshold: number | null;
@@ -344,8 +346,72 @@ export interface AdminProductSearch {
   brandId?: string;
   published?: boolean;
   lowStockOnly?: boolean;
+  noPhotosOnly?: boolean;
+  outOfStockOnly?: boolean;
   page?: number;
   pageSize?: number;
+}
+
+export interface CurrencyAmount {
+  currencyCode: string;
+  amount: number;
+}
+
+export interface AdminDashboardTodaySummary {
+  orders: number;
+  yesterdayOrders: number;
+  revenue: CurrencyAmount[];
+  yesterdayRevenue: CurrencyAmount[];
+}
+
+export interface AdminDashboardQueue {
+  pendingCount: number;
+  oldestPendingAt: string | null;
+  confirmedCount: number;
+  shippedCount: number;
+}
+
+export interface AdminDashboardDailySales {
+  day: string;
+  orders: number;
+  revenue: number;
+}
+
+export interface AdminDashboardLowStockItem {
+  productId: string;
+  variantId: string;
+  productName: LocalizedText;
+  variantDescription: LocalizedText;
+  sku: string;
+  stockQuantity: number;
+  imageUrl: string | null;
+}
+
+export interface AdminDashboardTopSeller {
+  productId: string;
+  productName: LocalizedText;
+  units: number;
+  revenue: number;
+  imageUrl: string | null;
+}
+
+export interface AdminDashboardCatalogHealth {
+  drafts: number;
+  publishedWithoutPhotos: number;
+  publishedOutOfStock: number;
+}
+
+export interface AdminDashboard {
+  today: string;
+  timeZoneId: string;
+  storeCurrencyCode: string;
+  todaySummary: AdminDashboardTodaySummary;
+  queue: AdminDashboardQueue;
+  last14Days: AdminDashboardDailySales[];
+  lowStock: AdminDashboardLowStockItem[];
+  topSellers: AdminDashboardTopSeller[];
+  recentOrders: AdminOrderListItem[];
+  catalog: AdminDashboardCatalogHealth;
 }
 
 export interface AdminVariant {

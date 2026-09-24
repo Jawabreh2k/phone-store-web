@@ -289,6 +289,29 @@ export function ProductPageSkeleton() {
   );
 }
 
+/** Mirrors the staff dashboard: greeting, KPI tiles, chart and side panel. */
+export function AdminDashboardSkeleton() {
+  return (
+    <div aria-busy="true" className="flex flex-col gap-6 sm:gap-8">
+      <div className="flex flex-col gap-2">
+        <div className={`${bar} h-10 w-64`} />
+        <div className={`${bar} h-4 w-48`} />
+      </div>
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        {Array.from({ length: 4 }, (_, i) => (
+          <div key={i} className={`${tile} h-28 rounded-card`} />
+        ))}
+      </div>
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
+        <div className={`${tile} h-64 rounded-card`} />
+        <div className={`${tile} h-64 rounded-card`} />
+      </div>
+      <div className={`${tile} h-48 rounded-card`} />
+      <div className={`${tile} h-40 rounded-card`} />
+    </div>
+  );
+}
+
 /** Mirrors the staff orders list: search, status chips, and table rows. */
 export function AdminOrdersSkeleton() {
   return (

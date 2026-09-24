@@ -117,6 +117,20 @@ export function TruckIcon({ className = "size-4" }: { className?: string }) {
   );
 }
 
+/**
+ * A tall panel beside two small ones: the staff dashboard. Deliberately unlike GridIcon (categories), so the
+ * two sidebar entries can't be confused.
+ */
+export function DashboardIcon({ className = "size-4" }: { className?: string }) {
+  return (
+    <svg aria-hidden viewBox="0 0 16 16" className={`${className} rtl:-scale-x-100`} fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+      <rect x="2" y="2" width="5.25" height="12" rx="1.25" />
+      <rect x="9.25" y="2" width="4.75" height="5" rx="1.25" />
+      <rect x="9.25" y="9" width="4.75" height="5" rx="1.25" />
+    </svg>
+  );
+}
+
 /** A route between two points: order tracking. */
 export function RouteIcon({ className = "size-4" }: { className?: string }) {
   return (

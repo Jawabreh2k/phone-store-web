@@ -31,7 +31,7 @@ export function AdminLoginForm({ locale, labels, loadingLabel }: Props) {
 
     try {
       await adminApi.login(locale, email, password, rememberMe);
-      router.replace(`/${locale}/admin/orders`);
+      router.replace(`/${locale}/admin/dashboard`);
     } catch (err) {
       setError(adminLoginErrorMessage(err, labels.errors));
       setSubmitting(false);

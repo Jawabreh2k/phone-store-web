@@ -34,6 +34,7 @@ interface Draft {
   supportEmail: string;
   currencyCode: string;
   phoneCountryCode: string;
+  timeZoneId: string;
   flatShippingFee: string;
   freeShipping: boolean;
   freeShippingThreshold: string;
@@ -48,15 +49,53 @@ type FieldKey =
   | "supportEmail"
   | "currencyCode"
   | "phoneCountryCode"
+  | "timeZoneId"
   | "flatShippingFee"
   | "freeShippingThreshold";
 type FieldErrors = Partial<Record<FieldKey, string>>;
 
-const fieldKeys = new Set<string>(["storeName.en", "storeName.ar", "supportPhone", "whatsAppNumber", "supportEmail", "currencyCode", "phoneCountryCode", "flatShippingFee", "freeShippingThreshold"]);
+const fieldKeys = new Set<string>(["storeName.en", "storeName.ar", "supportPhone", "whatsAppNumber", "supportEmail", "currencyCode", "phoneCountryCode", "timeZoneId", "flatShippingFee", "freeShippingThreshold"]);
 const storeNameMax = 80;
 
 /** Currencies of the region first; the current one is always offered even if it isn't listed. */
 const currencyChoices = ["JOD", "ILS", "SAR", "AED", "KWD", "QAR", "BHD", "OMR", "EGP", "IQD", "USD", "EUR"];
+
+const timezoneChoices = [
+  "Asia/Amman",
+  "Asia/Hebron",
+  "Asia/Jerusalem",
+  "Asia/Riyadh",
+  "Asia/Dubai",
+  "Asia/Kuwait",
+  "Asia/Qatar",
+  "Asia/Bahrain",
+  "Asia/Muscat",
+  "Asia/Baghdad",
+  "Africa/Cairo",
+  "Europe/London",
+  "UTC",
+];
+
+/**
+ * "Hebron (GMT+3)". The city comes from the dictionary: Intl's generic names can't tell these zones apart (five
+ * are "Arabian Standard Time", and Hebron and Cairo are both "Eastern European Time").
+ */
+function timezoneLabel(id: string, locale: Locale, cities: Record<string, string>): string {
+  const city = cities[id] ?? id;
+  try {
+    const offset = new Intl.DateTimeFormat(locale === "ar" ? "ar-u-nu-latn" : "en", { timeZone: id, timeZoneName: "shortOffset" })
+      .formatToParts(new Date())
+      .find((part) => part.type === "timeZoneName")?.value;
+    return offset ? `${city} (${offset})` : city;
+  } catch {
+    return city;
+  }
+}
+
+function timezoneOptions(current: string, locale: Locale, cities: Record<string, string>) {
+  const ids = timezoneChoices.includes(current) ? timezoneChoices : [current, ...timezoneChoices];
+  return ids.map((id) => ({ value: id, label: timezoneLabel(id, locale, cities) }));
+}
 
 function draftFrom(s: AdminSettings): Draft {
   return {
@@ -66,6 +105,7 @@ function draftFrom(s: AdminSettings): Draft {
     supportEmail: s.supportEmail ?? "",
     currencyCode: s.currencyCode,
     phoneCountryCode: s.phoneCountryCode,
+    timeZoneId: s.timeZoneId,
     flatShippingFee: formatNumberInput(s.flatShippingFee),
     freeShipping: s.freeShippingThreshold !== null,
     freeShippingThreshold: formatNumberInput(s.freeShippingThreshold),
@@ -84,6 +124,7 @@ function toRequest(d: Draft): UpdateSettingsRequest {
     supportEmail: d.supportEmail.trim() || null,
     currencyCode: d.currencyCode,
     phoneCountryCode: latinDigits(d.phoneCountryCode).replace(/^\+/, ""),
+    timeZoneId: d.timeZoneId,
     flatShippingFee: parseNumber(d.flatShippingFee),
     freeShippingThreshold: d.freeShipping ? parseNumber(d.freeShippingThreshold) : null,
     allowGuestCheckout: d.allowGuestCheckout,
@@ -342,6 +383,17 @@ export function AdminSettingsForm({ locale, settings, labels, saveBarLabels, lan
                 )}
               </Field>
             </div>
+            <Field label={labels.timeZone} hint={labels.timeZoneHint} error={errors.timeZoneId}>
+              {(control) => (
+                <SelectField
+                  {...control}
+                  value={draft.timeZoneId}
+                  options={timezoneOptions(draft.timeZoneId, locale, labels.timeZones)}
+                  disabled={busy}
+                  onChange={(timeZoneId) => update({ timeZoneId }, ["timeZoneId"])}
+                />
+              )}
+            </Field>
             {draft.currencyCode !== baseline.currencyCode && (
               <p role="status" className={notice}>
                 <AlertIcon />

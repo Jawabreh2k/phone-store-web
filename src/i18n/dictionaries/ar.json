@@ -264,6 +264,7 @@
     "switchLanguage": "English",
     "navLabel": "تنقل الموظفين",
     "nav": {
+      "dashboard": "لوحة التحكم",
       "orders": "الطلبات",
       "products": "المنتجات",
       "brands": "العلامات التجارية",
@@ -305,7 +306,59 @@
     "error": {
       "title": "حدث خطأ ما",
       "retry": "حاول مرة أخرى",
-      "backToOrders": "العودة للطلبات"
+      "backToDashboard": "العودة للوحة التحكم"
+    },
+    "dashboard": {
+      "title": "لوحة التحكم",
+      "greeting": "أهلاً {name}",
+      "todayDate": "اليوم {date}",
+      "viewStore": "عرض المتجر",
+      "ordersToday": "طلبات اليوم",
+      "salesToday": "مبيعات اليوم",
+      "ordersDelta": "{delta} مقارنة بالأمس",
+      "ordersDeltaSame": "مثل الأمس",
+      "yesterdaySales": "الأمس: {amount}",
+      "waitingConfirmation": "بانتظار التأكيد",
+      "readyToShip": "جاهزة للشحن",
+      "oldestWaiting": "أقدمها وصل {time}",
+      "salesChart": "المبيعات، آخر 14 يوماً",
+      "chartEmpty": "لا مبيعات في آخر 14 يوماً بعد.",
+      "needsAttention": "يحتاج انتباهك",
+      "lowStock": "مخزون منخفض",
+      "viewAllLowStock": "عرض الكل",
+      "catalogHealth": "حالة الكتالوج",
+      "drafts": "مسودات",
+      "publishedNoPhotos": "منشور بدون صور",
+      "publishedOutOfStock": "منشور ونفد المخزون",
+      "topSellers": "الأكثر مبيعاً (30 يوماً)",
+      "recentOrders": "أحدث الطلبات",
+      "unitsSold": "الوحدات",
+      "salesColumn": "المبيعات",
+      "emptyTitle": "متجرك جاهز",
+      "emptyBody": "أضف منتجات وشارك رابط متجرك لبدء استقبال الطلبات.",
+      "emptyAddProducts": "إضافة منتجات",
+      "emptyShareStore": "مشاركة رابط المتجر",
+      "outOfStock": "نفد المخزون",
+      "leftCount": {
+        "zero": "نفد المخزون",
+        "one": "متبقي {count}",
+        "two": "متبقي {count}",
+        "few": "متبقية {count}",
+        "many": "متبقي {count}",
+        "other": "متبقي {count}"
+      },
+      "chartOrders": {
+        "zero": "لا طلبات",
+        "one": "طلب واحد",
+        "two": "طلبان",
+        "few": "{count} طلبات",
+        "many": "{count} طلباً",
+        "other": "{count} طلب"
+      },
+      "topSellersEmpty": "لا مبيعات في آخر 30 يوماً بعد.",
+      "productColumn": "المنتج",
+      "dayColumn": "اليوم",
+      "ordersColumn": "الطلبات"
     },
     "orders": {
       "title": "الطلبات",
@@ -380,6 +433,8 @@
       "statusPublished": "منشورة",
       "statusDraft": "مسودات",
       "statusLowStock": "مخزون منخفض",
+      "statusNoPhotos": "بدون صور",
+      "statusOutOfStock": "نفد المخزون",
       "columnProduct": "المنتج",
       "columnPrice": "السعر",
       "columnStock": "الوحدات",
@@ -790,6 +845,8 @@
       "currency": "العملة",
       "countryCode": "رمز الدولة للهاتف",
       "countryCodeHint": "الأرقام المكتوبة دونه، مثل 079 123 4567، تأخذ هذا الرمز. الأردن 962، وفلسطين 970.",
+      "timeZone": "منطقة وقت المتجر",
+      "timeZoneHint": "«اليوم» في لوحة التحكم يتبع هذه المنطقة.",
       "currencyChanged": "لا تُحوَّل الأسعار: يبقى كل سعر بالرقم نفسه ويظهر بعملة {to} بدلاً من {from}. تحتفظ الطلبات السابقة بعملتها.",
       "preview": "معاينة",
       "previewHeader": "الترويسة",
@@ -811,6 +868,21 @@
         "validation": "بعض الحقول غير صالحة. تحقق منها وحاول مرة أخرى.",
         "files.too_large": "يجب ألا يتجاوز حجم الشعار 5 ميغابايت.",
         "files.unsupported_type": "استخدم صورة JPEG أو PNG أو WebP للشعار."
+      },
+      "timeZones": {
+        "Asia/Amman": "عمّان",
+        "Asia/Hebron": "الخليل",
+        "Asia/Jerusalem": "القدس",
+        "Asia/Riyadh": "الرياض",
+        "Asia/Dubai": "دبي",
+        "Asia/Kuwait": "الكويت",
+        "Asia/Qatar": "الدوحة",
+        "Asia/Bahrain": "البحرين",
+        "Asia/Muscat": "مسقط",
+        "Asia/Baghdad": "بغداد",
+        "Africa/Cairo": "القاهرة",
+        "Europe/London": "لندن",
+        "UTC": "التوقيت العالمي"
       }
     }
   }

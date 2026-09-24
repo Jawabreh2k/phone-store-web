@@ -1,8 +1,8 @@
 import type { Locale } from "@/i18n/config";
-import { GearIcon, GridIcon, PhoneIcon, RouteIcon, TagIcon } from "@/components/icons";
+import { DashboardIcon, GearIcon, GridIcon, PhoneIcon, RouteIcon, TagIcon } from "@/components/icons";
 import type { ComponentType } from "react";
 
-export type AdminNavId = "orders" | "products" | "brands" | "categories" | "settings";
+export type AdminNavId = "dashboard" | "orders" | "products" | "brands" | "categories" | "settings";
 
 export interface AdminNavItem {
   id: AdminNavId;
@@ -25,6 +25,7 @@ const section = (id: AdminNavId, Icon: AdminNavItem["Icon"], groupStart?: boolea
 
 /** Staff navigation: selling, then the catalogue, then the store itself. Add a tab here when a section ships. */
 export const adminNavItems: AdminNavItem[] = [
+  section("dashboard", DashboardIcon, true),
   section("orders", RouteIcon),
   section("products", PhoneIcon, true),
   section("brands", TagIcon),
