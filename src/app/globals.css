@@ -60,6 +60,20 @@
       transform: none;
     }
   }
+
+  /* Modal dialogs rise and fade in; paired with motion-safe: so reduced motion shows them at once. */
+  --animate-dialog-in: dialog-in 0.22s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+
+  @keyframes dialog-in {
+    from {
+      opacity: 0;
+      transform: translateY(12px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
 }
 
 /*

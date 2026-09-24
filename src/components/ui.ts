@@ -104,3 +104,25 @@ export const formSection = `flex flex-col gap-4 ${panel} p-5 sm:p-6`;
 
 /** Section heading inside a form card. */
 export const formSectionTitle = "text-lg font-semibold tracking-tight";
+
+/** A native select styled as fieldInput; pair it with a ChevronDownIcon at end-4 (see SelectField). */
+export const fieldSelect = `${fieldInput} cursor-pointer appearance-none pe-11 disabled:cursor-not-allowed`;
+
+/**
+ * Status label (Published, Draft, Low stock): ink text in a quiet pill, with a dot in the tone colour.
+ * The words carry the meaning, so it never relies on colour alone.
+ */
+const badge =
+  "inline-flex h-6 shrink-0 items-center gap-1.5 rounded-full border border-border bg-surface px-2.5 text-xs font-medium whitespace-nowrap text-foreground before:size-1.5 before:rounded-full";
+export const badgeSuccess = `${badge} before:bg-success`;
+export const badgeAccent = `${badge} before:bg-accent`;
+export const badgeBrand = `${badge} before:bg-brand`;
+export const badgeMuted = `${badge} text-muted before:bg-muted/60`;
+
+/** Language tag inside a bilingual input ("EN", "ع"), at the input's start. */
+export const langTag =
+  "pointer-events-none absolute start-3 top-3 inline-flex h-6 min-w-8 items-center justify-center rounded-lg bg-foreground/5 px-1.5 text-[0.6875rem] font-semibold tracking-wide text-muted";
+
+/** Dashed empty area inviting a first item (no options yet, drop photos here). */
+export const emptyArea =
+  "flex flex-col items-center gap-3 rounded-card border border-dashed border-foreground/20 bg-background/60 px-6 py-10 text-center";

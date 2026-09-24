@@ -33,10 +33,10 @@ function NavLinks({
   return (
     <nav aria-label={labels.navLabel}>
       <ul className="flex flex-col gap-1">
-        {adminNavItems.map(({ id, href, labelKey, Icon, isActive }) => {
+        {adminNavItems.map(({ id, href, labelKey, Icon, isActive, groupStart }) => {
           const active = isActive(pathname);
           return (
-            <li key={id}>
+            <li key={id} className={groupStart ? "mt-2 border-t border-border pt-2" : undefined}>
               <Link
                 href={href(locale)}
                 onClick={onNavigate}

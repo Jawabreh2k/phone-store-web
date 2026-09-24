@@ -174,6 +174,168 @@ export function LockIcon({ className = "size-4" }: { className?: string }) {
   );
 }
 
+/** A phone handset outline: the product catalogue. */
+export function PhoneIcon({ className = "size-4" }: { className?: string }) {
+  return (
+    <svg aria-hidden viewBox="0 0 16 16" className={className} fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+      <rect x="4.25" y="1.75" width="7.5" height="12.5" rx="1.75" />
+      <path d="M7.25 12h1.5" />
+    </svg>
+  );
+}
+
+/** Headphones: accessories. */
+export function HeadphonesIcon({ className = "size-4" }: { className?: string }) {
+  return (
+    <svg aria-hidden viewBox="0 0 16 16" className={className} fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M2.75 10V8a5.25 5.25 0 0 1 10.5 0v2" />
+      <rect x="2" y="9.25" width="3" height="4.5" rx="1.25" />
+      <rect x="11" y="9.25" width="3" height="4.5" rx="1.25" />
+    </svg>
+  );
+}
+
+export function PencilIcon({ className = "size-4" }: { className?: string }) {
+  return (
+    <svg aria-hidden viewBox="0 0 16 16" className={className} fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M10.5 2.75l2.75 2.75L6 12.75l-3.25.5.5-3.25z" />
+      <path d="M9 4.25L11.75 7" />
+    </svg>
+  );
+}
+
+/** A photo with a mountain and sun: image upload. */
+export function ImageIcon({ className = "size-4" }: { className?: string }) {
+  return (
+    <svg aria-hidden viewBox="0 0 16 16" className={className} fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+      <rect x="1.75" y="2.75" width="12.5" height="10.5" rx="1.75" />
+      <circle cx="5.5" cy="6.25" r="1.1" />
+      <path d="M14.25 10.5l-3.5-3.5-6.5 6.25" />
+    </svg>
+  );
+}
+
+/** Arrow out of a tray: upload. */
+export function UploadIcon({ className = "size-4" }: { className?: string }) {
+  return (
+    <svg aria-hidden viewBox="0 0 16 16" className={className} fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M8 10.25V2.25M5 5.25l3-3 3 3" />
+      <path d="M2.25 10.25v2a1.5 1.5 0 0 0 1.5 1.5h8.5a1.5 1.5 0 0 0 1.5-1.5v-2" />
+    </svg>
+  );
+}
+
+/** Box out of a square: opens the page in the store, in a new tab. */
+export function ExternalIcon({ className = "size-4" }: { className?: string }) {
+  return (
+    <svg aria-hidden viewBox="0 0 16 16" className={`${className} rtl:-scale-x-100`} fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M9.25 2.75h4v4M13.25 2.75L7.5 8.5" />
+      <path d="M11.25 9.5v3a1 1 0 0 1-1 1h-6.5a1 1 0 0 1-1-1v-6.5a1 1 0 0 1 1-1h3" />
+    </svg>
+  );
+}
+
+export function StarIcon({ className = "size-4" }: { className?: string }) {
+  return (
+    <svg aria-hidden viewBox="0 0 16 16" className={className} fill="currentColor">
+      <path d="M8 1.9l1.8 3.75 4.1.55-3 2.85.75 4.05L8 11.15l-3.65 1.95.75-4.05-3-2.85 4.1-.55z" />
+    </svg>
+  );
+}
+
+/** Up chevron, e.g. "move earlier" in a list. Down is ChevronDownIcon. */
+export function ChevronUpIcon({ className = "size-4" }: { className?: string }) {
+  return (
+    <svg aria-hidden viewBox="0 0 16 16" className={className} fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M4 10l4-4 4 4" />
+    </svg>
+  );
+}
+
+/** Two linked rings: compatibility between an accessory and phones. */
+export function LinkIcon({ className = "size-4" }: { className?: string }) {
+  return (
+    <svg aria-hidden viewBox="0 0 16 16" className={className} fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M6.75 9.25a2.75 2.75 0 0 0 3.9 0l2.1-2.1a2.75 2.75 0 0 0-3.9-3.9l-.6.6" />
+      <path d="M9.25 6.75a2.75 2.75 0 0 0-3.9 0l-2.1 2.1a2.75 2.75 0 0 0 3.9 3.9l.6-.6" />
+    </svg>
+  );
+}
+
+/** A list with bullets: specifications. */
+export function ListIcon({ className = "size-4" }: { className?: string }) {
+  return (
+    <svg aria-hidden viewBox="0 0 16 16" className={className} fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round">
+      <path d="M6 4h7.5M6 8h7.5M6 12h7.5" />
+      <path d="M2.75 4h.01M2.75 8h.01M2.75 12h.01" strokeWidth={2} />
+    </svg>
+  );
+}
+
+/** A price tag: brands. */
+export function TagIcon({ className = "size-4" }: { className?: string }) {
+  return (
+    <svg aria-hidden viewBox="0 0 16 16" className={`${className} rtl:-scale-x-100`} fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M1.75 8.25V2.75a1 1 0 0 1 1-1h5.5l6 6a1 1 0 0 1 0 1.4l-4.1 4.1a1 1 0 0 1-1.4 0z" />
+      <circle cx="5.25" cy="5.25" r="1.1" />
+    </svg>
+  );
+}
+
+/** Four tiles: categories. */
+export function GridIcon({ className = "size-4" }: { className?: string }) {
+  return (
+    <svg aria-hidden viewBox="0 0 16 16" className={className} fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinejoin="round">
+      <rect x="2" y="2" width="5" height="5" rx="1.25" />
+      <rect x="9" y="2" width="5" height="5" rx="1.25" />
+      <rect x="2" y="9" width="5" height="5" rx="1.25" />
+      <rect x="9" y="9" width="5" height="5" rx="1.25" />
+    </svg>
+  );
+}
+
+/** Cog: store settings. */
+export function GearIcon({ className = "size-4" }: { className?: string }) {
+  return (
+    <svg aria-hidden viewBox="0 0 16 16" className={className} fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="8" cy="8" r="2" />
+      <path d="M8 1.75v1.5M8 12.75v1.5M14.25 8h-1.5M3.25 8h-1.5M12.4 3.6l-1.05 1.05M4.65 11.35 3.6 12.4M12.4 12.4l-1.05-1.05M4.65 4.65 3.6 3.6" />
+      <circle cx="8" cy="8" r="4.25" />
+    </svg>
+  );
+}
+
+/** Shop front with an awning: the store's identity. */
+export function StoreIcon({ className = "size-4" }: { className?: string }) {
+  return (
+    <svg aria-hidden viewBox="0 0 16 16" className={className} fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M2.25 6.25 3.25 2.25h9.5l1 4" />
+      <path d="M2.25 6.25a1.95 1.95 0 0 0 3.9 0 1.85 1.85 0 0 0 3.7 0 1.95 1.95 0 0 0 3.9 0" />
+      <path d="M3 8.25v5.5h10v-5.5M6.5 13.75v-3h3v3" />
+    </svg>
+  );
+}
+
+/** Speech bubble with a handset: contact details. */
+export function ChatIcon({ className = "size-4" }: { className?: string }) {
+  return (
+    <svg aria-hidden viewBox="0 0 16 16" className={className} fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M8 1.75a6.25 6.25 0 0 0-5.4 9.4l-.85 3.1 3.1-.85A6.25 6.25 0 1 0 8 1.75z" />
+    </svg>
+  );
+}
+
+/** Coin stack: currency and region. */
+export function CoinsIcon({ className = "size-4" }: { className?: string }) {
+  return (
+    <svg aria-hidden viewBox="0 0 16 16" className={className} fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+      <ellipse cx="6.5" cy="4.5" rx="4.25" ry="2" />
+      <path d="M2.25 4.5v3c0 1.1 1.9 2 4.25 2s4.25-.9 4.25-2v-3" />
+      <path d="M6 11.4c.2 1.05 2 1.85 4.25 1.85 2.35 0 4.25-.9 4.25-2v-3c0-.95-1.4-1.75-3.3-1.95" />
+    </svg>
+  );
+}
+
 /** Circled exclamation mark for notices. */
 export function AlertIcon({ className = "size-4" }: { className?: string }) {
   return (

@@ -1,24 +1,33 @@
 import type { Locale } from "@/i18n/config";
-import { RouteIcon } from "@/components/icons";
+import { GearIcon, GridIcon, PhoneIcon, RouteIcon, TagIcon } from "@/components/icons";
 import type { ComponentType } from "react";
 
-export type AdminNavId = "orders";
+export type AdminNavId = "orders" | "products" | "brands" | "categories" | "settings";
 
 export interface AdminNavItem {
   id: AdminNavId;
   href: (locale: Locale) => string;
-  labelKey: "orders";
+  labelKey: AdminNavId;
   Icon: ComponentType<{ className?: string }>;
   isActive: (pathname: string) => boolean;
+  /** Starts a new group in the sidebar (a divider above it). */
+  groupStart?: boolean;
 }
 
-/** Staff navigation. Add a tab here when a new admin section ships. */
+const section = (id: AdminNavId, Icon: AdminNavItem["Icon"], groupStart?: boolean): AdminNavItem => ({
+  id,
+  href: (locale) => `/${locale}/admin/${id}`,
+  labelKey: id,
+  Icon,
+  isActive: (pathname) => pathname.includes(`/admin/${id}`),
+  groupStart,
+});
+
+/** Staff navigation: selling, then the catalogue, then the store itself. Add a tab here when a section ships. */
 export const adminNavItems: AdminNavItem[] = [
-  {
-    id: "orders",
-    href: (locale) => `/${locale}/admin/orders`,
-    labelKey: "orders",
-    Icon: RouteIcon,
-    isActive: (pathname) => pathname.includes("/admin/orders"),
-  },
+  section("orders", RouteIcon),
+  section("products", PhoneIcon, true),
+  section("brands", TagIcon),
+  section("categories", GridIcon),
+  section("settings", GearIcon, true),
 ];

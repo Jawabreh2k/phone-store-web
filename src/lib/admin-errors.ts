@@ -15,6 +15,12 @@ export function adminLoginErrorMessage(error: unknown, errors: LoginErrors): str
   return errors.generic;
 }
 
+/** A localized message for any API failure, by its stable code, from a dictionary group that has `generic`. */
+export function apiErrorMessage<T extends { generic: string }>(error: unknown, errors: T): string {
+  const code = error instanceof ApiError ? error.problem.code : undefined;
+  return code && code in errors ? String(errors[code as keyof T]) : errors.generic;
+}
+
 export function adminOrderErrorMessage(error: unknown, errors: OrderErrors): string {
   if (!(error instanceof ApiError)) return errors.generic;
 
