@@ -1,5 +1,13 @@
 import type { Locale } from "@/i18n/config";
-import { ApiError, type ApiProblem, type CartDto, type OrderPlacedDto, type PlaceOrderRequest, type UserProfile } from "./types";
+import {
+  ApiError,
+  type AddressDto,
+  type ApiProblem,
+  type CartDto,
+  type OrderPlacedDto,
+  type PlaceOrderRequest,
+  type UserProfile,
+} from "./types";
 
 /** Same-origin API for the browser. Rewrites in next.config.ts proxy to the .NET API. */
 function apiUrl(path: string, locale: Locale): string {
@@ -101,6 +109,19 @@ export function signIn(locale: Locale, email: string, password: string, remember
 
 export function signOut(locale: Locale): Promise<void> {
   return request<void>("/api/auth/logout", locale, { method: "POST" });
+}
+
+/** The signed-in customer's saved addresses, default first. */
+export function getMyAddresses(locale: Locale): Promise<AddressDto[]> {
+  return request<AddressDto[]>("/api/account/addresses", locale);
+}
+
+/** Customers may cancel only while the order is Pending (`orders.customer_cancel_pending_only` otherwise). */
+export function cancelMyOrder(locale: Locale, orderNumber: string, reason: string | null): Promise<void> {
+  return request<void>(`/api/account/orders/${encodeURIComponent(orderNumber)}/cancel`, locale, {
+    method: "POST",
+    body: JSON.stringify({ reason }),
+  });
 }
 
 // ---- Account recovery & external sign-in ----

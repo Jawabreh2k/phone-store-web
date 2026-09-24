@@ -1,13 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { AdminOrderActions } from "@/features/admin/admin-order-actions";
+import { AdminOrderMessages } from "@/features/admin/admin-order-messages";
 import { BackArrowIcon, CashIcon } from "@/components/ui/icons";
 import { LocalDateTime } from "@/components/ui/local-date-time";
 import { ProductImagePlaceholder } from "@/components/ui/product-image-placeholder";
 import { VariantLabel } from "@/components/ui/variant-label";
 import type { Dictionary } from "@/i18n/dictionaries";
 import type { Locale } from "@/i18n/config";
-import type { AdminOrderDetails, OrderDetailsDto } from "@/lib/api/types";
+import type { AdminNotification, AdminOrderDetails, OrderDetailsDto } from "@/lib/api/types";
 import { formatPrice } from "@/lib/format";
 import { orderStatusLabel, paymentStatusLabel } from "@/lib/order-labels";
 import { buttonSecondary, pageTitle, panel, panelTitle, textLink } from "@/components/ui/ui";
@@ -16,10 +17,13 @@ interface Props {
   locale: Locale;
   backHref: string;
   details: AdminOrderDetails;
+  /** Null when the message list could not be loaded. */
+  messages: AdminNotification[] | null;
   labels: Dictionary["admin"]["orders"];
   trackLabels: Dictionary["track"];
   cashOnDeliveryLabel: string;
   loadingLabel: string;
+  closeLabel: string;
 }
 
 function formatAddress(address: OrderDetailsDto["shippingAddress"]): string {
@@ -27,7 +31,7 @@ function formatAddress(address: OrderDetailsDto["shippingAddress"]): string {
   return parts.join(", ");
 }
 
-export function AdminOrderDetail({ locale, backHref, details, labels, trackLabels, cashOnDeliveryLabel, loadingLabel }: Props) {
+export function AdminOrderDetail({ locale, backHref, details, messages, labels, trackLabels, cashOnDeliveryLabel, loadingLabel, closeLabel }: Props) {
   const { order, history, nextStatuses } = details;
   const money = (amount: number) => formatPrice(amount, order.currencyCode, locale);
   const whatsAppDigits = order.contact.phone.replace(/\D/g, "");
@@ -122,6 +126,8 @@ export function AdminOrderDetail({ locale, backHref, details, labels, trackLabel
           </section>
 
           <AdminOrderActions locale={locale} orderId={order.id} nextStatuses={nextStatuses} labels={labels} loadingLabel={loadingLabel} />
+
+          <AdminOrderMessages locale={locale} messages={messages} labels={labels.messages} closeLabel={closeLabel} />
         </div>
 
         <aside className="flex flex-col gap-4 lg:sticky lg:top-8">

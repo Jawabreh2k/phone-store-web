@@ -380,6 +380,16 @@ export function UserIcon({ className = "size-4" }: { className?: string }) {
   );
 }
 
+/** Arrow leaving a door: sign out. Points to the end side, so it flips in RTL like ArrowIcon. */
+export function SignOutIcon({ className = "size-4" }: { className?: string }) {
+  return (
+    <svg aria-hidden viewBox="0 0 16 16" className={`${className} rtl:-scale-x-100`} fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M6.25 2.25H4A1.75 1.75 0 0 0 2.25 4v8c0 .97.78 1.75 1.75 1.75h2.25" />
+      <path d="M10.5 11l3-3-3-3M13.25 8H6.5" />
+    </svg>
+  );
+}
+
 /**
  * Google's "G" in its own colours: Google's sign-in branding asks for the mark unaltered, so this is the one icon
  * not drawn in currentColor.

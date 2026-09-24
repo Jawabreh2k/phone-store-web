@@ -12,17 +12,19 @@ interface Props {
   locale: Locale;
   labels: Dictionary["auth"]["forgot"];
   errors: Dictionary["auth"]["errors"];
-  /** h1 on its own page; h2 as a step inside the sign-in panel. */
+  /** h1 on its own page; h2 as a step inside the sign-in dialog. */
   titleAs?: "h1" | "h2";
-  /** Inside the sign-in panel: shows "Back to sign in". */
+  /** Inside the sign-in dialog: shows "Back to sign in" and drops the extra card. */
   onBack?: () => void;
+  /** Id for the dialog's accessible name while this step is showing. */
+  titleId?: string;
 }
 
 /**
  * Asks for the account email and has a reset link sent to it. The confirmation reads the same whether or not the
  * email has an account (the API never says), so the form can't be used to find out who shops here.
  */
-export function ForgotPasswordForm({ locale, labels, errors, titleAs: Title = "h2", onBack }: Props) {
+export function ForgotPasswordForm({ locale, labels, errors, titleAs: Title = "h2", onBack, titleId }: Props) {
   const [email, setEmail] = useState("");
   const [sentTo, setSentTo] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -52,14 +54,14 @@ export function ForgotPasswordForm({ locale, labels, errors, titleAs: Title = "h
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-2 text-center">
-        <Title className="text-[1.75rem] leading-tight font-semibold tracking-tight sm:text-3xl">
+        <Title id={titleId} className="text-[1.75rem] leading-tight font-semibold tracking-tight sm:text-3xl">
           {sentTo ? labels.sentTitle : labels.title}
         </Title>
         {!sentTo && <p className="text-sm leading-relaxed text-muted">{labels.subtitle}</p>}
       </div>
 
       {sentTo ? (
-        <div role="status" className={`${formSection} items-center text-center`}>
+        <div role="status" className={`${onBack ? "flex flex-col gap-4" : formSection} items-center text-center`}>
           <span aria-hidden className="inline-flex size-12 items-center justify-center rounded-full bg-brand/5 text-brand">
             <MailIcon className="size-5" />
           </span>
@@ -73,13 +75,14 @@ export function ForgotPasswordForm({ locale, labels, errors, titleAs: Title = "h
           </button>
         </div>
       ) : (
-        <form onSubmit={submit} className={formSection}>
+        <form onSubmit={submit} className={onBack ? "flex flex-col gap-4" : formSection}>
           <div className={fieldGroup}>
             <label htmlFor={emailId} className={fieldLabel}>
               {labels.email}
             </label>
             <input
               id={emailId}
+              data-auth-focus="forgot"
               name="email"
               type="email"
               autoComplete="email"
@@ -98,7 +101,7 @@ export function ForgotPasswordForm({ locale, labels, errors, titleAs: Title = "h
             </p>
           )}
 
-          <button type="submit" disabled={submitting} className={buttonPrimary}>
+          <button type="submit" disabled={submitting} className={onBack ? `${buttonPrimary} w-full` : buttonPrimary}>
             {submitting ? labels.sending : labels.submit}
           </button>
         </form>

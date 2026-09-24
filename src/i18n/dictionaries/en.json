@@ -5,6 +5,7 @@
     "accessories": "Accessories",
     "cart": "Cart",
     "account": "My account",
+    "orders": "Orders",
     "signIn": "Sign in",
     "signOut": "Sign out",
     "search": "Search phones and accessories",
@@ -206,7 +207,39 @@
     "stepDone": "Confirmation",
     "codDetail": "Pay {total} in cash when your order arrives. No card needed.",
     "noPaymentNow": "Nothing to pay now.",
-    "showSummary": "Order summary"
+    "showSummary": "Order summary",
+    "prefilled": "Filled in from your saved address. Change anything you need.",
+    "saveAddress": "Save this address",
+    "saveAddressHint": "Next time, checkout fills it in for you."
+  },
+  "account": {
+    "ordersTitle": "My orders",
+    "ordersSubtitle": "Orders placed while signed in to this account. Orders placed as a guest are followed with their tracking link.",
+    "emptyTitle": "No orders yet",
+    "emptyBody": "Orders you place while signed in show up here, so you can follow them any time.",
+    "browseProducts": "Browse products",
+    "orderTitle": "Order {number}",
+    "placedOn": "Placed {date}",
+    "cancel": {
+      "button": "Cancel order",
+      "hint": "You can cancel until the store confirms your order.",
+      "title": "Cancel this order?",
+      "body": "The store won't prepare or deliver it. This can't be undone.",
+      "reason": "Reason (optional)",
+      "confirm": "Cancel order",
+      "keep": "Keep order",
+      "cancelling": "Cancelling…",
+      "close": "Close"
+    },
+    "errors": {
+      "orders.customer_cancel_pending_only": "You can only cancel an order before the store confirms it. Please contact us.",
+      "orders.not_found": "This order was not found on your account.",
+      "validation": "The reason is too long: 500 characters at most.",
+      "generic": "Something went wrong. Please try again."
+    },
+    "notFoundTitle": "Order not found",
+    "notFoundBody": "This order isn't on your account. Orders placed as a guest are followed with their tracking link.",
+    "backToOrders": "Back to my orders"
   },
   "confirmation": {
     "orderPlaced": "Order placed!",
@@ -312,6 +345,7 @@
     "google": {
       "continue": "Continue with Google",
       "connect": "Connect Google",
+      "connected": "Google connected",
       "or": "or"
     },
     "errors": {
@@ -492,6 +526,53 @@
         "orders.cannot_cancel": "This order can no longer be cancelled.",
         "orders.cannot_return": "This order can only be returned after delivery.",
         "validation": "Please check the note and try again."
+      },
+      "messages": {
+        "title": "Messages",
+        "description": "What the store sent about this order and whether it arrived. Message text and links are not kept here.",
+        "empty": "No messages for this order yet.",
+        "loadError": "Could not load the messages. Reload the page to try again.",
+        "attempts": "Attempts",
+        "lastError": "Last error",
+        "queuedAt": "Queued",
+        "lastAttemptAt": "Last attempt",
+        "nextAttemptAt": "Next attempt",
+        "sentAt": "Sent",
+        "details": "Details",
+        "detailsTitle": "Message details",
+        "channelLabel": "Channel",
+        "statusLabel": "Status",
+        "retry": "Send again",
+        "retrying": "Sending…",
+        "parkedHint": "This message stopped retrying. Fix the cause (for example the email settings), then send it again.",
+        "channel": {
+          "Email": "Email",
+          "Sms": "SMS",
+          "WhatsApp": "WhatsApp",
+          "none": "—"
+        },
+        "template": {
+          "OrderPlaced": "Order received",
+          "OrderConfirmed": "Order confirmed",
+          "OrderShipped": "Out for delivery",
+          "OrderDelivered": "Delivered",
+          "OrderCancelled": "Order cancelled",
+          "OrderReturned": "Return recorded",
+          "StaffNewOrder": "New-order alert to staff",
+          "PasswordReset": "Password reset",
+          "other": "Message"
+        },
+        "status": {
+          "Pending": "Waiting",
+          "Processing": "Sending",
+          "Sent": "Sent",
+          "Parked": "Stopped"
+        },
+        "errors": {
+          "generic": "Something went wrong. Please try again.",
+          "outbox.not_parked": "This message isn't stopped, so it can't be sent again. It may be sending already.",
+          "outbox.not_found": "This message no longer exists."
+        }
       }
     },
     "products": {

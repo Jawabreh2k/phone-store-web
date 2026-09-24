@@ -56,6 +56,11 @@ export function changeOrderStatus(locale: Locale, orderId: string, status: Order
   return requestJson<void>(`/api/admin/orders/${encodeURIComponent(orderId)}/status`, locale, json("POST", { status, note: note || null }));
 }
 
+/** Sends a stopped (parked) message again. */
+export function retryNotification(locale: Locale, notificationId: string): Promise<void> {
+  return requestJson<void>(`/api/admin/notifications/${encodeURIComponent(notificationId)}/retry`, locale, { method: "POST" });
+}
+
 // ---- Products ----
 
 /** Creates an unpublished product without variants; resolves to its id. */

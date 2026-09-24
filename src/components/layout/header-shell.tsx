@@ -10,7 +10,18 @@ import { GoogleSignInLink } from "@/features/storefront/google-sign-in-link";
 import { SignInPanel } from "@/features/storefront/sign-in-panel";
 import type { Dictionary } from "@/i18n/dictionaries";
 import type { Locale } from "@/i18n/config";
-import { CartIcon, CloseIcon, MenuIcon, SearchIcon, UserIcon } from "@/components/ui/icons";
+import {
+  ArrowIcon,
+  CartIcon,
+  CheckIcon,
+  CloseIcon,
+  GoogleIcon,
+  ListIcon,
+  MenuIcon,
+  SearchIcon,
+  SignOutIcon,
+  UserIcon,
+} from "@/components/ui/icons";
 import { LanguageSwitcher } from "@/components/layout/language-switcher";
 import { StoreLogo } from "@/components/layout/store-logo";
 
@@ -30,6 +41,7 @@ interface Props {
     switchLanguage: string;
     signIn: string;
     account: string;
+    orders: string;
     signOut: string;
   };
   authLabels: Dictionary["auth"];
@@ -77,6 +89,17 @@ const iconButtonBase = `inline-flex ${navHeight} w-9 items-center justify-center
 const navLinkBase = `inline-flex ${navHeight} items-center rounded-lg px-3 ${navText} transition-colors duration-300`;
 const menuItemBase = `inline-flex ${navHeight} w-full items-center gap-2 rounded-xl px-4 ${navText} transition-colors`;
 
+/** A row in the signed-in account menu; the interactive ones highlight on hover and when they are the current page. */
+const accountRowBase = "flex h-10 w-full items-center gap-3 rounded-xl px-3 text-start text-sm font-medium pointer-coarse:h-11";
+const accountRow = `${accountRowBase} text-foreground transition-colors hover:bg-foreground/5 aria-[current=page]:bg-brand/5 aria-[current=page]:text-brand [&>svg:first-child]:text-muted aria-[current=page]:[&>svg:first-child]:text-brand`;
+
+/** Up to two initials for the avatar ("Sara Haddad" → "SH"), by whole characters so no letter is split. */
+function initials(name: string): string {
+  const words = name.trim().split(/\s+/).filter(Boolean);
+  const letters = words.length > 1 ? [words[0], words.at(-1)!] : words;
+  return letters.map((word) => Array.from(word)[0]).join("").toUpperCase();
+}
+
 /**
  * Colour sets for the two surfaces the transparent header can sit on: the paper page, or the indigo home hero.
  * The floating pill is always light, so it uses the paper set.
@@ -117,12 +140,24 @@ export function HeaderShell({ locale, storeName, logoUrl, labels, authLabels }: 
 
   const menuId = useId();
   const searchId = useId();
+  const accountId = useId();
 
   // The home hero runs behind the header; until the pill appears, the header is drawn light-on-dark.
   const overHero = !floating && pathname === `/${locale}`;
   const tone = overHero ? tones.brand : tones.paper;
   const iconButton = `${iconButtonBase} ${tone.icon}`;
   const navLink = `${navLinkBase} ${tone.link}`;
+
+  const ordersHref = `/${locale}/account/orders`;
+  const onOrders = pathname === ordersHref || pathname.startsWith(`${ordersHref}/`);
+  const menuLink = `${menuItemBase} text-muted hover:bg-foreground/5 hover:text-foreground aria-[current=page]:bg-foreground/5 aria-[current=page]:text-foreground`;
+  const googleConnected = profile?.connectedLogins?.includes("Google") ?? false;
+
+  const handleSignOut = async () => {
+    await signOut();
+    // A full load, not a client navigation: the router's back/forward cache would otherwise still hold the orders.
+    if (pathname.startsWith(`/${locale}/account`)) window.location.replace(`/${locale}`);
+  };
 
   useEffect(() => {
     let frame = 0;
@@ -200,6 +235,7 @@ export function HeaderShell({ locale, storeName, logoUrl, labels, authLabels }: 
             type="button"
             aria-label={status === "signedIn" ? labels.account : labels.signIn}
             aria-expanded={open === "account"}
+            aria-controls={status === "signedIn" && open === "account" ? accountId : undefined}
             title={status === "signedIn" ? profile?.fullName : undefined}
             onClick={() => toggle("account")}
             className={`hidden ${navHeight} items-center gap-2 rounded-lg px-3 ${navText} transition-colors duration-300 md:inline-flex ${tone.link}`}
@@ -212,6 +248,7 @@ export function HeaderShell({ locale, storeName, logoUrl, labels, authLabels }: 
             type="button"
             aria-label={status === "signedIn" ? labels.account : labels.signIn}
             aria-expanded={open === "account"}
+            aria-controls={status === "signedIn" && open === "account" ? accountId : undefined}
             onClick={() => toggle("account")}
             className={`${iconButton} md:hidden`}
           >
@@ -251,14 +288,56 @@ export function HeaderShell({ locale, storeName, logoUrl, labels, authLabels }: 
         open === "account" && (
           <>
             <div aria-hidden className="pointer-events-auto fixed inset-0 z-40" onClick={close} />
-            <div className="pointer-events-auto fixed end-4 top-[78px] z-50 flex w-full max-w-xs flex-col gap-2 rounded-2xl border border-border bg-surface/95 p-3 backdrop-blur-xl">
-              <p className="px-2 text-sm font-medium">
-                <bdi className="truncate">{profile?.fullName}</bdi>
-              </p>
-              <GoogleSignInLink locale={locale} returnUrl={pathname} label={authLabels.google.connect} connect />
-              <button type="button" onClick={() => void signOut()} className={`${menuItemBase} text-muted hover:bg-foreground/5 hover:text-foreground`}>
-                {labels.signOut}
-              </button>
+            {/* Lined up with the bar's end edge (not the window's), so it hangs under the account button on wide screens. */}
+            <div className="pointer-events-none fixed inset-x-4 top-[78px] z-50 mx-auto flex max-w-7xl justify-end">
+              <div
+                id={accountId}
+                className="pointer-events-auto w-full origin-top-right overflow-hidden rounded-2xl border border-border bg-surface/95 shadow-float backdrop-blur-xl motion-safe:animate-menu-in rtl:origin-top-left sm:w-72"
+              >
+                <div className="flex items-center gap-3 px-4 pt-4 pb-3.5">
+                  <span aria-hidden className="inline-flex size-10 shrink-0 items-center justify-center rounded-full bg-brand text-sm font-semibold text-brand-foreground">
+                    {initials(profile?.fullName ?? "")}
+                  </span>
+                  <div className="flex min-w-0 flex-col gap-0.5">
+                    <p className="truncate text-sm font-semibold">
+                      <bdi>{profile?.fullName}</bdi>
+                    </p>
+                    <p className="truncate text-xs text-muted">
+                      <bdi dir="ltr">{profile?.email}</bdi>
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-0.5 border-t border-border p-1.5">
+                  <Link href={ordersHref} aria-current={onOrders ? "page" : undefined} onClick={close} className={accountRow}>
+                    <ListIcon className={navIcon} />
+                    {labels.orders}
+                    <ArrowIcon className="ms-auto size-3.5 opacity-50" />
+                  </Link>
+                  {googleConnected ? (
+                    <p className={`${accountRowBase} text-muted`}>
+                      <GoogleIcon className={navIcon} />
+                      {authLabels.google.connected}
+                      <CheckIcon className="ms-auto size-4 text-success" />
+                    </p>
+                  ) : (
+                    <GoogleSignInLink
+                      locale={locale}
+                      returnUrl={pathname}
+                      label={authLabels.google.connect}
+                      connect
+                      className={`${accountRow} [&>svg]:size-[1.125rem]`}
+                    />
+                  )}
+                </div>
+
+                <div className="border-t border-border p-1.5">
+                  <button type="button" onClick={() => void handleSignOut()} className={accountRow}>
+                    <SignOutIcon className={navIcon} />
+                    {labels.signOut}
+                  </button>
+                </div>
+              </div>
             </div>
           </>
         )
@@ -300,6 +379,12 @@ export function HeaderShell({ locale, storeName, logoUrl, labels, authLabels }: 
             <UserIcon className={navIcon} />
             {status === "signedIn" ? labels.account : labels.signIn}
           </button>
+          {status === "signedIn" && (
+            <Link href={ordersHref} aria-current={onOrders ? "page" : undefined} className={menuLink}>
+              <ListIcon className={navIcon} />
+              {labels.orders}
+            </Link>
+          )}
           <CartLink
             href={`/${locale}/cart`}
             label={labels.cart}

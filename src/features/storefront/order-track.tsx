@@ -36,12 +36,6 @@ function formatAddress(address: OrderDetailsDto["shippingAddress"]): string {
  */
 export function OrderTrack({ locale, order, trackingPath, placed, labels, confirmation, cashOnDeliveryLabel }: Props) {
   const money = (amount: number) => formatPrice(amount, order.currencyCode, locale);
-  const cancelled = order.status === "Cancelled";
-  const returned = order.status === "Returned";
-  const terminal = cancelled || returned;
-  const current = steps.indexOf(order.status);
-  // The latest history entry for a status: when the order reached it, and any note from the shop.
-  const reached = (status: OrderStatus) => order.history.filter((entry) => entry.status === status).at(-1);
 
   return (
     <div className="flex flex-col gap-6 sm:gap-8">
@@ -97,6 +91,31 @@ export function OrderTrack({ locale, order, trackingPath, placed, labels, confir
         </header>
       )}
 
+      <OrderDetailsBody locale={locale} order={order} labels={labels} cashOnDeliveryLabel={cashOnDeliveryLabel} />
+    </div>
+  );
+}
+
+/**
+ * Timeline, items with totals, delivery address and payment: everything about an order below its heading.
+ * Shared by guest tracking and the signed-in account, which only differ in how the order is reached.
+ */
+export function OrderDetailsBody({
+  locale,
+  order,
+  labels,
+  cashOnDeliveryLabel,
+}: Pick<Props, "locale" | "order" | "labels" | "cashOnDeliveryLabel">) {
+  const money = (amount: number) => formatPrice(amount, order.currencyCode, locale);
+  const cancelled = order.status === "Cancelled";
+  const returned = order.status === "Returned";
+  const terminal = cancelled || returned;
+  const current = steps.indexOf(order.status);
+  // The latest history entry for a status: when the order reached it, and any note from the shop.
+  const reached = (status: OrderStatus) => order.history.filter((entry) => entry.status === status).at(-1);
+
+  return (
+    <>
       <section aria-labelledby="order-progress" className={`${panel} p-5 sm:p-7`}>
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
           <h2 id="order-progress" className={panelTitle}>
@@ -250,6 +269,6 @@ export function OrderTrack({ locale, order, trackingPath, placed, labels, confir
           </section>
         </aside>
       </div>
-    </div>
+    </>
   );
 }

@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { getDictionary, getLocale } from "@/i18n/dictionaries";
 import { api } from "@/lib/api/server";
 import { AuthErrorNotice } from "@/features/storefront/auth-error-notice";
+import { SignInPrompt } from "@/features/storefront/sign-in-prompt";
 import { HeaderShell } from "@/components/layout/header-shell";
 
 /** Loads what the header shows on the server; the scroll/menu behaviour lives in the client-side HeaderShell. */
@@ -24,6 +25,7 @@ export async function SiteHeader() {
           switchLanguage: dict.nav.switchLanguage,
           signIn: dict.nav.signIn,
           account: dict.nav.account,
+          orders: dict.nav.orders,
           signOut: dict.nav.signOut,
         }}
         authLabels={dict.auth}
@@ -31,6 +33,10 @@ export async function SiteHeader() {
       {/* A failed Google sign-in lands back on any storefront page; the notice floats under the header. */}
       <Suspense fallback={null}>
         <AuthErrorNotice errors={dict.auth.errors} dismissLabel={dict.auth.dismiss} />
+      </Suspense>
+      {/* Account pages send signed-out visitors home with ?signIn=<page>; this opens the dialog for them. */}
+      <Suspense fallback={null}>
+        <SignInPrompt locale={locale} labels={dict.auth} />
       </Suspense>
     </>
   );

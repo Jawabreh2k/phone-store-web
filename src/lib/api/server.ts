@@ -7,6 +7,7 @@ import {
   type AdminBrand,
   type AdminCategory,
   type AdminDashboard,
+  type AdminNotification,
   type AdminOrderDetails,
   type AdminOrderListItem,
   type AdminProduct,
@@ -17,6 +18,7 @@ import {
   type Brand,
   type Category,
   type OrderDetailsDto,
+  type OrderSummaryDto,
   type PagedResult,
   type ProductDetails,
   type ProductSearch,
@@ -65,7 +67,7 @@ async function get<T>(path: string, locale: Locale, query: Record<string, unknow
   return (await response.json()) as T;
 }
 
-/** Credential-bearing GET for staff routes. Forwards the browser cookie and never caches. */
+/** Credential-bearing GET for staff and customer-account routes. Forwards the browser cookie and never caches. */
 async function getAuth<T>(
   path: string,
   locale: Locale,
@@ -137,6 +139,28 @@ export const api = {
     }),
 };
 
+/** A read of the signed-in customer's own data; `signedIn: false` when the cookie is missing or expired. */
+export type AccountRead<T> = { signedIn: false } | { signedIn: true; data: T };
+
+/**
+ * The signed-in customer's own orders. The API scopes every call by the cookie's user, so these go through
+ * getAuth (cookie forwarded, never in the data cache or under a shared tag).
+ */
+export const accountApi = {
+  orders: (locale: Locale, page?: number): Promise<AccountRead<PagedResult<OrderSummaryDto>>> =>
+    getAuth<PagedResult<OrderSummaryDto>>("/api/account/orders", locale, { page }).then((result) =>
+      result.status === 401 ? { signedIn: false } : { signedIn: true, data: authRequired(result, "My orders") },
+    ),
+
+  /** `data` is null when the order number is not one of this customer's orders. */
+  order: (locale: Locale, orderNumber: string): Promise<AccountRead<OrderDetailsDto | null>> =>
+    getAuth<OrderDetailsDto>(`/api/account/orders/${encodeURIComponent(orderNumber)}`, locale).then((result) => {
+      if (result.status === 401) return { signedIn: false };
+      if (result.status === 404) return { signedIn: true, data: null };
+      return { signedIn: true, data: authRequired(result, "My order") };
+    }),
+};
+
 export const adminApi = {
   me: (locale: Locale) =>
     getAuth<UserProfile>("/api/auth/me", locale).then((result) => ({ profile: result.data, status: result.status })),
@@ -155,6 +179,12 @@ export const adminApi = {
     getAuth<AdminOrderDetails>(`/api/admin/orders/${encodeURIComponent(id)}`, locale).then((result) => {
       if (result.status === 404) return null;
       return authRequired(result, "Order detail");
+    }),
+
+  orderNotifications: (locale: Locale, id: string) =>
+    getAuth<AdminNotification[]>(`/api/admin/orders/${encodeURIComponent(id)}/notifications`, locale).then((result) => {
+      if (result.status === 404) return null;
+      return authRequired(result, "Order messages");
     }),
 
   products: (locale: Locale, search: AdminProductSearch = {}) =>

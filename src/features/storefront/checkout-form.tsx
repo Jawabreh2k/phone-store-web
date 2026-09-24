@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { CartLoadError } from "@/features/storefront/cart-load-error";
 import { useCart } from "@/features/storefront/cart-provider";
+import { useSession } from "@/features/storefront/session-provider";
 import { Fill } from "@/components/ui/fill";
 import { AlertIcon, CashIcon, CheckIcon, ChevronDownIcon } from "@/components/ui/icons";
 import { ProductImagePlaceholder } from "@/components/ui/product-image-placeholder";
@@ -13,7 +14,7 @@ import { CheckoutPageSkeleton } from "@/components/ui/skeletons";
 import type { Dictionary } from "@/i18n/dictionaries";
 import type { Locale } from "@/i18n/config";
 import * as cartApi from "@/lib/api/client";
-import { ApiError } from "@/lib/api/types";
+import { ApiError, type AddressDto } from "@/lib/api/types";
 import { checkoutErrorMessage, checkoutRedirectNotice, mapFieldErrors } from "@/lib/checkout-errors";
 import { formatPrice, plural } from "@/lib/format";
 import {
@@ -52,10 +53,34 @@ const apiFieldMap: Record<FieldKey, string> = {
 const requiredFields = new Set<FieldKey>(["fullName", "phone", "city", "area", "street"]);
 const fieldOrder: FieldKey[] = ["fullName", "phone", "email", "city", "area", "street", "building", "details", "note"];
 
+/** Field values from a saved address (its phone is already E.164, shown as is) and the account email. */
+function prefillFrom(address: AddressDto | undefined, email: string | undefined): Partial<Record<FieldKey, string>> {
+  return {
+    ...(address && {
+      fullName: address.recipientName,
+      phone: address.phone,
+      city: address.address.city,
+      area: address.address.area,
+      street: address.address.street,
+      building: address.address.building ?? "",
+      details: address.address.details ?? "",
+    }),
+    email: email ?? "",
+  };
+}
+
 export function CheckoutForm({ locale, labels, cartLabels }: Props) {
   const router = useRouter();
   const { cart, status, refresh } = useCart();
+  const { profile, status: sessionStatus } = useSession();
+  const signedIn = sessionStatus === "signedIn";
   const ready = status === "ready";
+  const formShown = ready && !!cart && cart.lines.length > 0;
+  // Saved addresses, once loaded for the signed-in customer (null until then; an empty list when there are none).
+  const [addresses, setAddresses] = useState<{ customerId: string; list: AddressDto[] } | null>(null);
+  const [prefilled, setPrefilled] = useState(false);
+  // Fields the customer has typed in. Prefill never touches them, even if they were cleared on purpose.
+  const editedRef = useRef(new Set<FieldKey>());
   const [submitting, setSubmitting] = useState(false);
   const [placedOrder, setPlacedOrder] = useState(false);
   const [keepCheckoutView, setKeepCheckoutView] = useState(false);
@@ -77,6 +102,41 @@ export function CheckoutForm({ locale, labels, cartLabels }: Props) {
       router.replace(`/${locale}/cart?notice=empty`);
     }
   }, [ready, placedOrder, keepCheckoutView, cart, locale, router]);
+
+  const customerId = signedIn ? profile?.id : undefined;
+  useEffect(() => {
+    if (!customerId) return;
+    let cancelled = false;
+    // A convenience only: if the addresses can't be read, the customer types them in as a guest would.
+    cartApi.getMyAddresses(locale).then(
+      (list) => {
+        if (!cancelled) setAddresses({ customerId, list });
+      },
+      () => {
+        if (!cancelled) setAddresses({ customerId, list: [] });
+      },
+    );
+    return () => {
+      cancelled = true;
+    };
+  }, [customerId, locale]);
+
+  // Fill empty, untouched fields once both the form and the account data are there. The inputs are
+  // uncontrolled (the submit reads FormData), so the values are set on the elements themselves.
+  const savedList = customerId && addresses?.customerId === customerId ? addresses.list : null;
+  useEffect(() => {
+    const form = formRef.current;
+    if (!formShown || !form || !savedList) return;
+    const saved = savedList.find((a) => a.isDefault) ?? savedList[0];
+    let filledFromAddress = false;
+    for (const [key, value] of Object.entries(prefillFrom(saved, profile?.email)) as [FieldKey, string][]) {
+      const input = form.elements.namedItem(key);
+      if (!value || !(input instanceof HTMLInputElement) || input.value || editedRef.current.has(key)) continue;
+      input.value = value;
+      if (key !== "email") filledFromAddress = true;
+    }
+    if (filledFromAddress) setPrefilled(true);
+  }, [formShown, savedList, profile?.email]);
 
   const focusFirstInvalid = (errors: Partial<Record<FieldKey, string>>) => {
     const first = fieldOrder.find((key) => errors[key]);
@@ -159,7 +219,8 @@ export function CheckoutForm({ locale, labels, cartLabels }: Props) {
           details: String(data.get("details") ?? "").trim() || null,
         },
         note: String(data.get("note") ?? "").trim() || null,
-        saveAddress: false,
+        // The API saves only for a signed-in customer, and skips an address that is already saved.
+        saveAddress: signedIn && data.get("saveAddress") === "on",
       });
 
       placedRef.current = true;
@@ -258,7 +319,10 @@ export function CheckoutForm({ locale, labels, cartLabels }: Props) {
         aria-invalid={fieldErrors[name] ? true : undefined}
         aria-describedby={fieldErrors[name] ? `${name}-error` : undefined}
         disabled={submitting}
-        onChange={() => clearFieldError(name)}
+        onChange={() => {
+          editedRef.current.add(name);
+          clearFieldError(name);
+        }}
         className={fieldInput}
       />
       {fieldErrors[name] && (
@@ -340,6 +404,13 @@ export function CheckoutForm({ locale, labels, cartLabels }: Props) {
           </p>
         )}
 
+        {prefilled && (
+          <p className="flex items-start gap-3 rounded-2xl border border-brand/15 bg-brand/5 px-4 py-3 text-sm leading-relaxed" role="status">
+            <CheckIcon className="mt-0.5 size-4 shrink-0 text-brand" />
+            {labels.prefilled}
+          </p>
+        )}
+
         <section className={formSection}>
           {sectionTitle(1, labels.contactSection)}
           {field("fullName", labels.fullName)}
@@ -358,6 +429,15 @@ export function CheckoutForm({ locale, labels, cartLabels }: Props) {
             {field("building", labels.building)}
             {field("details", labels.details)}
           </div>
+          {signedIn && (
+            <label className="flex cursor-pointer items-start gap-3 text-sm">
+              <input type="checkbox" name="saveAddress" defaultChecked disabled={submitting} className="mt-0.5 size-4 shrink-0 accent-brand" />
+              <span className="flex flex-col gap-0.5">
+                <span className="font-medium">{labels.saveAddress}</span>
+                <span className="text-muted">{labels.saveAddressHint}</span>
+              </span>
+            </label>
+          )}
           <div className={`${fieldGroup} border-t border-border pt-4`}>
             <label htmlFor="note" className={fieldLabel}>
               {labels.note}

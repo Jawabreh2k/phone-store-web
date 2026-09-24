@@ -216,6 +216,29 @@ export interface OrderDetailsDto {
   canCancel: boolean;
 }
 
+/** A row in the signed-in customer's order list (newest first). */
+export interface OrderSummaryDto {
+  id: string;
+  orderNumber: string;
+  status: OrderStatus;
+  placedAt: string;
+  /** Units across all lines. */
+  itemCount: number;
+  total: number;
+  currencyCode: string;
+  firstItemImageUrl: string | null;
+}
+
+/** An address saved on the customer's account. `phone` is already E.164. */
+export interface AddressDto {
+  id: string;
+  label: string;
+  recipientName: string;
+  phone: string;
+  address: AddressInput;
+  isDefault: boolean;
+}
+
 export interface UserProfile {
   id: string;
   email: string;
@@ -223,6 +246,8 @@ export interface UserProfile {
   phoneNumber: string | null;
   preferredLanguage: string;
   roles: string[];
+  /** External providers the account can sign in with, e.g. "Google". */
+  connectedLogins: string[];
 }
 
 export interface AdminOrderListItem {
@@ -252,6 +277,33 @@ export interface AdminOrderDetails {
   customerId: string | null;
   history: AdminStatusChange[];
   nextStatuses: OrderStatus[];
+}
+
+export type NotificationChannel = "Email" | "Sms" | "WhatsApp";
+export type NotificationTemplate =
+  | "OrderPlaced"
+  | "OrderConfirmed"
+  | "OrderShipped"
+  | "OrderDelivered"
+  | "OrderCancelled"
+  | "OrderReturned"
+  | "StaffNewOrder"
+  | "PasswordReset";
+export type OutboxStatus = "Pending" | "Processing" | "Sent" | "Parked";
+
+/** One outgoing message about an order: delivery state only (the API never returns its text or links). */
+export interface AdminNotification {
+  id: string;
+  type: string;
+  channel: NotificationChannel | null;
+  template: NotificationTemplate | null;
+  status: OutboxStatus;
+  attempts: number;
+  lastError: string | null;
+  occurredAt: string;
+  nextAttemptAt: string;
+  lastAttemptAt: string | null;
+  processedAt: string | null;
 }
 
 // ---- Admin catalogue: admin DTOs carry both languages so the editor can show them side by side ----
