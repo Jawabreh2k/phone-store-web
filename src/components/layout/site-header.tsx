@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { getDictionary, getLocale } from "@/i18n/dictionaries";
 import { api } from "@/lib/api/server";
+import { DEFAULT_STORE_NAME } from "@/lib/constants";
 import { AuthErrorNotice } from "@/features/storefront/auth-error-notice";
 import { SignInPrompt } from "@/features/storefront/sign-in-prompt";
 import { HeaderShell } from "@/components/layout/header-shell";
@@ -14,7 +15,7 @@ export async function SiteHeader() {
     <>
       <HeaderShell
         locale={locale}
-        storeName={settings?.storeName ?? "PhoneStore"}
+        storeName={settings?.storeName ?? DEFAULT_STORE_NAME}
         logoUrl={settings?.logoUrl ?? null}
         labels={{
           phones: dict.nav.phones,

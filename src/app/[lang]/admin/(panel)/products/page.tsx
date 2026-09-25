@@ -45,9 +45,9 @@ export default async function AdminProductsPage({ searchParams }: PageProps<"/[l
   const filters = parseAdminProductsListParams(params);
   const { search, type, brand, status, page = 1 } = filters;
 
-  let result, brands;
+  let result, brands, settings;
   try {
-    [result, brands] = await Promise.all([
+    [result, brands, settings] = await Promise.all([
       adminApi.products(locale, {
         search,
         type,
@@ -60,11 +60,12 @@ export default async function AdminProductsPage({ searchParams }: PageProps<"/[l
         pageSize: 24,
       }),
       adminApi.brands(locale),
+      api.settings(locale),
     ]);
   } catch (error) {
     handleAdminReadError(error, locale);
   }
-  const currency = (await api.settings(locale))?.currencyCode ?? "JOD";
+  const currency = settings?.currencyCode ?? "JOD";
 
   /** The list URL with some filters changed; any change goes back to page 1. */
   const href = (changes: Partial<AdminProductsListParams>) => adminProductsListHref(locale, { ...filters, page: undefined, ...changes });

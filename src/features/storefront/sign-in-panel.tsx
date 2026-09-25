@@ -36,13 +36,16 @@ const REVEAL_MS = 420;
  * (2px outline, 3px offset) draw outside the button instead of being sliced by the card.
  */
 function Reveal({ open, children }: { open: boolean; children: ReactNode }) {
-  const [clip, setClip] = useState(!open);
+  const [clip, setClip] = useState(() => !open);
+  // Closing clips immediately; reset during render (not an effect) so it lands before paint.
+  const [wasOpen, setWasOpen] = useState(open);
+  if (open !== wasOpen) {
+    setWasOpen(open);
+    if (!open) setClip(true);
+  }
 
   useEffect(() => {
-    if (!open) {
-      setClip(true);
-      return;
-    }
+    if (!open) return;
     const frame = window.setTimeout(() => setClip(false), REVEAL_MS);
     return () => window.clearTimeout(frame);
   }, [open]);

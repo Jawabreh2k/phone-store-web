@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 import type { Brand, ProductSummary, PublicSettings } from "@/lib/api/types";
+import { DEFAULT_STORE_NAME } from "@/lib/constants";
 import { formatPrice, t } from "@/lib/format";
 import styles from "./home-hero.module.css";
 import { ArrowIcon, CartIcon, CheckIcon } from "@/components/ui/icons";
@@ -100,7 +101,7 @@ export function HomeHero({ locale, dict, settings, phones, brands }: Props) {
                 <PhoneScreen
                   feed={feed}
                   price={price}
-                  storeName={settings?.storeName ?? "PhoneStore"}
+                  storeName={settings?.storeName ?? DEFAULT_STORE_NAME}
                   logoUrl={settings?.logoUrl}
                   dict={dict}
                 />

@@ -3,6 +3,7 @@ import { IBM_Plex_Sans_Arabic } from "next/font/google";
 import { dirOf } from "@/i18n/config";
 import { getLocale } from "@/i18n/dictionaries";
 import { api } from "@/lib/api/server";
+import { DEFAULT_STORE_NAME } from "@/lib/constants";
 import "../globals.css";
 
 // One family for both scripts keeps Arabic and Latin text visually consistent.
@@ -19,7 +20,7 @@ const plexArabic = IBM_Plex_Sans_Arabic({
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
   const settings = await api.settings(locale);
-  const storeName = settings?.storeName ?? "PhoneStore";
+  const storeName = settings?.storeName ?? DEFAULT_STORE_NAME;
   return {
     title: { default: storeName, template: `%s | ${storeName}` },
     alternates: { languages: { ar: "/ar", en: "/en" } },

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { getDictionary, getLocale } from "@/i18n/dictionaries";
 import { api } from "@/lib/api/server";
+import { DEFAULT_STORE_NAME } from "@/lib/constants";
 import { formatPrice } from "@/lib/format";
 import { Fill } from "@/components/ui/fill";
 import { CheckIcon } from "@/components/ui/icons";
@@ -16,7 +17,7 @@ import { brandSurface } from "@/components/ui/ui";
 export async function SiteFooter() {
   const [locale, dict] = await Promise.all([getLocale(), getDictionary()]);
   const settings = await api.settings(locale);
-  const storeName = settings?.storeName ?? "PhoneStore";
+  const storeName = settings?.storeName ?? DEFAULT_STORE_NAME;
   const whatsApp = settings?.whatsAppNumber?.replace(/\D/g, "");
   const hasContact = Boolean(settings?.supportPhone || whatsApp || settings?.supportEmail);
   const threshold = settings?.freeShippingThreshold;
